@@ -25,7 +25,9 @@ public class ShopController {
     private final ShopService shopService;
 
     @PostMapping("/shops")
-    public ResponseEntity<CreateShopResponse> createShop(@RequestBody CreateShopRequest createShopRequest, @RequestAttribute("userId") Long userId) {
+    public ResponseEntity<CreateShopResponse> createShop(
+            @RequestBody CreateShopRequest createShopRequest,
+            @RequestAttribute("userId") Long userId) {
 
         CreateShopResponse createShopResponse = shopService.createShop(createShopRequest, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createShopResponse);
@@ -45,18 +47,28 @@ public class ShopController {
     }
 
     @GetMapping("/shops/{shopId}")
-    public ResponseEntity<ShopDetailResponse> readShopDetail(@PathVariable("shopId") Long shopId){
+    public ResponseEntity<ShopDetailResponse> readShopDetail(@PathVariable("shopId") Long shopId) {
 
         ShopDetailResponse shopDetailResponse = shopService.readShopDetail(shopId);
         return ResponseEntity.ok(shopDetailResponse);
     }
 
     @PatchMapping("/shops/{shopId}")
-    public ResponseEntity<ShopDetailResponse> updateShop(@RequestAttribute("userId") Long userId,
-                                                         @PathVariable("shopId") Long shopId,
-                                                         @RequestBody UpdateShopRequest updateShopRequest){
+    public ResponseEntity<ShopDetailResponse> updateShop(
+            @RequestAttribute("userId") Long userId,
+            @PathVariable("shopId") Long shopId,
+            @RequestBody UpdateShopRequest updateShopRequest) {
 
         ShopDetailResponse shopDetailResponse = shopService.updateShop(userId, shopId, updateShopRequest);
         return ResponseEntity.ok(shopDetailResponse);
+    }
+
+    @DeleteMapping("/shops/{shopId}")
+    public ResponseEntity<Void> deleteShop(
+            @RequestAttribute("userId") Long userId,
+            @PathVariable("shopId") Long shopId) {
+
+        shopService.deleteShop(userId, shopId);
+        return ResponseEntity.ok().build();
     }
 }
