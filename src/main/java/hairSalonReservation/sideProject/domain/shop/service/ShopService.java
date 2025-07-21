@@ -94,9 +94,9 @@ public class ShopService {
     @Transactional
     public void deleteShop(Long userId, Long shopId){
 
-        Shop shop = shopRepository.findByIdAndIsDeletedFalse(shopId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
+        Shop shop = shopRepository.findByIdAndIsDeletedFalse(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
         if(userId != shop.getUser().getId()){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+
         shop.deleted();
     }
 }
