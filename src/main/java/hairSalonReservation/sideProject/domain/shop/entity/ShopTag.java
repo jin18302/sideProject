@@ -15,7 +15,11 @@ public class ShopTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
+    @Column(nullable = false, length = 15)
     private String name;
+
+    @Column(nullable = false)
+    boolean isDeleted = false;
 
     private ShopTag (String name){
         this.name = name;
@@ -23,5 +27,9 @@ public class ShopTag {
 
     public static ShopTag from(String name){
         return new ShopTag(name);
+    }
+
+    public void delete(){
+        this.isDeleted = true;
     }
 }

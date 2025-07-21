@@ -15,7 +15,11 @@ public enum ErrorCode {
     FORBIDDEN(HttpStatus.FORBIDDEN, "해당 기능을 수행할 권한이 없습니다."),
 
     //샵관련
-    SHOP_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 헤어샵입니다");
+    SHOP_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 헤어샵입니다."),
+
+    //태그관련
+    SHOP_TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다.")
+    ;
 
     private final HttpStatus httpStatus;
     private final String message;
