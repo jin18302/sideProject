@@ -4,6 +4,7 @@ import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public record CreateShopResponse(
@@ -18,7 +19,9 @@ public record CreateShopResponse(
         String imageUrlList,
         String snsUriList,
         ShopStatus shopStatus,
-        LocalDate openDate) {
+        LocalDate openDate,
+        LocalDateTime createdAt
+) {
 
     public static CreateShopResponse from(Shop shop){
         return new CreateShopResponse(
@@ -33,7 +36,8 @@ public record CreateShopResponse(
                 shop.getImageUrlList(),
                 shop.getSnsUriList(),
                 shop.getShopStatus(),
-                shop.getOpenDate()
+                shop.getOpenDate(),
+                shop.getCreatedAt()
         );
     }
 }

@@ -1,6 +1,7 @@
 package hairSalonReservation.sideProject.domain.shop.entity;
 
 import hairSalonReservation.sideProject.common.entity.BaseEntity;
+import hairSalonReservation.sideProject.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,10 +18,13 @@ public class Shop extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 30)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    @Column(nullable = false, unique = true, length = 30)
     private String name;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, unique = true, length = 50)
     private String businessId;
 
     @Column(nullable = false)
@@ -49,8 +53,9 @@ public class Shop extends BaseEntity {
 
     private LocalDate openDate;
 
-    private Shop(String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
+    private Shop(User user, String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
                  String introduction, String imageUrlList, String snsUriList, LocalDate openDate){
+        this.user = user;
         this.name = name;
         this.businessId = businessId;
         this.address = address;
@@ -63,8 +68,8 @@ public class Shop extends BaseEntity {
         this.openDate = openDate;
     }
 
-    public static Shop of(String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
+    public static Shop of(User user, String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
                           String introduction, String imageUrlList, String snsUriList, LocalDate openDate){
-        return new Shop(name, businessId, address, phoneNumber, openTime, endTime, introduction, imageUrlList, snsUriList, openDate);
+        return new Shop(user, name, businessId, address, phoneNumber, openTime, endTime, introduction, imageUrlList, snsUriList, openDate);
     }
 }

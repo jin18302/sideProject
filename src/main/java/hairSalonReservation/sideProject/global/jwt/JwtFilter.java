@@ -29,15 +29,7 @@ public class JwtFilter implements Filter {
 
         String url = httpRequest.getRequestURI();
 
-        if (url.startsWith("/api")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        if (url.startsWith("/swagger-ui")
-            || url.startsWith("/v3/api-docs")
-            || url.startsWith("/swagger-resources")
-            || url.equals("/swagger-ui.html")) {
+        if (url.startsWith("/api/auth")) {
             chain.doFilter(request, response);
             return;
         }
@@ -56,9 +48,9 @@ public class JwtFilter implements Filter {
                 throw new InvalidClassException("잘못된 JWT 토큰입니다.");
             }
 
-            httpRequest.setAttribute("memberId", Long.parseLong(claims.getSubject()));
+            httpRequest.setAttribute("userId", Long.parseLong(claims.getSubject()));
             httpRequest.setAttribute("email", claims.get("email"));
-            httpRequest.setAttribute("authority", claims.get("authority"));
+            httpRequest.setAttribute("userRole", claims.get("userRole"));
 
             chain.doFilter(request, response);
         } catch (SecurityException | MalformedJwtException e) {
