@@ -97,6 +97,6 @@ public class ShopService {
         Shop shop = shopRepository.findByIdAndIsDeletedFalse(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
         if(userId != shop.getUser().getId()){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
-        shop.deleted();
+        shop.delete();
     }
 }

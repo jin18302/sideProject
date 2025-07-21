@@ -95,7 +95,7 @@ public class Shop extends BaseEntity {
         this.shopStatus = shopStatus;
     }
 
-    public void deleted(){
+    public void delete(){
         this.setDeleted(true);
         this.setDeletedAt(LocalDateTime.now());
         this.shopStatus = ShopStatus.SHUTDOWN;
