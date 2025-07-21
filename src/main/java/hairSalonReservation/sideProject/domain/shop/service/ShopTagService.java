@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -24,6 +26,12 @@ public class ShopTagService {
         ShopTag shopTag = ShopTag.from(request.name());
         shopTagRepository.save(shopTag);
         return ShopTagResponse.from(shopTag);
+    }
+
+    public List<ShopTagResponse> readAllShopTag(){
+
+        List<ShopTag> shopTagList = shopTagRepository.findAllByIsDeletedFalse();
+        return shopTagList.stream().map(ShopTagResponse::from).toList();
     }
 
     @Transactional
