@@ -3,6 +3,8 @@ package hairSalonReservation.sideProject.domain.shop.service;
 import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopResponse;
+import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailResponse;
+import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepository;
 import hairSalonReservation.sideProject.domain.user.entity.User;
@@ -10,8 +12,12 @@ import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
 import hairSalonReservation.sideProject.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -46,6 +52,16 @@ public class ShopService {
 
         shopRepository.save(shop);
         return CreateShopResponse.from(shop);
+    }
+
+    public Page<ShopSummaryResponse> readByFilter(Pageable pageable, String area, List<String> tagList){
+        return null;
+    }
+
+    public ShopDetailResponse readShopDetail(Long shopId){
+
+        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
+        return ShopDetailResponse.from(shop);
     }
 
 
