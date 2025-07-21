@@ -1,6 +1,5 @@
-package hairSalonReservation.sideProject.domain.shopTag.entity;
+package hairSalonReservation.sideProject.domain.shop.entity;
 
-import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

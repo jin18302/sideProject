@@ -1,6 +1,6 @@
-package hairSalonReservation.sideProject.domain.shopTag.controller;
+package hairSalonReservation.sideProject.domain.shop.controller;
 
-import hairSalonReservation.sideProject.domain.shopTag.service.ShopTagService;
+import hairSalonReservation.sideProject.domain.shop.service.ShopTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 

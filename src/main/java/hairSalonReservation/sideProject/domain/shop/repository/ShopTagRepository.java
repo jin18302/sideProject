@@ -1,6 +1,6 @@
-package hairSalonReservation.sideProject.domain.shopTag.repository;
+package hairSalonReservation.sideProject.domain.shop.repository;
 
-import hairSalonReservation.sideProject.domain.shopTag.entity.ShopTag;
+import hairSalonReservation.sideProject.domain.shop.entity.ShopTag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ShopTagRepository extends JpaRepository<ShopTag, Long> {

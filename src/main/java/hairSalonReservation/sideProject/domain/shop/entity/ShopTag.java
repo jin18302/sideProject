@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.domain.shopTag.entity;
+package hairSalonReservation.sideProject.domain.shop.entity;
 
 
 import jakarta.persistence.*;

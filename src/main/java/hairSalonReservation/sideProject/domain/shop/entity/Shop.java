@@ -1,7 +1,6 @@
 package hairSalonReservation.sideProject.domain.shop.entity;
 
 import hairSalonReservation.sideProject.common.entity.BaseEntity;
-import hairSalonReservation.sideProject.domain.shopTag.entity.ShopTagMapper;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
