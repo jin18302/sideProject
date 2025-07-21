@@ -15,10 +15,20 @@ public class ShopTagMapper {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ShopTag shopTag;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     private Shop shop;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ShopTag shopTag;
 
+
+
+    private ShopTagMapper(ShopTag shopTag, Shop shop){
+        this.shop = shop;
+        this.shopTag = shopTag;
+        shop.getShopTagMapperList().add(this);
+    }
+
+    public static ShopTagMapper of(ShopTag shopTag, Shop shop){
+        return new ShopTagMapper(shopTag, shop);
+    }
 }

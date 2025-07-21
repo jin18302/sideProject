@@ -8,7 +8,10 @@ import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailRespo
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopStatus;
+import hairSalonReservation.sideProject.domain.shop.entity.ShopTag;
+import hairSalonReservation.sideProject.domain.shop.entity.ShopTagMapper;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepository;
+import hairSalonReservation.sideProject.domain.shop.repository.ShopTagRepository;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
@@ -29,6 +32,7 @@ public class ShopService {
 
     private final UserRepository userRepository;
     private final ShopRepository shopRepository;
+    private final ShopTagRepository shopTagRepository;
 
     @Transactional
     public CreateShopResponse createShop(CreateShopRequest request, Long userId) {
@@ -54,6 +58,8 @@ public class ShopService {
         );
 
         shopRepository.save(shop);
+
+        createShopTagMapper(shop, request);
         return CreateShopResponse.from(shop);
     }
 
@@ -75,7 +81,8 @@ public class ShopService {
 
         ShopStatus shopStatus = ShopStatus.of(updateShopRequest.shopStatus());
 
-        shop.update(updateShopRequest.name(),
+        shop.update(
+                updateShopRequest.name(),
                 updateShopRequest.businessId(),
                 updateShopRequest.address(),
                 updateShopRequest.phoneNumber(),
@@ -98,5 +105,13 @@ public class ShopService {
         if(userId != shop.getUser().getId()){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         shop.delete();
+    }
+
+    private void createShopTagMapper(Shop shop, CreateShopRequest request){
+
+        List<ShopTag> shopTagList = shopTagRepository.findAllByIsDeletedFalse();
+
+        if(request.shopTagList().size() != shopTagList.size()){throw new RuntimeException();}
+        shopTagList.forEach(s -> ShopTagMapper.of(s, shop));
     }
 }

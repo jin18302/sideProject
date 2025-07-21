@@ -6,6 +6,7 @@ import hairSalonReservation.sideProject.domain.shop.entity.ShopStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public record CreateShopResponse(
         Long id,
@@ -18,12 +19,16 @@ public record CreateShopResponse(
         String introduction,
         String imageUrlList,
         String snsUriList,
+        List<String> shopTagList,
         ShopStatus shopStatus,
         LocalDate openDate,
         LocalDateTime createdAt
 ) {
 
     public static CreateShopResponse from(Shop shop){
+
+        List<String> shopTagList = shop.getShopTagMapperList().stream().map(s -> s.getShopTag().getName()).toList();
+
         return new CreateShopResponse(
                 shop.getId(),
                 shop.getName(),
@@ -35,6 +40,7 @@ public record CreateShopResponse(
                 shop.getIntroduction(),
                 shop.getImageUrlList(),
                 shop.getSnsUriList(),
+                shopTagList,
                 shop.getShopStatus(),
                 shop.getOpenDate(),
                 shop.getCreatedAt()

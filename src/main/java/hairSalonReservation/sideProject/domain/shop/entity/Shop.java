@@ -46,7 +46,7 @@ public class Shop extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<ShopTagMapper> shopTagMapperList = new ArrayList<>();
 
     @Column(nullable = true, columnDefinition = "TEXT")
@@ -91,6 +91,7 @@ public class Shop extends BaseEntity {
         this.introduction = introduction;
         this.imageUrlList = imageUrlList;
         this.snsUriList = snsUriList;
+
         this.openDate = openDate;
         this.shopStatus = shopStatus;
     }

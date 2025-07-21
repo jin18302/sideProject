@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -20,6 +19,7 @@ public record CreateShopRequest(
         @NotEmpty String introduction,
         List<String> imageUrlList,
         List<String> snsUriList,
+        List<Long> shopTagList,
         @JsonFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate openDate
 ) {
 }

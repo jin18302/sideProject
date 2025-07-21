@@ -20,6 +20,7 @@ public record UpdateShopRequest(
         @NotEmpty String introduction,
         List<String> imageUrlList,
         List<String> snsUriList,
+        List<String> shopTagList,
         @JsonFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate openDate,
         String shopStatus
 ) {

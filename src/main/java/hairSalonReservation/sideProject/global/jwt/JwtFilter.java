@@ -29,7 +29,7 @@ public class JwtFilter implements Filter {
 
         String url = httpRequest.getRequestURI();
 
-        if (url.startsWith("/api")) {
+        if (url.startsWith("/api/auth")) {
             chain.doFilter(request, response);
             return;
         }
