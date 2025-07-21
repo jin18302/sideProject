@@ -2,14 +2,17 @@ package hairSalonReservation.sideProject.domain.shop.service;
 
 import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopRequest;
+import hairSalonReservation.sideProject.domain.shop.dto.request.UpdateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
+import hairSalonReservation.sideProject.domain.shop.entity.ShopStatus;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepository;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
+import hairSalonReservation.sideProject.global.exception.ForbiddenException;
 import hairSalonReservation.sideProject.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -64,5 +67,27 @@ public class ShopService {
         return ShopDetailResponse.from(shop);
     }
 
+    @Transactional
+    public ShopDetailResponse updateShop(Long userId, Long shopId, UpdateShopRequest updateShopRequest){
 
+        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
+        if(!userId.equals(shop.getUser().getId())){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+
+        ShopStatus shopStatus = ShopStatus.of(updateShopRequest.shopStatus());
+
+        shop.update(updateShopRequest.name(),
+                updateShopRequest.businessId(),
+                updateShopRequest.address(),
+                updateShopRequest.phoneNumber(),
+                updateShopRequest.openTime(),
+                updateShopRequest.endTime(),
+                updateShopRequest.introduction(),
+                JsonHelper.toJson(updateShopRequest.imageUrlList()),
+                JsonHelper.toJson(updateShopRequest.snsUriList()),
+                updateShopRequest.openDate(),
+                shopStatus
+                );
+
+        return ShopDetailResponse.from(shop);
+    }
 }

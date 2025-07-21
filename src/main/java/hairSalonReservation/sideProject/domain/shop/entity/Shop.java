@@ -79,4 +79,19 @@ public class Shop extends BaseEntity {
                           String introduction, String imageUrlList, String snsUriList, LocalDate openDate){
         return new Shop(user, name, businessId, address, phoneNumber, openTime, endTime, introduction, imageUrlList, snsUriList, openDate);
     }
+
+    public void update(String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
+                 String introduction, String imageUrlList, String snsUriList, LocalDate openDate, ShopStatus shopStatus){
+        this.name = name;
+        this.businessId = businessId;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.openTime = openTime;
+        this.endTime = endTime;
+        this.introduction = introduction;
+        this.imageUrlList = imageUrlList;
+        this.snsUriList = snsUriList;
+        this.openDate = openDate;
+        this.shopStatus = shopStatus;
+    }
 }

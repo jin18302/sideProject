@@ -1,6 +1,7 @@
 package hairSalonReservation.sideProject.domain.shop.controller;
 
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopRequest;
+import hairSalonReservation.sideProject.domain.shop.dto.request.UpdateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
@@ -50,4 +51,12 @@ public class ShopController {
         return ResponseEntity.ok(shopDetailResponse);
     }
 
+    @PatchMapping("/shops/{shopId}")
+    public ResponseEntity<ShopDetailResponse> updateShop(@RequestAttribute("userId") Long userId,
+                                                         @PathVariable("shopId") Long shopId,
+                                                         @RequestBody UpdateShopRequest updateShopRequest){
+
+        ShopDetailResponse shopDetailResponse = shopService.updateShop(userId, shopId, updateShopRequest);
+        return ResponseEntity.ok(shopDetailResponse);
+    }
 }
