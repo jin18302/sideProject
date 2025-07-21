@@ -1,6 +1,6 @@
 package hairSalonReservation.sideProject.domain.user.entity;
 
-import hairSalonReservation.sideProject.common.BaseEntity;
+import hairSalonReservation.sideProject.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,10 +18,10 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String name;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -38,7 +38,7 @@ public class User extends BaseEntity {
         this.userRole = userRole;
     }
 
-    public static User of(String name, String email, String password, Gender gender, UserRole userRole){
-        return new User(name, email, password, gender, userRole);
+    public static User of(String name, String email, String password, String gender, String userRole){
+        return new User(name, email, password, Gender.of(gender), UserRole.of(userRole));
     }
 }

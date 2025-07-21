@@ -1,6 +1,6 @@
 package hairSalonReservation.sideProject.domain.shop.entity;
 
-import hairSalonReservation.sideProject.common.BaseEntity;
+import hairSalonReservation.sideProject.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -45,7 +45,7 @@ public class Shop extends BaseEntity {
     private String snsUriList;
 
     @Enumerated(EnumType.STRING)
-    private ShopStatus ShopStatus = ShopStatus.NOT_OPENED;
+    private ShopStatus shopStatus = ShopStatus.NOT_OPENED;
 
     private LocalDate openDate;
 
@@ -67,9 +67,4 @@ public class Shop extends BaseEntity {
                           String introduction, String imageUrlList, String snsUriList, LocalDate openDate){
         return new Shop(name, businessId, address, phoneNumber, openTime, endTime, introduction, imageUrlList, snsUriList, openDate);
     }
-
-
-
-
-
 }

@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.common;
+package hairSalonReservation.sideProject.common.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
