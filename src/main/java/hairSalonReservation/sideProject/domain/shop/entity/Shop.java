@@ -1,13 +1,17 @@
 package hairSalonReservation.sideProject.domain.shop.entity;
 
 import hairSalonReservation.sideProject.common.entity.BaseEntity;
+import hairSalonReservation.sideProject.domain.shopTag.entity.ShopTagMapper;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity @Table
@@ -41,6 +45,9 @@ public class Shop extends BaseEntity {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<ShopTagMapper> shopTagMapperList = new ArrayList<>();
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String imageUrlList;
