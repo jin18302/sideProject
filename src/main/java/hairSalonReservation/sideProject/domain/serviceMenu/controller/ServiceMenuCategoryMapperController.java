@@ -1,6 +1,5 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.controller;
 
-
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.ServiceMenuCategoryMapperRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuCategoryMapperResponse;
 import hairSalonReservation.sideProject.domain.serviceMenu.service.ServiceMenuCategoryMapperService;
@@ -8,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RequestMapping("/api")
@@ -42,6 +40,4 @@ public class ServiceMenuCategoryMapperController {
         List<ServiceMenuCategoryMapperResponse> mapperResponseList = serviceMenuCategoryMapperService.updateServiceCategoryMapper(designerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperResponseList);
     }
-
-
 }
