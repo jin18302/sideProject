@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -22,11 +24,16 @@ public class ServiceMenuCategoryService {
     @Transactional
     public ServiceMenuCategoryResponse createServiceMenuCategory(CreateServiceMenuCategoryRequest request){
 
-        if(!serviceMenuCategoryRepository.existsByName(request.name())){throw new ConflictException(ErrorCode.DUPLICATE_CATEGORY_NAME);}
+        if(serviceMenuCategoryRepository.existsByName(request.name())){throw new ConflictException(ErrorCode.DUPLICATE_CATEGORY_NAME);}
 
         ServiceMenuCategory serviceMenuCategory = ServiceMenuCategory.from(request.name());
         serviceMenuCategoryRepository.save(serviceMenuCategory);
         return ServiceMenuCategoryResponse.from(serviceMenuCategory);
+    }
+
+    public List<ServiceMenuCategoryResponse> readAll(){
+
+        return serviceMenuCategoryRepository.findAllByIsDeletedFalse().stream().map(ServiceMenuCategoryResponse::from).toList();
     }
 
     @Transactional
@@ -34,11 +41,13 @@ public class ServiceMenuCategoryService {
 
         ServiceMenuCategory serviceMenuCategory = serviceMenuCategoryRepository.findById(serviceMenuCategoryId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND));
-        if(!serviceMenuCategoryRepository.existsByName(request.name())){throw new ConflictException(ErrorCode.DUPLICATE_CATEGORY_NAME);}
+        if(serviceMenuCategoryRepository.existsByName(request.name())){throw new ConflictException(ErrorCode.DUPLICATE_CATEGORY_NAME);}
 
         serviceMenuCategory.update(request.name());
         return ServiceMenuCategoryResponse.from(serviceMenuCategory);
     }
+
+
 
 
 }

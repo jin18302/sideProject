@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +23,13 @@ public class ServiceMenuCategoryController {
 
         ServiceMenuCategoryResponse serviceMenuCategoryResponse = serviceMenuCategoryService.createServiceMenuCategory(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceMenuCategoryResponse);
+    }
+
+    @GetMapping("/service-menu-categories")
+    public ResponseEntity<List<ServiceMenuCategoryResponse>> readAll(){
+
+        List<ServiceMenuCategoryResponse> menuCategoryResponseList = serviceMenuCategoryService.readAll();
+        return ResponseEntity.status(HttpStatus.OK).body(menuCategoryResponseList);
     }
 
     @PatchMapping("/service-menu-categories/{serviceMenuCategoryId}")
