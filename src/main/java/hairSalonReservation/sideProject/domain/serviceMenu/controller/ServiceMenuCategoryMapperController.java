@@ -34,5 +34,14 @@ public class ServiceMenuCategoryMapperController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperResponseList);
     }
 
+    @PatchMapping("/designer/{designerId}/serviceMenuCategories")
+    public ResponseEntity<List<ServiceMenuCategoryMapperResponse>> updateServiceCategoryMapper(
+            @PathVariable(name = "designerId") Long designerId,
+            @RequestBody ServiceMenuCategoryMapperRequest request
+    ){
+        List<ServiceMenuCategoryMapperResponse> mapperResponseList = serviceMenuCategoryMapperService.updateServiceCategoryMapper(designerId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapperResponseList);
+    }
+
 
 }

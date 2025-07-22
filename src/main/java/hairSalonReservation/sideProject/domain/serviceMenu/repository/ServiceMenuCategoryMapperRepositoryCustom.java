@@ -7,4 +7,6 @@ import java.util.List;
 public interface ServiceMenuCategoryMapperRepositoryCustom {
 
     List<ServiceMenuCategoryMapper> findByDesignerId(Long designerId);
+
+    void deleteByDesignerId(Long designerId);
 }

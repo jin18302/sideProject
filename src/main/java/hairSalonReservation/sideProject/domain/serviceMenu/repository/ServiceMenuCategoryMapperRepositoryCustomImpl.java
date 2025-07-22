@@ -12,7 +12,7 @@ import static hairSalonReservation.sideProject.domain.serviceMenu.entity.QServic
 
 @Repository
 @RequiredArgsConstructor
-public class ServiceMenuCategoryMapperRepositoryCustomImpl implements ServiceMenuCategoryMapperRepositoryCustom{
+public class ServiceMenuCategoryMapperRepositoryCustomImpl implements ServiceMenuCategoryMapperRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
@@ -25,5 +25,13 @@ public class ServiceMenuCategoryMapperRepositoryCustomImpl implements ServiceMen
                 .where(serviceMenuCategoryMapper.designer.id.eq(designerId))
                 .join(serviceMenuCategoryMapper.serviceMenuCategory, serviceMenuCategory).fetchJoin()
                 .fetch();
+    }
+
+    @Override
+    public void deleteByDesignerId(Long designerId) {
+
+        queryFactory.delete(serviceMenuCategoryMapper)
+                .where(serviceMenuCategoryMapper.designer.id.eq(designerId))
+                .execute();
     }
 }
