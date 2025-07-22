@@ -46,4 +46,12 @@ public class Designer {
         return new Designer(shop, name, profileImage, introduction, imageUrlList, snsUriList);
     }
 
+    public void update(String name, String profileImage, String introduction, String imageUrlList, String snsUriList){
+        this.name = name;
+        this.profileImage = profileImage;
+        this.introduction = introduction;
+        this.imageUrlList = imageUrlList;
+        this.snsUriList = snsUriList;
+    }
+
 }

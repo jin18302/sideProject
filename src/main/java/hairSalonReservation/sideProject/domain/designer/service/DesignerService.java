@@ -2,6 +2,7 @@ package hairSalonReservation.sideProject.domain.designer.service;
 
 import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.designer.dto.request.CreateDesignerRequest;
+import hairSalonReservation.sideProject.domain.designer.dto.request.UpdateDesignerRequest;
 import hairSalonReservation.sideProject.domain.designer.dto.response.DesignerDetailResponse;
 import hairSalonReservation.sideProject.domain.designer.dto.response.DesignerSummaryResponse;
 import hairSalonReservation.sideProject.domain.designer.entity.Designer;
@@ -54,8 +55,23 @@ public class DesignerService {
 
     public DesignerDetailResponse readById(Long designerId){
 
-        Designer designer = designerRepository.findById(designerId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        Designer designer = designerRepository.findById(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        return DesignerDetailResponse.from(designer);
+    }
+
+    @Transactional
+    public DesignerDetailResponse updateDesigner(Long userId, Long designerId,  UpdateDesignerRequest request){
+
+        Designer designer = designerRepository.findById(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+
+        designer.update(
+                request.name(),
+                request.profileImage(),
+                request.introduction(),
+                JsonHelper.toJson(request.imageUriList()),
+                JsonHelper.toJson(request.snsUriList())
+        );
 
         return DesignerDetailResponse.from(designer);
     }

@@ -1,6 +1,7 @@
 package hairSalonReservation.sideProject.domain.designer.controller;
 
 import hairSalonReservation.sideProject.domain.designer.dto.request.CreateDesignerRequest;
+import hairSalonReservation.sideProject.domain.designer.dto.request.UpdateDesignerRequest;
 import hairSalonReservation.sideProject.domain.designer.dto.response.DesignerDetailResponse;
 import hairSalonReservation.sideProject.domain.designer.dto.response.DesignerSummaryResponse;
 import hairSalonReservation.sideProject.domain.designer.service.DesignerService;
@@ -40,6 +41,16 @@ public class DesignerController {
     public ResponseEntity<DesignerDetailResponse> readById(@PathVariable(name = "designerId") Long designerId){
 
         DesignerDetailResponse designerDetailResponse = designerService.readById(designerId);
+        return ResponseEntity.status(HttpStatus.OK).body(designerDetailResponse);
+    }
+
+    @PatchMapping("/designers/{designerId}")
+    public ResponseEntity<DesignerDetailResponse> updateDesigner(
+            @RequestAttribute("userId") Long userId,
+            @PathVariable(name = "designerId") Long designerId,
+            @RequestBody UpdateDesignerRequest request
+    ){
+        DesignerDetailResponse designerDetailResponse = designerService.updateDesigner(userId, designerId, request);
         return ResponseEntity.status(HttpStatus.OK).body(designerDetailResponse);
     }
 
