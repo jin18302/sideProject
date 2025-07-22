@@ -20,6 +20,9 @@ public enum ErrorCode {
     //태그관련
     SHOP_TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다."),
 
+    //카테고리 관련
+    DUPLICATE_CATEGORY_NAME(HttpStatus.CONFLICT, "이미 존재하는 카테고리명입니다."),
+
     //디자이너 관련
     DESIGNER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 디자이너입니다.")
     ;
