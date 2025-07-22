@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/api/shops")
+@RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
 public class DesignerController {
@@ -16,7 +16,7 @@ public class DesignerController {
     private final DesignerService designerService;
 
 
-    @PostMapping("{shopId}/designers")
+    @PostMapping("/shops/{shopId}/designers")
     public ResponseEntity<DesignerResponse> createDesigner(
             @PathVariable(name = "shopId") Long shopId,
             @RequestAttribute("userId") Long userId,
