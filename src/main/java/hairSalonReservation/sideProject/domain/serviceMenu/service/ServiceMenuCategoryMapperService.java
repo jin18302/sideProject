@@ -8,6 +8,7 @@ import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceM
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategory;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategoryMapper;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepository;
+import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryRepository;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
 import hairSalonReservation.sideProject.global.exception.NotFoundException;
@@ -23,6 +24,7 @@ import java.util.List;
 public class ServiceMenuCategoryMapperService {
 
     private final ServiceMenuCategoryMapperRepository serviceMenuCategoryMapperRepository;
+    private final ServiceMenuCategoryMapperRepositoryCustomImpl serviceMenuCategoryMapperRepositoryCustom;
     private final DesignerRepository designerRepository;
     private final ServiceMenuCategoryRepository serviceMenuCategoryRepository;
 
@@ -37,5 +39,11 @@ public class ServiceMenuCategoryMapperService {
         List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategory.stream().map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
         serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
         return serviceMenuCategoryMapperList.stream().map(ServiceMenuCategoryMapperResponse::from).toList();
+    }
+
+    public List<ServiceMenuCategoryMapperResponse> readByDesignerId(Long designerId){
+
+        return serviceMenuCategoryMapperRepositoryCustom.findByDesignerId(designerId).stream()
+                .map(ServiceMenuCategoryMapperResponse::from).toList();
     }
 }
