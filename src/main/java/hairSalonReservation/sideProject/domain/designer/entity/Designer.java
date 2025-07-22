@@ -1,15 +1,18 @@
 package hairSalonReservation.sideProject.domain.designer.entity;
 
+import hairSalonReservation.sideProject.common.entity.BaseEntity;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity @Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Designer {
+public class Designer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,4 +57,8 @@ public class Designer {
         this.snsUriList = snsUriList;
     }
 
+    public void delete(){
+        this.setDeleted(true);
+        this.setDeletedAt(LocalDateTime.now());
+    }
 }

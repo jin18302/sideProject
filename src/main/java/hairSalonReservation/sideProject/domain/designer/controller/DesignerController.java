@@ -54,4 +54,13 @@ public class DesignerController {
         return ResponseEntity.status(HttpStatus.OK).body(designerDetailResponse);
     }
 
+    @DeleteMapping("/designers/{designerId}")
+    public ResponseEntity<Void> deleteDesigner(
+            @RequestAttribute("userId") Long userId,
+            @PathVariable(name = "designerId") Long designerId
+    ){
+        designerService.deleteDesigner(userId, designerId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }

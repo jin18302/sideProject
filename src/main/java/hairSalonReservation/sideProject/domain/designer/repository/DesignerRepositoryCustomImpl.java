@@ -28,7 +28,7 @@ public class DesignerRepositoryCustomImpl implements DesignerRepositoryCustom {
                         designer.introduction
                 ))
                 .from(designer)
-                .where(designer.shop.id.eq(shopId))
+                .where(designer.shop.id.eq(shopId), designer.isDeleted.eq(Boolean.FALSE))
                 .fetch();
 
     }

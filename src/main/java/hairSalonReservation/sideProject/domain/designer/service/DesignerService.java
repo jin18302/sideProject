@@ -16,7 +16,6 @@ import hairSalonReservation.sideProject.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -62,7 +61,7 @@ public class DesignerService {
     @Transactional
     public DesignerDetailResponse updateDesigner(Long userId, Long designerId,  UpdateDesignerRequest request){
 
-        Designer designer = designerRepository.findById(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
         if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         designer.update(
@@ -74,5 +73,14 @@ public class DesignerService {
         );
 
         return DesignerDetailResponse.from(designer);
+    }
+
+    @Transactional
+    public void deleteDesigner(Long userId, Long designerId){
+
+        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+
+        designer.delete();
     }
 }
