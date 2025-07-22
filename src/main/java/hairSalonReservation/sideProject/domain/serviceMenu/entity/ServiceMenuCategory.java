@@ -24,4 +24,8 @@ public class ServiceMenuCategory {
     public static ServiceMenuCategory from(String name){
         return new ServiceMenuCategory(name);
     }
+
+    public void update(String name){
+        this.name = name;
+    }
 }
