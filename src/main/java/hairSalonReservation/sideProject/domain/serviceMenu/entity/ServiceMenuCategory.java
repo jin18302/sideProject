@@ -1,14 +1,17 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.entity;
 
+import hairSalonReservation.sideProject.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Entity @Table
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ServiceMenuCategory {
+public class ServiceMenuCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +30,10 @@ public class ServiceMenuCategory {
 
     public void update(String name){
         this.name = name;
+    }
+
+    public void delete(){
+        this.setDeleted(true);
+        this.setDeletedAt(LocalDateTime.now());
     }
 }

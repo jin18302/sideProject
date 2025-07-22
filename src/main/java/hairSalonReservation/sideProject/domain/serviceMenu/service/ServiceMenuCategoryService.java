@@ -47,7 +47,12 @@ public class ServiceMenuCategoryService {
         return ServiceMenuCategoryResponse.from(serviceMenuCategory);
     }
 
+    @Transactional
+    public void deleteServiceMenuCategory(Long serviceMenuCategoryId){
 
+        ServiceMenuCategory serviceMenuCategory = serviceMenuCategoryRepository.findById(serviceMenuCategoryId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND));
 
-
+        serviceMenuCategory.delete();
+    }
 }

@@ -41,4 +41,11 @@ public class ServiceMenuCategoryController {
         ServiceMenuCategoryResponse serviceMenuCategoryResponse = serviceMenuCategoryService.updateServiceMenuCategory(serviceMenuCategoryId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceMenuCategoryResponse);
     }
+
+    @DeleteMapping("/service-menu-categories/{serviceMenuCategoryId}")
+    public ResponseEntity<Void> deleteServiceMenuCategory(@PathVariable(name = "serviceMenuCategoryId") Long serviceMenuCategoryId){
+
+        serviceMenuCategoryService.deleteServiceMenuCategory(serviceMenuCategoryId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
