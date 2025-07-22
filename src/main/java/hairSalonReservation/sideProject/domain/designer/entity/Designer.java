@@ -24,22 +24,26 @@ public class Designer {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
+    @Column(nullable = false)
+    private String profileImage;
+
     @Column(nullable = true, columnDefinition = "TEXT")
     private String imageUrlList;
 
     @Column(nullable = true, columnDefinition = "TEXT")
     private String snsUriList;
 
-    private Designer(Shop shop, String name, String introduction, String imageUrlList, String snsUriList){
+    private Designer(Shop shop, String name, String profileImage, String introduction, String imageUrlList, String snsUriList){
         this.shop = shop;
         this.name = name;
+        this.profileImage = profileImage;
         this.introduction = introduction;
         this.imageUrlList = imageUrlList;
         this.snsUriList = snsUriList;
     }
 
-    public static Designer of(Shop shop, String name, String introduction, String imageUrlList, String snsUriList){
-        return new Designer(shop, name, introduction, imageUrlList, snsUriList);
+    public static Designer of(Shop shop, String name, String profileImage, String introduction, String imageUrlList, String snsUriList){
+        return new Designer(shop, name, profileImage, introduction, imageUrlList, snsUriList);
     }
 
 }

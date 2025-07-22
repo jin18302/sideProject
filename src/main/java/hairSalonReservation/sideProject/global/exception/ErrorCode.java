@@ -18,7 +18,10 @@ public enum ErrorCode {
     SHOP_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 헤어샵입니다."),
 
     //태그관련
-    SHOP_TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다.")
+    SHOP_TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다."),
+
+    //디자이너 관련
+    DESIGNER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 디자이너입니다.")
     ;
 
     private final HttpStatus httpStatus;
