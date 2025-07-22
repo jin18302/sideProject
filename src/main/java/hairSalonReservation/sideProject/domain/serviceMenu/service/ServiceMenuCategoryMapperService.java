@@ -1,0 +1,41 @@
+package hairSalonReservation.sideProject.domain.serviceMenu.service;
+
+
+import hairSalonReservation.sideProject.domain.designer.entity.Designer;
+import hairSalonReservation.sideProject.domain.designer.repository.DesignerRepository;
+import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.ServiceMenuCategoryMapperRequest;
+import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuCategoryMapperResponse;
+import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategory;
+import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategoryMapper;
+import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepository;
+import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryRepository;
+import hairSalonReservation.sideProject.global.exception.ErrorCode;
+import hairSalonReservation.sideProject.global.exception.NotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class ServiceMenuCategoryMapperService {
+
+    private final ServiceMenuCategoryMapperRepository serviceMenuCategoryMapperRepository;
+    private final DesignerRepository designerRepository;
+    private final ServiceMenuCategoryRepository serviceMenuCategoryRepository;
+
+    @Transactional
+    public List<ServiceMenuCategoryMapperResponse> createServiceCategoryMapper(Long designerId, ServiceMenuCategoryMapperRequest request) {
+
+        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        List<ServiceMenuCategory> serviceMenuCategory = serviceMenuCategoryRepository.findAllByIdInAndIsDeletedFalse(request.serviceCategoryId());
+
+        if (request.serviceCategoryId().size() != serviceMenuCategory.size()) {throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);}
+
+        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategory.stream().map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
+        serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
+        return serviceMenuCategoryMapperList.stream().map(ServiceMenuCategoryMapperResponse::from).toList();
+    }
+}
