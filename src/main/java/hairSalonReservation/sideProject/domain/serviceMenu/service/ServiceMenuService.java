@@ -1,17 +1,20 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.service;
 
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.CreateServiceMenuRequest;
+import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.UpdateServiceMenuRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuResponse;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenu;
-import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategory;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategoryMapper;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepository;
+import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepositoryCustomImpl;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
 import hairSalonReservation.sideProject.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ServiceMenuService {
 
     private final ServiceMenuRepository serviceMenuRepository;
+    private final ServiceMenuRepositoryCustomImpl serviceMenuRepositoryCustom;
     private final ServiceMenuCategoryMapperRepository serviceMenuCategoryMapperRepository;
 
     @Transactional
@@ -36,5 +40,35 @@ public class ServiceMenuService {
 
         serviceMenuRepository.save(serviceMenu);
         return ServiceMenuResponse.from(serviceMenu);
+    }
+
+    public List<ServiceMenuResponse> readAllByDesignerServiceCategory(Long serviceCategoryMapperId){
+
+        return serviceMenuRepositoryCustom.findByServiceCategoryMapperId(serviceCategoryMapperId)
+                .stream().map(ServiceMenuResponse::from).toList();
+    }
+
+    @Transactional
+    public ServiceMenuResponse updateServiceMenu(Long serviceMenuId, UpdateServiceMenuRequest request){
+
+        ServiceMenu menu = serviceMenuRepository.findById(serviceMenuId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_NOT_FOUND));
+
+        menu.update(
+                request.name(),
+                request.price(),
+                request.introduction()
+        );
+
+        return ServiceMenuResponse.from(menu);
+    }
+
+    @Transactional
+    public void deleteServiceMenu(Long serviceMenuId){
+
+        ServiceMenu menu = serviceMenuRepository.findById(serviceMenuId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_NOT_FOUND));
+
+        menu.delete();
     }
 }
