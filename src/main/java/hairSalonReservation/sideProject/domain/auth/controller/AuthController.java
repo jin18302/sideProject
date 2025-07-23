@@ -1,9 +1,10 @@
-package hairSalonReservation.sideProject.domain.auth;
+package hairSalonReservation.sideProject.domain.auth.controller;
 
-import hairSalonReservation.sideProject.domain.auth.dto.LoginRequest;
-import hairSalonReservation.sideProject.domain.auth.dto.LoginResponse;
-import hairSalonReservation.sideProject.domain.auth.dto.SignUpRequest;
-import hairSalonReservation.sideProject.domain.auth.dto.SignUpResponse;
+import hairSalonReservation.sideProject.domain.auth.service.AuthService;
+import hairSalonReservation.sideProject.domain.auth.dto.request.LoginRequest;
+import hairSalonReservation.sideProject.domain.auth.dto.response.LoginResponse;
+import hairSalonReservation.sideProject.domain.auth.dto.request.SignUpRequest;
+import hairSalonReservation.sideProject.domain.auth.dto.response.SignUpResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

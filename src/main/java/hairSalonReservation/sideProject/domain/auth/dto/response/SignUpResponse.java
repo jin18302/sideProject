@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.domain.auth.dto;
+package hairSalonReservation.sideProject.domain.auth.dto.response;
 
 import hairSalonReservation.sideProject.domain.user.entity.Gender;
 import hairSalonReservation.sideProject.domain.user.entity.User;

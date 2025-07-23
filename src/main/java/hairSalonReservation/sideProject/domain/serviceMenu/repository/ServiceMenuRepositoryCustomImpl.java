@@ -21,7 +21,7 @@ public class ServiceMenuRepositoryCustomImpl implements ServiceMenuRepositoryCus
         return jpaQueryFactory.select(serviceMenu)
                 .from(serviceMenu)
                 .where(serviceMenu.serviceMenuCategoryMapper.id.eq(serviceCategoryMapperId),
-                        serviceMenu.isDeleted.eq(false)
-                );
+                        serviceMenu.isDeleted.eq(false))
+                .fetch();
     }
 }
