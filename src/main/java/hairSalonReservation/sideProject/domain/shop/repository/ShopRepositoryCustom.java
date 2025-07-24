@@ -9,4 +9,6 @@ import java.util.List;
 public interface ShopRepositoryCustom {
 
     Page<ShopSummaryResponse> findByFilter(Pageable pageable, String area, List<String> tagList);
+
+
 }

@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 public record UpdateShopRequest(
         @Size(max = 15) @NotEmpty String name,
@@ -20,7 +21,7 @@ public record UpdateShopRequest(
         @NotEmpty String introduction,
         List<String> imageUrlList,
         List<String> snsUriList,
-        List<String> shopTagList,
+        Set<Long> shopTagIdSet,
         @JsonFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate openDate,
         String shopStatus
 ) {

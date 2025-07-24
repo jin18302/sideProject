@@ -8,10 +8,7 @@ import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailRespo
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopStatus;
-import hairSalonReservation.sideProject.domain.shop.entity.ShopTag;
-import hairSalonReservation.sideProject.domain.shop.entity.ShopTagMapper;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepository;
-import hairSalonReservation.sideProject.domain.shop.repository.ShopTagRepository;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
@@ -23,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,16 +30,13 @@ public class ShopService {
 
     private final UserRepository userRepository;
     private final ShopRepository shopRepository;
-    private final ShopTagRepository shopTagRepository;
+    private final ShopTagMapperService shopTagMapperService;
 
-    @Transactional
+    @Transactional// 사장전용
     public CreateShopResponse createShop(CreateShopRequest request, Long userId) {
 
         if (!userRepository.existsById(userId)) {throw new NotFoundException(ErrorCode.USER_NOT_FOUND);}
         User user = userRepository.getReferenceById(userId);
-
-        String stringImageUriList = JsonHelper.toJson(request.imageUrlList());
-        String stringSnsUriList = JsonHelper.toJson(request.snsUriList());
 
         Shop shop = Shop.of(
                 user,
@@ -52,32 +47,32 @@ public class ShopService {
                 request.openTime(),
                 request.endTime(),
                 request.introduction(),
-                stringImageUriList,
-                stringSnsUriList,
+                JsonHelper.toJson(request.imageUrlList()),
+                JsonHelper.toJson(request.snsUriList()),
                 request.openDate()
         );
 
         shopRepository.save(shop);
 
-        createShopTagMapper(shop, request);
+        shopTagMapperService.createShopTagMapper(shop, new ArrayList<>(request.shopTagIdSet()));
         return CreateShopResponse.from(shop);
     }
 
-    public Page<ShopSummaryResponse> readByFilter(Pageable pageable, String area, List<String> tagList){
+    public Page<ShopSummaryResponse> readByFilter(Pageable pageable, String area, List<String> tagList) {
         return null;
     }
 
-    public ShopDetailResponse readShopDetail(Long shopId){
+    public ShopDetailResponse readShopDetail(Long shopId) {
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
         return ShopDetailResponse.from(shop);
     }
 
     @Transactional
-    public ShopDetailResponse updateShop(Long userId, Long shopId, UpdateShopRequest updateShopRequest){
+    public ShopDetailResponse updateShop(Long userId, Long shopId, UpdateShopRequest updateShopRequest) {
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
-        if(!userId.equals(shop.getUser().getId())){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        if (!userId.equals(shop.getUser().getId())) {throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         ShopStatus shopStatus = ShopStatus.of(updateShopRequest.shopStatus());
 
@@ -93,25 +88,17 @@ public class ShopService {
                 JsonHelper.toJson(updateShopRequest.snsUriList()),
                 updateShopRequest.openDate(),
                 shopStatus
-                );
-
+        );
+        shopTagMapperService.updateShopTagMapper(shop, new ArrayList<>(updateShopRequest.shopTagIdSet()));
         return ShopDetailResponse.from(shop);
     }
 
     @Transactional
-    public void deleteShop(Long userId, Long shopId){
+    public void deleteShop(Long userId, Long shopId) {
 
         Shop shop = shopRepository.findByIdAndIsDeletedFalse(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
-        if(userId != shop.getUser().getId()){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        if (userId != shop.getUser().getId()) {throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         shop.delete();
-    }
-
-    private void createShopTagMapper(Shop shop, CreateShopRequest request){
-
-        List<ShopTag> shopTagList = shopTagRepository.findAllByIsDeletedFalse();
-
-        if(request.shopTagList().size() != shopTagList.size()){throw new RuntimeException();}
-        shopTagList.forEach(s -> ShopTagMapper.of(s, shop));
     }
 }
