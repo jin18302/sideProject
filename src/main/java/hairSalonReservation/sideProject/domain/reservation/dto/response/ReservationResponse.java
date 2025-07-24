@@ -2,20 +2,19 @@ package hairSalonReservation.sideProject.domain.reservation.dto.response;
 
 import hairSalonReservation.sideProject.domain.reservation.entity.Reservation;
 import hairSalonReservation.sideProject.domain.reservation.entity.ReservationStatus;
-import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuResponse;
 
-public record CreateReservationResponse(
+public record ReservationResponse(
         Long id,
-        ServiceMenuResponse serviceMenu,
+        Long serviceMenuId,
         Long designerId,
         Long userId,
         ReservationStatus reservationStatus
 ) {
 
-    public static CreateReservationResponse from(Reservation reservation){
-        return new CreateReservationResponse(
+    public static ReservationResponse from(Reservation reservation){
+        return new ReservationResponse(
                 reservation.getId(),
-                ServiceMenuResponse.from(reservation.getServiceMenu()),
+               reservation.getServiceMenu().getId(),
                 reservation.getDesigner().getId(),
                 reservation.getUser().getId(),
                 reservation.getReservationStatus()

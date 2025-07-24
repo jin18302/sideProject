@@ -30,7 +30,8 @@ public enum ErrorCode {
     DESIGNER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 디자이너입니다."),
 
     //예약관련
-    TIME_SLOT_ALREADY_BOOKED(HttpStatus.CONFLICT, "선택하신 시간은 예약이 불가능합니다.")
+    TIME_SLOT_ALREADY_BOOKED(HttpStatus.CONFLICT, "선택하신 시간은 예약이 불가능합니다."),
+    RESERVATION_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 예약건입니다.")
     ;
 
     private final HttpStatus httpStatus;

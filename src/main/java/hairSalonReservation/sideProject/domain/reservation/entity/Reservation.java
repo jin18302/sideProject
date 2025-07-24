@@ -48,4 +48,12 @@ public class Reservation {
     public static Reservation of(ServiceMenu serviceMenu, Designer designer, User user, LocalDate date, LocalTime time){
         return new Reservation(serviceMenu, designer, user, date, time);
     }
+
+    public void cancel(){
+        this.reservationStatus = ReservationStatus.CANCELLED;
+    }
+
+    public void updateReservationStatus(ReservationStatus status){
+        this.reservationStatus = status;
+    }
 }
