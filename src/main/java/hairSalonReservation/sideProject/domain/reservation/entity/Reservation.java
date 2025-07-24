@@ -1,6 +1,5 @@
 package hairSalonReservation.sideProject.domain.reservation.entity;
 
-import hairSalonReservation.sideProject.domain.calendar.entity.Slot;
 import hairSalonReservation.sideProject.domain.designer.entity.Designer;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenu;
 import hairSalonReservation.sideProject.domain.user.entity.User;
@@ -8,6 +7,9 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @Entity
@@ -19,9 +21,6 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Slot slot;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private ServiceMenu serviceMenu;
 
@@ -31,17 +30,22 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
+    private LocalDate date;
+
+    private LocalTime time;
+
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus = ReservationStatus.REQUESTED;
 
-    private Reservation(Slot slot, ServiceMenu serviceMenu, Designer designer, User user){
-        this.slot = slot;
+    private Reservation(ServiceMenu serviceMenu, Designer designer, User user, LocalDate date, LocalTime time){
         this.serviceMenu = serviceMenu;
         this.designer = designer;
         this.user = user;
+        this.date = date;
+        this.time = time;
     }
 
-    public static Reservation of(Slot slot, ServiceMenu serviceMenu, Designer designer, User user){
-        return new Reservation(slot, serviceMenu, designer, user);
+    public static Reservation of(ServiceMenu serviceMenu, Designer designer, User user, LocalDate date, LocalTime time){
+        return new Reservation(serviceMenu, designer, user, date, time);
     }
 }

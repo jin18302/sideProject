@@ -30,12 +30,19 @@ public class ServiceMenuCategoryMapperService {
     @Transactional
     public List<ServiceMenuCategoryMapperResponse> createServiceCategoryMapper(Long designerId, ServiceMenuCategoryMapperRequest request) {
 
-        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
-        List<ServiceMenuCategory> serviceMenuCategory = serviceMenuCategoryRepository.findAllByIdInAndIsDeletedFalse(new ArrayList<>(request.serviceCategoryIdSet()));
+        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
 
-        if (request.serviceCategoryIdSet().size() != serviceMenuCategory.size()) {throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);}
+        List<ServiceMenuCategory> serviceMenuCategory = serviceMenuCategoryRepository
+                .findAllByIdInAndIsDeletedFalse(new ArrayList<>(request.serviceCategoryIdSet()));
 
-        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategory.stream().map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
+        if (request.serviceCategoryIdSet().size() != serviceMenuCategory.size()) {
+            throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);
+        }
+
+        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategory.stream()
+                .map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
+
         serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
         return serviceMenuCategoryMapperList.stream().map(ServiceMenuCategoryMapperResponse::from).toList();
     }
@@ -49,22 +56,29 @@ public class ServiceMenuCategoryMapperService {
     @Transactional
     public List<ServiceMenuCategoryMapperResponse> updateServiceCategoryMapper(Long designerId, ServiceMenuCategoryMapperRequest request) {
 
-        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
 
         List<Long> existingCategoryIdList = serviceMenuCategoryMapperRepositoryCustom.findByDesignerId(designer.getId())
                 .stream().map(ServiceMenuCategoryMapper::getServiceMenuCategory)
                 .map(ServiceMenuCategory::getId).toList();
 
-        List<Long> toDeleteIdList = existingCategoryIdList.stream().filter(i -> !request.serviceCategoryIdSet().contains(i)).toList();// 삭제대상
-        List<Long> toAddIdList = new ArrayList<>(request.serviceCategoryIdSet()).stream().filter(i -> !existingCategoryIdList.contains(i)).toList();
+        List<Long> toDeleteIdList = existingCategoryIdList.stream()
+                .filter(i -> !request.serviceCategoryIdSet().contains(i)).toList();// 삭제대상
+
+        List<Long> toAddIdList = new ArrayList<>(request.serviceCategoryIdSet()).stream()
+                .filter(i -> !existingCategoryIdList.contains(i)).toList();
 
         serviceMenuCategoryMapperRepositoryCustom.deleteByDesignerIdAndCategoryIdIn(designerId, toDeleteIdList);
         List<ServiceMenuCategory> serviceMenuCategoryList = serviceMenuCategoryRepository.findAllByIdInAndIsDeletedFalse(toAddIdList);
 
-        if (toAddIdList.size() != serviceMenuCategoryList.size()) {throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);}
-        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategoryList.stream().map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
-        serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
+        if (toAddIdList.size() != serviceMenuCategoryList.size()) {
+            throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);
+        }
+        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategoryList.stream()
+                .map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
 
+        serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
         return serviceMenuCategoryMapperList.stream().map(ServiceMenuCategoryMapperResponse::from).toList();
     }
 }

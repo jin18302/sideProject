@@ -27,7 +27,10 @@ public enum ErrorCode {
     SERVICE_MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 메뉴입니다."),
 
     //디자이너 관련
-    DESIGNER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 디자이너입니다.")
+    DESIGNER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 디자이너입니다."),
+
+    //예약관련
+    TIME_SLOT_ALREADY_BOOKED(HttpStatus.CONFLICT, "선택하신 시간은 예약이 불가능합니다.")
     ;
 
     private final HttpStatus httpStatus;
