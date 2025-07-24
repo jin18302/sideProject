@@ -6,6 +6,7 @@ import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopRespo
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
 import hairSalonReservation.sideProject.domain.shop.service.ShopService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +27,7 @@ public class ShopController {
 
     @PostMapping("/shops")
     public ResponseEntity<CreateShopResponse> createShop(
-            @RequestBody CreateShopRequest createShopRequest,
+            @RequestBody @Valid CreateShopRequest createShopRequest,
             @RequestAttribute("userId") Long userId) {
 
         CreateShopResponse createShopResponse = shopService.createShop(createShopRequest, userId);
@@ -57,7 +58,7 @@ public class ShopController {
     public ResponseEntity<ShopDetailResponse> updateShop(
             @RequestAttribute("userId") Long userId,
             @PathVariable("shopId") Long shopId,
-            @RequestBody UpdateShopRequest updateShopRequest) {
+            @RequestBody @Valid UpdateShopRequest updateShopRequest) {
 
         ShopDetailResponse shopDetailResponse = shopService.updateShop(userId, shopId, updateShopRequest);
         return ResponseEntity.ok(shopDetailResponse);

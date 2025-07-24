@@ -3,6 +3,7 @@ package hairSalonReservation.sideProject.domain.shop.controller;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopTagRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopTagResponse;
 import hairSalonReservation.sideProject.domain.shop.service.ShopTagService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class ShopTagController {
     private final ShopTagService shopTagService;
 
     @PostMapping("/shop-tags")
-    public ResponseEntity<ShopTagResponse> createShopTag(@RequestBody CreateShopTagRequest request){
+    public ResponseEntity<ShopTagResponse> createShopTag(@RequestBody @Valid CreateShopTagRequest request){
 
         ShopTagResponse shopTagResponse = shopTagService.createShopTag(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(shopTagResponse);

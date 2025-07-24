@@ -4,6 +4,7 @@ import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.CreateSer
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.UpdateServiceMenuRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuResponse;
 import hairSalonReservation.sideProject.domain.serviceMenu.service.ServiceMenuService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class ServiceMenuController {
     @PostMapping("/designers/service-categories/{serviceCategoryMapperId}")
     public ResponseEntity<ServiceMenuResponse> createServiceMenu(
             @PathVariable(name = "serviceCategoryMapperId") Long serviceCategoryMapperId,
-            @RequestBody CreateServiceMenuRequest request
+            @RequestBody @Valid CreateServiceMenuRequest request
             ){
         ServiceMenuResponse serviceMenuResponse = serviceMenuService.createServiceMenu(serviceCategoryMapperId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceMenuResponse);
@@ -37,7 +38,7 @@ public class ServiceMenuController {
     @PatchMapping("/service-menu/{serviceMenuId}")
     public ResponseEntity<ServiceMenuResponse> updateServiceMenu(
             @PathVariable(name = "serviceMenuId") Long serviceMenuId,
-            @RequestBody UpdateServiceMenuRequest request
+            @RequestBody @Valid UpdateServiceMenuRequest request
             ){
         ServiceMenuResponse serviceMenuResponse = serviceMenuService.updateServiceMenu(serviceMenuId, request);
         return ResponseEntity.status(HttpStatus.OK).body(serviceMenuResponse);
