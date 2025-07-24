@@ -17,7 +17,7 @@ public class ServiceMenuCategory extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 15)
     private String name;
 
     private ServiceMenuCategory(String name){

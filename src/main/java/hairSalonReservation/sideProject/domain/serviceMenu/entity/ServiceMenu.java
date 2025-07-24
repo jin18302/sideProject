@@ -20,7 +20,7 @@ public class ServiceMenu extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ServiceMenuCategoryMapper serviceMenuCategoryMapper;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String name;
 
     @Column(nullable = false)

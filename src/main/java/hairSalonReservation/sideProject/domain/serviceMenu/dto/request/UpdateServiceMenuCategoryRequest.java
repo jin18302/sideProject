@@ -1,4 +1,7 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.dto.request;
 
-public record UpdateServiceMenuCategoryRequest(String name) {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+public record UpdateServiceMenuCategoryRequest(@NotBlank @Size(max = 15) String name) {
 }
