@@ -15,7 +15,7 @@ public class ShopTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, unique = true, length = 15)
     private String name;
 
     @Column(nullable = false)

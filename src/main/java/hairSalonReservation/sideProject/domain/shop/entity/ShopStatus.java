@@ -1,7 +1,5 @@
 package hairSalonReservation.sideProject.domain.shop.entity;
 
-import hairSalonReservation.sideProject.domain.user.entity.Gender;
-
 import java.util.Arrays;
 
 public enum ShopStatus {
@@ -16,7 +14,7 @@ public enum ShopStatus {
         return Arrays.stream(ShopStatus.values())
                 .filter(r -> r.name().equalsIgnoreCase(shopStatus))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 Gender 입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 ShopStatus 입니다."));
     }
 }
 

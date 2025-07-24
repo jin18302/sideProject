@@ -25,16 +25,16 @@ public class Shop extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @Column(nullable = false, unique = true, length = 30)
+    @Column(nullable = false, unique = true, length = 15)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, unique = true)
     private String businessId;
 
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 13)
     private String phoneNumber;
 
     @Column(nullable = false)
@@ -46,7 +46,7 @@ public class Shop extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "shop_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShopTagMapper> shopTagMapperList = new ArrayList<>();
 
     @Column(nullable = true, columnDefinition = "TEXT")
