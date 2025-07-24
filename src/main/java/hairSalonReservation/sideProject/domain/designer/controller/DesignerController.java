@@ -5,6 +5,7 @@ import hairSalonReservation.sideProject.domain.designer.dto.request.UpdateDesign
 import hairSalonReservation.sideProject.domain.designer.dto.response.DesignerDetailResponse;
 import hairSalonReservation.sideProject.domain.designer.dto.response.DesignerSummaryResponse;
 import hairSalonReservation.sideProject.domain.designer.service.DesignerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class DesignerController {
     public ResponseEntity<DesignerDetailResponse> createDesigner(
             @PathVariable(name = "shopId") Long shopId,
             @RequestAttribute("userId") Long userId,
-            @RequestBody CreateDesignerRequest request
+            @RequestBody @Valid CreateDesignerRequest request
     ){
         DesignerDetailResponse designerResponse = designerService.createDesigner(shopId, userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(designerResponse);
@@ -48,7 +49,7 @@ public class DesignerController {
     public ResponseEntity<DesignerDetailResponse> updateDesigner(
             @RequestAttribute("userId") Long userId,
             @PathVariable(name = "designerId") Long designerId,
-            @RequestBody UpdateDesignerRequest request
+            @RequestBody @Valid UpdateDesignerRequest request
     ){
         DesignerDetailResponse designerDetailResponse = designerService.updateDesigner(userId, designerId, request);
         return ResponseEntity.status(HttpStatus.OK).body(designerDetailResponse);

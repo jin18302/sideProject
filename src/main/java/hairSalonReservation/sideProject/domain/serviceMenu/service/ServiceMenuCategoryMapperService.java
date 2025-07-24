@@ -14,7 +14,7 @@ import hairSalonReservation.sideProject.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,9 +31,9 @@ public class ServiceMenuCategoryMapperService {
     public List<ServiceMenuCategoryMapperResponse> createServiceCategoryMapper(Long designerId, ServiceMenuCategoryMapperRequest request) {
 
         Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
-        List<ServiceMenuCategory> serviceMenuCategory = serviceMenuCategoryRepository.findAllByIdInAndIsDeletedFalse(request.serviceCategoryId());
+        List<ServiceMenuCategory> serviceMenuCategory = serviceMenuCategoryRepository.findAllByIdInAndIsDeletedFalse(new ArrayList<>(request.serviceCategoryIdSet()));
 
-        if (request.serviceCategoryId().size() != serviceMenuCategory.size()) {throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);}
+        if (request.serviceCategoryIdSet().size() != serviceMenuCategory.size()) {throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);}
 
         List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategory.stream().map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
         serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
@@ -50,14 +50,21 @@ public class ServiceMenuCategoryMapperService {
     public List<ServiceMenuCategoryMapperResponse> updateServiceCategoryMapper(Long designerId, ServiceMenuCategoryMapperRequest request) {
 
         Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
-        List<ServiceMenuCategory> serviceMenuCategory = serviceMenuCategoryRepository.findAllByIdInAndIsDeletedFalse(request.serviceCategoryId());
 
-        serviceMenuCategoryMapperRepositoryCustom.deleteByDesignerId(designerId);
-        if (request.serviceCategoryId().size() != serviceMenuCategory.size()) {throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);}
+        List<Long> existingCategoryIdList = serviceMenuCategoryMapperRepositoryCustom.findByDesignerId(designer.getId())
+                .stream().map(ServiceMenuCategoryMapper::getServiceMenuCategory)
+                .map(ServiceMenuCategory::getId).toList();
 
-        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategory.stream().map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
+        List<Long> toDeleteIdList = existingCategoryIdList.stream().filter(i -> !request.serviceCategoryIdSet().contains(i)).toList();// 삭제대상
+        List<Long> toAddIdList = new ArrayList<>(request.serviceCategoryIdSet()).stream().filter(i -> !existingCategoryIdList.contains(i)).toList();
+
+        serviceMenuCategoryMapperRepositoryCustom.deleteByDesignerIdAndCategoryIdIn(designerId, toDeleteIdList);
+        List<ServiceMenuCategory> serviceMenuCategoryList = serviceMenuCategoryRepository.findAllByIdInAndIsDeletedFalse(toAddIdList);
+
+        if (toAddIdList.size() != serviceMenuCategoryList.size()) {throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);}
+        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategoryList.stream().map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
         serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
+
         return serviceMenuCategoryMapperList.stream().map(ServiceMenuCategoryMapperResponse::from).toList();
     }
-
 }

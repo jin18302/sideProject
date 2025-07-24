@@ -46,7 +46,7 @@ public class Shop extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
-    @OneToMany(mappedBy = "shop_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ShopTagMapper> shopTagMapperList = new ArrayList<>();
 
     @Column(nullable = true, columnDefinition = "TEXT")

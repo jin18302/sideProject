@@ -8,5 +8,5 @@ public interface ServiceMenuCategoryMapperRepositoryCustom {
 
     List<ServiceMenuCategoryMapper> findByDesignerId(Long designerId);
 
-    void deleteByDesignerId(Long designerId);
+    void deleteByDesignerIdAndCategoryIdIn(Long designerId, List<Long> categoryIdList);
 }

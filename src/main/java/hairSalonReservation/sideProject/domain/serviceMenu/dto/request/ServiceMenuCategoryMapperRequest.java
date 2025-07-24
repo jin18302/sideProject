@@ -1,6 +1,6 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.dto.request;
 
-import java.util.List;
+import java.util.Set;
 
-public record ServiceMenuCategoryMapperRequest(List<Long> serviceCategoryId) {
+public record ServiceMenuCategoryMapperRequest(Set<Long> serviceCategoryIdSet) {
 }

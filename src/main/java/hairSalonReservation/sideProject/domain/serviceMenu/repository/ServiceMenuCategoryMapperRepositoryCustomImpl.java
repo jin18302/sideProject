@@ -28,10 +28,13 @@ public class ServiceMenuCategoryMapperRepositoryCustomImpl implements ServiceMen
     }
 
     @Override
-    public void deleteByDesignerId(Long designerId) {
+    public void deleteByDesignerIdAndCategoryIdIn(Long designerId, List<Long> categoryIdList) {
 
         queryFactory.delete(serviceMenuCategoryMapper)
-                .where(serviceMenuCategoryMapper.designer.id.eq(designerId))
+                .where(
+                        serviceMenuCategoryMapper.designer.id.eq(designerId),
+                        serviceMenuCategoryMapper.serviceMenuCategory.id.in(categoryIdList)
+                )
                 .execute();
     }
 }

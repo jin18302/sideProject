@@ -39,8 +39,7 @@ public class ServiceMenuCategoryService {
     @Transactional
     public ServiceMenuCategoryResponse updateServiceMenuCategory(Long serviceMenuCategoryId, UpdateServiceMenuCategoryRequest request){
 
-        ServiceMenuCategory serviceMenuCategory = serviceMenuCategoryRepository.findById(serviceMenuCategoryId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND));
+        ServiceMenuCategory serviceMenuCategory = serviceMenuCategoryRepository.findById(serviceMenuCategoryId).orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND));
         if(serviceMenuCategoryRepository.existsByName(request.name())){throw new ConflictException(ErrorCode.DUPLICATE_CATEGORY_NAME);}
 
         serviceMenuCategory.update(request.name());
