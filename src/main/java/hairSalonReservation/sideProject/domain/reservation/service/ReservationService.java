@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.domain.reservation.service;
 
+import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.domain.designer.entity.Designer;
 import hairSalonReservation.sideProject.domain.designer.repository.DesignerRepository;
 import hairSalonReservation.sideProject.domain.reservation.dto.request.CreateReservationRequest;
@@ -86,6 +87,7 @@ public class ReservationService {
         return ReservationResponse.from(reservation);
     }
 
+    @CheckRole("OWNER")
     @Transactional
     public ReservationResponse updateReservationStatus(Long userId, Long reservationId,  UpdateReservationStatusRequest request){
 

@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.domain.designer.service;
 
+import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.designer.dto.request.CreateDesignerRequest;
 import hairSalonReservation.sideProject.domain.designer.dto.request.UpdateDesignerRequest;
@@ -28,11 +29,13 @@ public class DesignerService {
     private final ShopRepository shopRepository;
 
 
+    @CheckRole("OWNER")
     @Transactional
     public DesignerDetailResponse createDesigner(Long shopId, Long userId, CreateDesignerRequest request){
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
-        if(shop.getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        Long shopOwnerId = shop.getUser().getId();
+        if(!shopOwnerId.equals(userId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         Designer designer = Designer.of(
                 shop,
@@ -61,13 +64,16 @@ public class DesignerService {
         return DesignerDetailResponse.from(designer);
     }
 
+    @CheckRole("OWNER")
     @Transactional
     public DesignerDetailResponse updateDesigner(Long userId, Long designerId,  UpdateDesignerRequest request){
 
         Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
 
-        if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        Long shopOwnerId = designer.getShop().getUser().getId();
+
+        if(shopOwnerId != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         designer.update(
                 request.name(),
@@ -80,6 +86,7 @@ public class DesignerService {
         return DesignerDetailResponse.from(designer);
     }
 
+    @CheckRole("OWNER")
     @Transactional
     public void deleteDesigner(Long userId, Long designerId){
 

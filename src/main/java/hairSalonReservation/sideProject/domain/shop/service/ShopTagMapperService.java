@@ -1,22 +1,27 @@
 package hairSalonReservation.sideProject.domain.shop.service;
 
+import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopTag;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopTagMapper;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopTagRepository;
 import hairSalonReservation.sideProject.global.exception.BadRequestException;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
+import hairSalonReservation.sideProject.global.exception.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@CheckRole("OWNER")
 @Service
 @RequiredArgsConstructor
 public class ShopTagMapperService {
 
     private final ShopTagRepository shopTagRepository;
 
+    @Transactional
     public void createShopTagMapper(Shop shop, List<Long> shopTagIdList) {// TODO : 위치 고려
 
         List<ShopTag> shopTagList = shopTagRepository.findAllByIdInAndIsDeletedFalse(shopTagIdList);
@@ -25,7 +30,12 @@ public class ShopTagMapperService {
         shopTagList.forEach(s -> ShopTagMapper.of(s, shop));
     }
 
-    public void updateShopTagMapper(Shop shop, List<Long> shopTagIdList ){
+    @Transactional
+    public void updateShopTagMapper(Long userId, Shop shop, List<Long> shopTagIdList ){
+
+        Long shopOwnerId = shop.getUser().getId();
+        if(!userId.equals(shopOwnerId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+
         List<Long> existingTagSet = shop.getShopTagMapperList().stream().map(ShopTagMapper::getShopTag).map(ShopTag::getId).toList();
         List<Long> newTagSet = shopTagRepository.findAllByIdInAndIsDeletedFalse(shopTagIdList).stream().map(ShopTag::getId).toList();
 

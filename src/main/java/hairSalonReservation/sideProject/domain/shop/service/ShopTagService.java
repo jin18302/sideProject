@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.domain.shop.service;
 
+import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopTagRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopTagResponse;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopTag;
@@ -19,7 +20,7 @@ public class ShopTagService {
 
     private final ShopTagRepository shopTagRepository;
 
-    //관리자 전용
+    @CheckRole("ADMIN")
     @Transactional
     public ShopTagResponse createShopTag(CreateShopTagRequest request){
 
@@ -34,6 +35,7 @@ public class ShopTagService {
         return shopTagList.stream().map(ShopTagResponse::from).toList();
     }
 
+    @CheckRole("ADMIN")
     @Transactional
     public void deleteShopTag(Long shopTagId){
 

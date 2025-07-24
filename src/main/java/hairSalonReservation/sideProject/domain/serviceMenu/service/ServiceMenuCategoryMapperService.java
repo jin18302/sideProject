@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.service;
 
+import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.domain.designer.entity.Designer;
 import hairSalonReservation.sideProject.domain.designer.repository.DesignerRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.ServiceMenuCategoryMapperRequest;
@@ -10,6 +11,7 @@ import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMen
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryRepository;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
+import hairSalonReservation.sideProject.global.exception.ForbiddenException;
 import hairSalonReservation.sideProject.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,11 +29,15 @@ public class ServiceMenuCategoryMapperService {
     private final DesignerRepository designerRepository;
     private final ServiceMenuCategoryRepository serviceMenuCategoryRepository;
 
+    @CheckRole("ADMIN")
     @Transactional
-    public List<ServiceMenuCategoryMapperResponse> createServiceCategoryMapper(Long designerId, ServiceMenuCategoryMapperRequest request) {
+    public List<ServiceMenuCategoryMapperResponse> createServiceCategoryMapper(Long userId, Long designerId, ServiceMenuCategoryMapperRequest request) {
 
         Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+
+        Long shopOwnerId = designer.getShop().getUser().getId();
+        if(!userId.equals(shopOwnerId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         List<ServiceMenuCategory> serviceMenuCategory = serviceMenuCategoryRepository
                 .findAllByIdInAndIsDeletedFalse(new ArrayList<>(request.serviceCategoryIdSet()));
@@ -53,11 +59,15 @@ public class ServiceMenuCategoryMapperService {
                 .map(ServiceMenuCategoryMapperResponse::from).toList();
     }
 
+    @CheckRole("ADMIN")
     @Transactional
-    public List<ServiceMenuCategoryMapperResponse> updateServiceCategoryMapper(Long designerId, ServiceMenuCategoryMapperRequest request) {
+    public List<ServiceMenuCategoryMapperResponse> updateServiceCategoryMapper(Long userId, Long designerId, ServiceMenuCategoryMapperRequest request) {
 
         Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+
+        Long shopOwnerId = designer.getShop().getUser().getId();
+        if(!userId.equals(shopOwnerId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         List<Long> existingCategoryIdList = serviceMenuCategoryMapperRepositoryCustom.findByDesignerId(designer.getId())
                 .stream().map(ServiceMenuCategoryMapper::getServiceMenuCategory)

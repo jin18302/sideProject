@@ -19,10 +19,13 @@ public class ServiceMenuCategoryMapperController {
 
     @PostMapping("/designer/{designerId}/serviceMenuCategories")
     public ResponseEntity<List<ServiceMenuCategoryMapperResponse>> createServiceCategoryMapper(
+            @RequestAttribute("userId") Long userId,
             @PathVariable(name = "designerId") Long designerId,
             @RequestBody @Valid ServiceMenuCategoryMapperRequest request
             ){
-        List<ServiceMenuCategoryMapperResponse> mapperResponseList = serviceMenuCategoryMapperService.createServiceCategoryMapper(designerId, request);
+        List<ServiceMenuCategoryMapperResponse> mapperResponseList = serviceMenuCategoryMapperService
+                .createServiceCategoryMapper(userId, designerId, request);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperResponseList);
     }
 
@@ -35,10 +38,13 @@ public class ServiceMenuCategoryMapperController {
 
     @PatchMapping("/designer/{designerId}/serviceMenuCategories")
     public ResponseEntity<List<ServiceMenuCategoryMapperResponse>> updateServiceCategoryMapper(
+            @RequestAttribute("userId") Long userId,
             @PathVariable(name = "designerId") Long designerId,
             @RequestBody @Valid ServiceMenuCategoryMapperRequest request
     ){
-        List<ServiceMenuCategoryMapperResponse> mapperResponseList = serviceMenuCategoryMapperService.updateServiceCategoryMapper(designerId, request);
+        List<ServiceMenuCategoryMapperResponse> mapperResponseList = serviceMenuCategoryMapperService
+                .updateServiceCategoryMapper(userId, designerId, request);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperResponseList);
     }
 }

@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.domain.shop.service;
 
+import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.request.UpdateShopRequest;
@@ -32,7 +33,8 @@ public class ShopService {
     private final ShopRepository shopRepository;
     private final ShopTagMapperService shopTagMapperService;
 
-    @Transactional// 사장전용
+    @CheckRole("OWNER")
+    @Transactional
     public CreateShopResponse createShop(CreateShopRequest request, Long userId) {
 
         if (!userRepository.existsById(userId)) {throw new NotFoundException(ErrorCode.USER_NOT_FOUND);}
@@ -68,11 +70,13 @@ public class ShopService {
         return ShopDetailResponse.from(shop);
     }
 
+    @CheckRole("OWNER")
     @Transactional
     public ShopDetailResponse updateShop(Long userId, Long shopId, UpdateShopRequest updateShopRequest) {
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
-        if (!userId.equals(shop.getUser().getId())) {throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        Long shopOwnerId = shop.getUser().getId();
+        if (!userId.equals(shopOwnerId)) {throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         ShopStatus shopStatus = ShopStatus.of(updateShopRequest.shopStatus());
 
@@ -89,17 +93,19 @@ public class ShopService {
                 updateShopRequest.openDate(),
                 shopStatus
         );
-        shopTagMapperService.updateShopTagMapper(shop, new ArrayList<>(updateShopRequest.shopTagIdSet()));
+        shopTagMapperService.updateShopTagMapper(userId, shop, new ArrayList<>(updateShopRequest.shopTagIdSet()));
         return ShopDetailResponse.from(shop);
     }
 
+    @CheckRole("OWNER")
     @Transactional
     public void deleteShop(Long userId, Long shopId) {
 
         Shop shop = shopRepository.findByIdAndIsDeletedFalse(shopId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
 
-        if (userId != shop.getUser().getId()) {throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        Long shopOwnerId = shop.getUser().getId();
+        if (!userId.equals(shopOwnerId)) {throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         shop.delete();
     }

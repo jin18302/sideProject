@@ -22,7 +22,7 @@ public class ServiceMenuController {
     public ResponseEntity<ServiceMenuResponse> createServiceMenu(
             @PathVariable(name = "serviceCategoryMapperId") Long serviceCategoryMapperId,
             @RequestBody @Valid CreateServiceMenuRequest request
-            ){
+    ) {
         ServiceMenuResponse serviceMenuResponse = serviceMenuService.createServiceMenu(serviceCategoryMapperId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceMenuResponse);
     }
@@ -30,23 +30,26 @@ public class ServiceMenuController {
     @GetMapping("/designers/service-categories/{serviceCategoryMapperId}")
     public ResponseEntity<List<ServiceMenuResponse>> readAllByDesignerServiceCategory(
             @PathVariable(name = "serviceCategoryMapperId") Long serviceCategoryMapperId
-    ){
+    ) {
         List<ServiceMenuResponse> serviceMenuResponseList = serviceMenuService.readAllByDesignerServiceCategory(serviceCategoryMapperId);
         return ResponseEntity.status(HttpStatus.OK).body(serviceMenuResponseList);
     }
 
     @PatchMapping("/service-menu/{serviceMenuId}")
     public ResponseEntity<ServiceMenuResponse> updateServiceMenu(
+            @RequestAttribute("userId") Long userId,
             @PathVariable(name = "serviceMenuId") Long serviceMenuId,
             @RequestBody @Valid UpdateServiceMenuRequest request
-            ){
-        ServiceMenuResponse serviceMenuResponse = serviceMenuService.updateServiceMenu(serviceMenuId, request);
+    ) {
+        ServiceMenuResponse serviceMenuResponse = serviceMenuService.updateServiceMenu(userId, serviceMenuId, request);
         return ResponseEntity.status(HttpStatus.OK).body(serviceMenuResponse);
     }
 
     @DeleteMapping("/service-menu/{serviceMenuId}")
-    public ResponseEntity<Void> deleteServiceMenu(@PathVariable(name = "serviceMenuId") Long serviceMenuId) {
-        serviceMenuService.deleteServiceMenu(serviceMenuId);
+    public ResponseEntity<Void> deleteServiceMenu(
+            @RequestAttribute("userId") Long userId,
+            @PathVariable(name = "serviceMenuId") Long serviceMenuId) {
+        serviceMenuService.deleteServiceMenu(userId, serviceMenuId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

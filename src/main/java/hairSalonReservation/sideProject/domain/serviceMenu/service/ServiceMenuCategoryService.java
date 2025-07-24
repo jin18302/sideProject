@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.service;
 
+import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.CreateServiceMenuCategoryRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.UpdateServiceMenuCategoryRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuCategoryResponse;
@@ -21,6 +22,7 @@ public class ServiceMenuCategoryService {
 
     private final ServiceMenuCategoryRepository serviceMenuCategoryRepository;
 
+    @CheckRole("ADMIN")
     @Transactional
     public ServiceMenuCategoryResponse createServiceMenuCategory(CreateServiceMenuCategoryRequest request){
 
@@ -38,6 +40,7 @@ public class ServiceMenuCategoryService {
         return serviceMenuCategoryRepository.findAllByIsDeletedFalse().stream().map(ServiceMenuCategoryResponse::from).toList();
     }
 
+    @CheckRole("ADMIN")
     @Transactional
     public ServiceMenuCategoryResponse updateServiceMenuCategory(Long serviceMenuCategoryId, UpdateServiceMenuCategoryRequest request){
 
@@ -52,6 +55,7 @@ public class ServiceMenuCategoryService {
         return ServiceMenuCategoryResponse.from(serviceMenuCategory);
     }
 
+    @CheckRole("ADMIN")
     @Transactional
     public void deleteServiceMenuCategory(Long serviceMenuCategoryId){
 
