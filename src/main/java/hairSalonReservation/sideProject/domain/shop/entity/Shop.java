@@ -91,7 +91,6 @@ public class Shop extends BaseEntity {
         this.introduction = introduction;
         this.imageUrlList = imageUrlList;
         this.snsUriList = snsUriList;
-
         this.openDate = openDate;
         this.shopStatus = shopStatus;
     }
