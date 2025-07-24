@@ -28,7 +28,7 @@ public class DesignerService {
     private final ShopRepository shopRepository;
 
 
-    @Transactional // TODO : 디자이너가 생성됨과 동시에 해당 디자이너의 캘린더가 자동으로 생성되어야함
+    @Transactional
     public DesignerDetailResponse createDesigner(Long shopId, Long userId, CreateDesignerRequest request){
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
@@ -39,6 +39,7 @@ public class DesignerService {
                 request.name(),
                 request.profileImage(),
                 request.introduction(),
+                JsonHelper.toJson(request.dayOffWeekdayList()),
                 JsonHelper.toJson(request.imageUriList()),
                 JsonHelper.toJson(request.snsUriList())
         );
@@ -54,14 +55,18 @@ public class DesignerService {
 
     public DesignerDetailResponse readById(Long designerId){
 
-        Designer designer = designerRepository.findById(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        Designer designer = designerRepository.findById(designerId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+
         return DesignerDetailResponse.from(designer);
     }
 
     @Transactional
     public DesignerDetailResponse updateDesigner(Long userId, Long designerId,  UpdateDesignerRequest request){
 
-        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+
         if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         designer.update(
@@ -78,7 +83,9 @@ public class DesignerService {
     @Transactional
     public void deleteDesigner(Long userId, Long designerId){
 
-        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId).orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+
         if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         designer.delete();

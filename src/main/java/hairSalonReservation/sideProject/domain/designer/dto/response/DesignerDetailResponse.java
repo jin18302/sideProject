@@ -2,6 +2,7 @@ package hairSalonReservation.sideProject.domain.designer.dto.response;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import hairSalonReservation.sideProject.common.util.JsonHelper;
+import hairSalonReservation.sideProject.domain.designer.entity.DayOffWeekday;
 import hairSalonReservation.sideProject.domain.designer.entity.Designer;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public record DesignerDetailResponse(
         String name,
         String profileImage,
         String introduction,
+        List<DayOffWeekday> dayOffWeekdayList,
         List<String> imageUriList,
         List<String> snsUriList
 
@@ -24,6 +26,7 @@ public record DesignerDetailResponse(
                 designer.getName(),
                 designer.getProfileImage(),
                 designer.getIntroduction(),
+                JsonHelper.fromJsonToList(designer.getDayOffWeekdayList(), new TypeReference<>(){}),
                 JsonHelper.fromJsonToList(designer.getImageUrlList(), new TypeReference<>(){}),
                 JsonHelper.fromJsonToList(designer.getSnsUriList(), new TypeReference<>(){})
         );
