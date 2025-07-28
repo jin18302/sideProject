@@ -9,6 +9,6 @@ public record ShopSummaryResponse(
         String name,
         String introduction,
         ShopStatus shopStatus,
-        List<String> imageList
+        String imageList
  ) {
 }

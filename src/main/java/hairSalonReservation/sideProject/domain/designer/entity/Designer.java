@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
-@Entity @Table
+@Entity @Table(name = "designers")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Designer extends BaseEntity {
 

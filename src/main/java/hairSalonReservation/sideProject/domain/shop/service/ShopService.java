@@ -1,6 +1,7 @@
 package hairSalonReservation.sideProject.domain.shop.service;
 
 import hairSalonReservation.sideProject.common.annotation.CheckRole;
+import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
 import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.request.UpdateShopRequest;
@@ -10,17 +11,19 @@ import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResp
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopStatus;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepository;
+import hairSalonReservation.sideProject.domain.shop.repository.ShopRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
 import hairSalonReservation.sideProject.global.exception.ErrorCode;
 import hairSalonReservation.sideProject.global.exception.ForbiddenException;
 import hairSalonReservation.sideProject.global.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class ShopService {
 
     private final UserRepository userRepository;
     private final ShopRepository shopRepository;
+    private final ShopRepositoryCustomImpl shopRepositoryCustom;
     private final ShopTagMapperService shopTagMapperService;
 
     @CheckRole("OWNER")
@@ -60,8 +64,9 @@ public class ShopService {
         return CreateShopResponse.from(shop);
     }
 
-    public Page<ShopSummaryResponse> readByFilter(Pageable pageable, String area, List<String> tagList) {
-        return null;
+    public CursorPageResponse<ShopSummaryResponse> readByFilter(Long lastCursor, String area, LocalDate date, LocalTime time, List<Long> tagList) {
+
+        return shopRepositoryCustom.findByFilter(lastCursor, area, tagList);
     }
 
     public ShopDetailResponse readShopDetail(Long shopId) {

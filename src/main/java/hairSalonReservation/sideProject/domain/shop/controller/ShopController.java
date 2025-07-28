@@ -1,22 +1,22 @@
 package hairSalonReservation.sideProject.domain.shop.controller;
 
+import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.request.UpdateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
+import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.service.ShopService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @RequestMapping("/api")
 @RestController
@@ -35,15 +35,14 @@ public class ShopController {
     }
 
     @GetMapping("/shops")
-    public ResponseEntity<Page<ShopSummaryResponse>> readByFilter(
+    public ResponseEntity<CursorPageResponse<ShopSummaryResponse>> readByFilter(
             @RequestParam(required = false, name = "area") String area,
-            @RequestParam(required = false, name = "tagList") List<String> tagList,
-            @RequestParam(required = false, name = "size", defaultValue = "10") int size,
-            @RequestParam(required = false, name = "page", defaultValue = "1") int page,
-            @RequestParam(required = false, name = "sort") String sort
-    ) {
-        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.fromString("DESC"), sort));
-        Page<ShopSummaryResponse> shopResponsePage = shopService.readByFilter(pageable, area, tagList);
+            @RequestParam(required = false, name = "tagIdList") List<Long> tagList,
+            @RequestParam(required = true, name = "lastCursor") Long lastCursor,
+            @RequestParam(required = false, name = "date")LocalDate date,
+            @RequestParam(required = false, name = "time")LocalTime time
+            ) {
+        CursorPageResponse<ShopSummaryResponse> shopResponsePage = shopService.readByFilter(lastCursor, area, date, time, tagList);
         return ResponseEntity.ok(shopResponsePage);
     }
 
