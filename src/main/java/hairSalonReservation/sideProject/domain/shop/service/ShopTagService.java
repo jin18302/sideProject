@@ -5,8 +5,8 @@ import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopTagReq
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopTagResponse;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopTag;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopTagRepository;
-import hairSalonReservation.sideProject.global.exception.ErrorCode;
-import hairSalonReservation.sideProject.global.exception.NotFoundException;
+import hairSalonReservation.sideProject.common.exception.ErrorCode;
+import hairSalonReservation.sideProject.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

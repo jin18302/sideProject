@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.global.exception;
+package hairSalonReservation.sideProject.common.exception;
 
 public class ConflictException extends CustomRuntimeException {
     public ConflictException(ErrorCode errorCode) {

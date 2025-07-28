@@ -9,9 +9,9 @@ import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceCategor
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepositoryCustomImpl;
-import hairSalonReservation.sideProject.global.exception.ErrorCode;
-import hairSalonReservation.sideProject.global.exception.ForbiddenException;
-import hairSalonReservation.sideProject.global.exception.NotFoundException;
+import hairSalonReservation.sideProject.common.exception.ErrorCode;
+import hairSalonReservation.sideProject.common.exception.ForbiddenException;
+import hairSalonReservation.sideProject.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

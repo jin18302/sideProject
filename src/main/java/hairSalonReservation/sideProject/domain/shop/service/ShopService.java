@@ -14,11 +14,10 @@ import hairSalonReservation.sideProject.domain.shop.repository.ShopRepository;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
-import hairSalonReservation.sideProject.global.exception.ErrorCode;
-import hairSalonReservation.sideProject.global.exception.ForbiddenException;
-import hairSalonReservation.sideProject.global.exception.NotFoundException;
+import hairSalonReservation.sideProject.common.exception.ErrorCode;
+import hairSalonReservation.sideProject.common.exception.ForbiddenException;
+import hairSalonReservation.sideProject.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

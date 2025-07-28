@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.global.dummy;
+package hairSalonReservation.sideProject.common.dummy;
 
 import java.util.ArrayList;
 import java.util.HashSet;

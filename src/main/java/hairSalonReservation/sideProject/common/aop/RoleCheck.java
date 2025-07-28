@@ -1,8 +1,8 @@
 package hairSalonReservation.sideProject.common.aop;
 
 import hairSalonReservation.sideProject.common.annotation.CheckRole;
-import hairSalonReservation.sideProject.global.exception.ErrorCode;
-import hairSalonReservation.sideProject.global.exception.ForbiddenException;
+import hairSalonReservation.sideProject.common.exception.ErrorCode;
+import hairSalonReservation.sideProject.common.exception.ForbiddenException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

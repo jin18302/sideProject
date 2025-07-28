@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.global.exception;
+package hairSalonReservation.sideProject.common.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

@@ -1,6 +1,4 @@
-package hairSalonReservation.sideProject.global.dummy;
-
-import net.datafaker.Faker;
+package hairSalonReservation.sideProject.common.dummy;
 
 import java.util.ArrayList;
 import java.util.List;

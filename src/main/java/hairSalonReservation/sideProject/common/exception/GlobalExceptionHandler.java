@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.global.exception;
+package hairSalonReservation.sideProject.common.exception;
 
 import hairSalonReservation.sideProject.common.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
