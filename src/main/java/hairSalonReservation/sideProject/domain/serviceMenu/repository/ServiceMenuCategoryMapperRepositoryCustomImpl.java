@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static hairSalonReservation.sideProject.domain.serviceMenu.entity.QServiceCategoryMapper.serviceCategoryMapper;
 import static hairSalonReservation.sideProject.domain.serviceMenu.entity.QServiceMenuCategory.serviceMenuCategory;
 
 @Repository
@@ -19,20 +20,20 @@ public class ServiceMenuCategoryMapperRepositoryCustomImpl implements ServiceMen
     public List<ServiceCategoryMapper> findByDesignerId(Long designerId) {
 
         return queryFactory
-                .selectDistinct(serviceMenuCategoryMapper)
-                .from(serviceMenuCategoryMapper)
-                .where(serviceMenuCategoryMapper.designer.id.eq(designerId))
-                .join(serviceMenuCategoryMapper.serviceMenuCategory, serviceMenuCategory).fetchJoin()
+                .selectDistinct(serviceCategoryMapper)
+                .from(serviceCategoryMapper)
+                .where(serviceCategoryMapper.designer.id.eq(designerId))
+                .join(serviceCategoryMapper.serviceMenuCategory, serviceMenuCategory).fetchJoin()
                 .fetch();
     }
 
     @Override
     public void deleteByDesignerIdAndCategoryIdIn(Long designerId, List<Long> categoryIdList) {
 
-        queryFactory.delete(serviceMenuCategoryMapper)
+        queryFactory.delete(serviceCategoryMapper)
                 .where(
-                        serviceMenuCategoryMapper.designer.id.eq(designerId),
-                        serviceMenuCategoryMapper.serviceMenuCategory.id.in(categoryIdList)
+                        serviceCategoryMapper.designer.id.eq(designerId),
+                        serviceCategoryMapper.serviceMenuCategory.id.in(categoryIdList)
                 )
                 .execute();
     }
