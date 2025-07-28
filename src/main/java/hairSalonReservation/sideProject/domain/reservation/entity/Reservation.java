@@ -13,7 +13,7 @@ import java.time.LocalTime;
 
 @Getter
 @Entity
-@Table
+@Table(name = "reservations")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
 

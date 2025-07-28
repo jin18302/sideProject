@@ -7,9 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity @Table
+@Entity @Table(name = "service_category_mappers")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ServiceMenuCategoryMapper {
+public class ServiceCategoryMapper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,12 +21,12 @@ public class ServiceMenuCategoryMapper {
     @ManyToOne(fetch = FetchType.LAZY)
     private Designer designer;
 
-    private ServiceMenuCategoryMapper(ServiceMenuCategory serviceMenuCategory, Designer designer){
+    private ServiceCategoryMapper(ServiceMenuCategory serviceMenuCategory, Designer designer){
         this.serviceMenuCategory = serviceMenuCategory;
         this.designer = designer;
     }
 
-    public static ServiceMenuCategoryMapper of(ServiceMenuCategory serviceMenuCategory, Designer designer){
-        return new ServiceMenuCategoryMapper(serviceMenuCategory, designer);
+    public static ServiceCategoryMapper of(ServiceMenuCategory serviceMenuCategory, Designer designer){
+        return new ServiceCategoryMapper(serviceMenuCategory, designer);
     }
 }

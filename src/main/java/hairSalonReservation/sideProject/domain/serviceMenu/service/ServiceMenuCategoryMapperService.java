@@ -5,8 +5,8 @@ import hairSalonReservation.sideProject.domain.designer.entity.Designer;
 import hairSalonReservation.sideProject.domain.designer.repository.DesignerRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.ServiceMenuCategoryMapperRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuCategoryMapperResponse;
+import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceCategoryMapper;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategory;
-import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategoryMapper;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryRepository;
@@ -46,8 +46,8 @@ public class ServiceMenuCategoryMapperService {
             throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);
         }
 
-        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategory.stream()
-                .map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
+        List<ServiceCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategory.stream()
+                .map(c -> ServiceCategoryMapper.of(c, designer)).toList();
 
         serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
         return serviceMenuCategoryMapperList.stream().map(ServiceMenuCategoryMapperResponse::from).toList();
@@ -70,7 +70,7 @@ public class ServiceMenuCategoryMapperService {
         if(!userId.equals(shopOwnerId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         List<Long> existingCategoryIdList = serviceMenuCategoryMapperRepositoryCustom.findByDesignerId(designer.getId())
-                .stream().map(ServiceMenuCategoryMapper::getServiceMenuCategory)
+                .stream().map(ServiceCategoryMapper::getServiceMenuCategory)
                 .map(ServiceMenuCategory::getId).toList();
 
         List<Long> toDeleteIdList = existingCategoryIdList.stream()
@@ -82,11 +82,10 @@ public class ServiceMenuCategoryMapperService {
         serviceMenuCategoryMapperRepositoryCustom.deleteByDesignerIdAndCategoryIdIn(designerId, toDeleteIdList);
         List<ServiceMenuCategory> serviceMenuCategoryList = serviceMenuCategoryRepository.findAllByIdInAndIsDeletedFalse(toAddIdList);
 
-        if (toAddIdList.size() != serviceMenuCategoryList.size()) {
-            throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);
-        }
-        List<ServiceMenuCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategoryList.stream()
-                .map(c -> ServiceMenuCategoryMapper.of(c, designer)).toList();
+        if (toAddIdList.size() != serviceMenuCategoryList.size()) {throw new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND);}
+
+        List<ServiceCategoryMapper> serviceMenuCategoryMapperList = serviceMenuCategoryList.stream()
+                .map(c -> ServiceCategoryMapper.of(c, designer)).toList();
 
         serviceMenuCategoryMapperRepository.saveAll(serviceMenuCategoryMapperList);
         return serviceMenuCategoryMapperList.stream().map(ServiceMenuCategoryMapperResponse::from).toList();

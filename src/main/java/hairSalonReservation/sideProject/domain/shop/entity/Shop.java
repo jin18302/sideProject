@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Entity @Table
+@Entity @Table(name = "shops")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Shop extends BaseEntity {
 
@@ -25,7 +25,7 @@ public class Shop extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @Column(nullable = false, unique = true, length = 15)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false, unique = true)
@@ -34,7 +34,7 @@ public class Shop extends BaseEntity {
     @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false, length = 13)
+    @Column(nullable = false)
     private String phoneNumber;
 
     @Column(nullable = false)

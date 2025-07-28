@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(name = "uk_shop_tag", columnNames = {"shop", "shop_tag"})})
+@Table(name = "shop_tag_mappers",
+        uniqueConstraints = {@UniqueConstraint(name = "uk_shop_tag", columnNames = {"shop_id", "shop_tag_id"})})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
 public class ShopTagMapper {

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
-@Entity @Table
+@Entity @Table(name = "service_menus")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ServiceMenu extends BaseEntity {
 
@@ -18,7 +18,7 @@ public class ServiceMenu extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ServiceMenuCategoryMapper serviceMenuCategoryMapper;
+    private ServiceCategoryMapper serviceMenuCategoryMapper;
 
     @Column(nullable = false, length = 20)
     private String name;
@@ -29,14 +29,14 @@ public class ServiceMenu extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
-    private ServiceMenu(ServiceMenuCategoryMapper serviceMenuCategoryMapper, String name, Integer price, String introduction){
+    private ServiceMenu(ServiceCategoryMapper serviceMenuCategoryMapper, String name, Integer price, String introduction){
         this.serviceMenuCategoryMapper = serviceMenuCategoryMapper;
         this.name = name;
         this.price = price;
         this.introduction = introduction;
     }
 
-    public static ServiceMenu of(ServiceMenuCategoryMapper serviceMenuCategoryMapper, String name, Integer price, String introduction){
+    public static ServiceMenu of(ServiceCategoryMapper serviceMenuCategoryMapper, String name, Integer price, String introduction){
         return new ServiceMenu(serviceMenuCategoryMapper, name, price, introduction);
     }
 

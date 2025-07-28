@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity @Table
+@Entity @Table(name = "shop_tags")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ShopTag {
 

@@ -5,7 +5,7 @@ import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.CreateSer
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.UpdateServiceMenuRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuResponse;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenu;
-import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenuCategoryMapper;
+import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceCategoryMapper;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepositoryCustomImpl;
@@ -30,7 +30,7 @@ public class ServiceMenuService {
     @Transactional
     public ServiceMenuResponse createServiceMenu(Long serviceCategoryMapperId, CreateServiceMenuRequest request){
 
-        ServiceMenuCategoryMapper serviceMenuCategoryMapper = serviceMenuCategoryMapperRepository.findById(serviceCategoryMapperId)
+        ServiceCategoryMapper serviceMenuCategoryMapper = serviceMenuCategoryMapperRepository.findById(serviceCategoryMapperId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND));
 
         ServiceMenu serviceMenu = ServiceMenu.of(

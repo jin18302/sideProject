@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
-@Entity @Table
+@Entity @Table(name = "service_menu_categories")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ServiceMenuCategory extends BaseEntity {
 
