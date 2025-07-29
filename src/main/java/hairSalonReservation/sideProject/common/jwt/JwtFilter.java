@@ -29,7 +29,9 @@ public class JwtFilter implements Filter {
 
         String url = httpRequest.getRequestURI();
 
-        if (url.startsWith("/api/auth")) {
+        log.info("현재 엔드포인트 : {}", url);
+
+        if (url.startsWith("/favicon.ico") || url.startsWith("/api") || url.startsWith("/image/upload.html")) {
             chain.doFilter(request, response);
             return;
         }
