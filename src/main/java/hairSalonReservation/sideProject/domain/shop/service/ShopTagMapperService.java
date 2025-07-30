@@ -4,6 +4,8 @@ import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopTag;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopTagMapper;
+import hairSalonReservation.sideProject.domain.shop.repository.ShopRepositoryCustom;
+import hairSalonReservation.sideProject.domain.shop.repository.ShopRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopTagRepository;
 import hairSalonReservation.sideProject.common.exception.BadRequestException;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ShopTagMapperService {
 
     private final ShopTagRepository shopTagRepository;
+    private final ShopRepositoryCustomImpl shopRepositoryCustom;
 
     @Transactional
     public void createShopTagMapper(Shop shop, List<Long> shopTagIdList) {// TODO : 위치 고려
@@ -33,7 +36,7 @@ public class ShopTagMapperService {
     @Transactional
     public void updateShopTagMapper(Long userId, Shop shop, List<Long> shopTagIdList ){
 
-        Long shopOwnerId = shop.getUser().getId();
+        Long shopOwnerId = shopRepositoryCustom.findShopOwnerIdByShopId(shop.getId());
         if(!userId.equals(shopOwnerId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         List<Long> existingTagSet = shop.getShopTagMapperList().stream().map(ShopTagMapper::getShopTag).map(ShopTag::getId).toList();

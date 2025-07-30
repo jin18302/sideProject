@@ -8,7 +8,7 @@ import hairSalonReservation.sideProject.common.exception.BadRequestException;
 import hairSalonReservation.sideProject.common.exception.ConflictException;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import hairSalonReservation.sideProject.common.exception.NotFoundException;
-import hairSalonReservation.sideProject.common.jwt.JwtUtil;
+import hairSalonReservation.sideProject.common.util.JwtUtil;
 import hairSalonReservation.sideProject.domain.auth.dto.request.SignUpRequest;
 import hairSalonReservation.sideProject.domain.auth.dto.response.SignUpResponse;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;

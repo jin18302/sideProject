@@ -13,6 +13,7 @@ import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMen
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import hairSalonReservation.sideProject.common.exception.ForbiddenException;
 import hairSalonReservation.sideProject.common.exception.NotFoundException;
+import hairSalonReservation.sideProject.domain.shop.repository.ShopRepositoryCustomImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,7 @@ public class ServiceMenuCategoryMapperService {
     private final ServiceMenuCategoryMapperRepositoryCustomImpl serviceMenuCategoryMapperRepositoryCustom;
     private final DesignerRepository designerRepository;
     private final ServiceMenuCategoryRepository serviceMenuCategoryRepository;
+    private final ShopRepositoryCustomImpl shopRepositoryCustom;
 
     @CheckRole("ADMIN")
     @Transactional

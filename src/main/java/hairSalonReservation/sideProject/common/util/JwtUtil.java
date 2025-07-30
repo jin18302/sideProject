@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.common.jwt;
+package hairSalonReservation.sideProject.common.util;
 
 import hairSalonReservation.sideProject.domain.user.entity.UserRole;
 import io.jsonwebtoken.Claims;

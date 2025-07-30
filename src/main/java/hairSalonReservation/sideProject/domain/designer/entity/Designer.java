@@ -37,7 +37,7 @@ public class Designer extends BaseEntity {
     private String imageUrlList;
 
     @Column(nullable = true, columnDefinition = "TEXT")
-    private String snsUriList;
+    private String snsUrlList;
 
     private Designer(Shop shop, String name, String profileImage, String introduction, String dayOffWeekdayList, String imageUrlList, String snsUriList){
         this.shop = shop;
@@ -46,7 +46,7 @@ public class Designer extends BaseEntity {
         this.introduction = introduction;
         this.dayOffWeekdayList = dayOffWeekdayList;
         this.imageUrlList = imageUrlList;
-        this.snsUriList = snsUriList;
+        this.snsUrlList = snsUriList;
     }
 
     public static Designer of(Shop shop, String name, String profileImage, String introduction, String dayOffWeekdayList, String imageUrlList, String snsUriList){
@@ -58,7 +58,7 @@ public class Designer extends BaseEntity {
         this.profileImage = profileImage;
         this.introduction = introduction;
         this.imageUrlList = imageUrlList;
-        this.snsUriList = snsUriList;
+        this.snsUrlList = snsUriList;
     }
 
     public void delete(){

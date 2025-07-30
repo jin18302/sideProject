@@ -1,5 +1,6 @@
-package hairSalonReservation.sideProject.common.jwt;
+package hairSalonReservation.sideProject.common.filter;
 
+import hairSalonReservation.sideProject.common.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;

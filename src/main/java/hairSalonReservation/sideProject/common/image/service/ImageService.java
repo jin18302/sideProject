@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import java.util.UUID;
 
 @Slf4j
@@ -20,6 +19,9 @@ public class ImageService {
 
     @Value("${image.bucket}")
     String bucket;
+
+    @Value("${image.expiry}")
+    int expiry;
 
     private final MinioClient minioClient;
 
@@ -31,9 +33,8 @@ public class ImageService {
                 .method(Method.PUT)
                 .bucket(bucket)
                 .object(imageKey)
-                .expiry(600)
+                .expiry(expiry)
                 .build();
-
         try{
             String url = minioClient.getPresignedObjectUrl(preUrlRequest);
             return PresignedUrlResponse.of(url);
@@ -48,9 +49,8 @@ public class ImageService {
                 .method(Method.GET)
                 .bucket(bucket)
                 .object(fileName)
-                .expiry(600)
+                .expiry(expiry)
                 .build();
-
         try{
             String url = minioClient.getPresignedObjectUrl(getUrlRequest);
             return PresignedUrlResponse.of(url);

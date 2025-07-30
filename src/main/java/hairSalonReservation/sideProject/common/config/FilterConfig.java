@@ -1,8 +1,8 @@
 package hairSalonReservation.sideProject.common.config;
 
-import hairSalonReservation.sideProject.common.exception.ExceptionHandlerFilter;
-import hairSalonReservation.sideProject.common.jwt.JwtFilter;
-import hairSalonReservation.sideProject.common.jwt.JwtUtil;
+import hairSalonReservation.sideProject.common.filter.ExceptionHandlerFilter;
+import hairSalonReservation.sideProject.common.filter.JwtFilter;
+import hairSalonReservation.sideProject.common.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
