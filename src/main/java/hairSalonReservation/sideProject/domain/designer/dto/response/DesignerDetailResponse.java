@@ -14,8 +14,8 @@ public record DesignerDetailResponse(
         String profileImage,
         String introduction,
         List<DayOffWeekday> dayOffWeekdayList,
-        List<String> imageUriList,
-        List<String> snsUriList
+        List<String> imageUrlList,
+        List<String> snsUrlList
 
 ) {
 
@@ -28,7 +28,7 @@ public record DesignerDetailResponse(
                 designer.getIntroduction(),
                 JsonHelper.fromJsonToList(designer.getDayOffWeekdayList(), new TypeReference<>(){}),
                 JsonHelper.fromJsonToList(designer.getImageUrlList(), new TypeReference<>(){}),
-                JsonHelper.fromJsonToList(designer.getSnsUriList(), new TypeReference<>(){})
+                JsonHelper.fromJsonToList(designer.getSnsUrlList(), new TypeReference<>(){})
         );
     }
 }
