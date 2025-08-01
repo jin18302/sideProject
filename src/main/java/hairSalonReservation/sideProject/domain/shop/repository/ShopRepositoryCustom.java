@@ -12,5 +12,7 @@ public interface ShopRepositoryCustom {
 
     CursorPageResponse<ShopSummaryResponse> findByFilter(Long lastCursor, String area, List<Long> tagList);
 
+    Long findShopOwnerIdByShopId(Long shopId);
+
 
 }

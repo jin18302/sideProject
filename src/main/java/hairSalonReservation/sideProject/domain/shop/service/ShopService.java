@@ -63,7 +63,7 @@ public class ShopService {
         return CreateShopResponse.from(shop);
     }
 
-    public CursorPageResponse<ShopSummaryResponse> readByFilter(Long lastCursor, String area, LocalDate date, LocalTime time, List<Long> tagList) {
+    public CursorPageResponse<ShopSummaryResponse> readByFilter(Long lastCursor, String area, List<Long> tagList) {
 
         return shopRepositoryCustom.findByFilter(lastCursor, area, tagList);
     }
@@ -79,7 +79,7 @@ public class ShopService {
     public ShopDetailResponse updateShop(Long userId, Long shopId, UpdateShopRequest updateShopRequest) {
 
         Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
-        Long shopOwnerId = shop.getUser().getId();
+        Long shopOwnerId = shopRepositoryCustom.findShopOwnerIdByShopId(shopId);
         if (!userId.equals(shopOwnerId)) {throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         ShopStatus shopStatus = ShopStatus.of(updateShopRequest.shopStatus());
@@ -108,7 +108,7 @@ public class ShopService {
         Shop shop = shopRepository.findByIdAndIsDeletedFalse(shopId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
 
-        Long shopOwnerId = shop.getUser().getId();
+        Long shopOwnerId = shopRepositoryCustom.findShopOwnerIdByShopId(shopId);
         if (!userId.equals(shopOwnerId)) {throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         shop.delete();

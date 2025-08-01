@@ -36,13 +36,15 @@ public class ShopController {
 
     @GetMapping("/shops")
     public ResponseEntity<CursorPageResponse<ShopSummaryResponse>> readByFilter(
-            @RequestParam(required = false, name = "area") String area,
+            @RequestParam(required = true, name = "area") String area,
             @RequestParam(required = false, name = "tagIdList") List<Long> tagList,
-            @RequestParam(required = true, name = "lastCursor") Long lastCursor,
-            @RequestParam(required = false, name = "date")LocalDate date,
-            @RequestParam(required = false, name = "time")LocalTime time
+            @RequestParam(required = false, name = "lastCursor", defaultValue = "0") Long lastCursor
             ) {
-        CursorPageResponse<ShopSummaryResponse> shopResponsePage = shopService.readByFilter(lastCursor, area, date, time, tagList);
+        long start = System.currentTimeMillis();
+        CursorPageResponse<ShopSummaryResponse> shopResponsePage = shopService.readByFilter(lastCursor, area, tagList);
+
+        long end = System.currentTimeMillis();
+        System.out.println("API 실행 시간: " + (end - start) + "ms");
         return ResponseEntity.ok(shopResponsePage);
     }
 

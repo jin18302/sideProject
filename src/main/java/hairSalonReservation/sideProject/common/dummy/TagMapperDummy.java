@@ -15,9 +15,8 @@ public class TagMapperDummy {
         Random random = new Random();
         int idCounter = 1;
 
-        for(int i = 1 ; i < 26 ; i++){
-            for(int j = 0 ; j < 200_000 ; j++){
-                long shopId = i;
+        for(int i = 1 ; i < 5_000_000 ; i++){
+                long shopId = random.nextLong(TOTAL_SHOPS) + 1;
                 long tagId = random.nextLong(TOTAL_TAGS) + 1;
 
                 StringBuilder builder = new StringBuilder();
@@ -27,7 +26,6 @@ public class TagMapperDummy {
                 builder.append(tagId);
 
                 tagDataList.add(builder.toString());
-            }
         }
         CSVGenerator.generate(TAG_TABLE_NAME, TAG_COLUMNS, tagDataList);
     }

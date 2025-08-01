@@ -14,7 +14,7 @@ public class ShopDummyDataCreator {
 
     private static final String SHOP_TABLE_NAME = "shops";
     private static final String SHOP_COLUMNS = "id,user_id,name,business_id,address,phone_number,open_time,end_time,introduction," +
-                                               "image_url_list,sns_uri_list,shop_status,open_date,created_at,updated_at,@is_deleted,@is_deleted_at";
+                                               "image_url_list,sns_uri_list,shop_status,open_date,created_at,updated_at,@is_deleted,@deleted_at";
 
     static List<String> provinces = List.of(
             "서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "대전광역시", "울산광역시", "세종특별자치시",
