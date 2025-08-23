@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
+
 import static hairSalonReservation.sideProject.domain.shop.entity.QShop.shop;
 import static hairSalonReservation.sideProject.domain.shop.entity.QShopTagMapper.shopTagMapper;
 
@@ -54,7 +56,10 @@ public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
         return new CursorPageResponse<>(shopSummaryResponseList, lastCursor, isLast);
     }
 
+
+
     private List<Long> filterShopIdsByAllTagsAndCursor(Long lastCursor, List<Long> tagList){
+
         BooleanBuilder subQueryBuilder = new BooleanBuilder().and(shopTagMapper.shopTag.id.in(tagList));
         if(lastCursor != 0){subQueryBuilder.and(shop.id.lt(lastCursor));}
 
@@ -62,7 +67,7 @@ public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
                 .from(shopTagMapper)
                 .where(subQueryBuilder)
                 .groupBy(shopTagMapper.shop.id)
-                .having(shopTagMapper.shopTag.id.countDistinct().eq((long) tagList.size()))
+                .having(shopTagMapper.shopTag.id.count().eq((long) tagList.size()))
                 .fetch();
     }
 

@@ -6,7 +6,6 @@ import hairSalonReservation.sideProject.domain.shop.dto.request.UpdateShopReques
 import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
-import hairSalonReservation.sideProject.domain.shop.entity.Shop;
 import hairSalonReservation.sideProject.domain.shop.service.ShopService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @RequestMapping("/api")
@@ -28,7 +25,8 @@ public class ShopController {
     @PostMapping("/shops")
     public ResponseEntity<CreateShopResponse> createShop(
             @RequestBody @Valid CreateShopRequest createShopRequest,
-            @RequestAttribute("userId") Long userId) {
+            @RequestAttribute("userId") Long userId
+    ){
 
         CreateShopResponse createShopResponse = shopService.createShop(createShopRequest, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(createShopResponse);
@@ -38,13 +36,11 @@ public class ShopController {
     public ResponseEntity<CursorPageResponse<ShopSummaryResponse>> readByFilter(
             @RequestParam(required = true, name = "area") String area,
             @RequestParam(required = false, name = "tagIdList") List<Long> tagList,
-            @RequestParam(required = false, name = "lastCursor", defaultValue = "0") Long lastCursor
-            ) {
-        long start = System.currentTimeMillis();
+            @RequestParam(required = false, name = "lastCursor", defaultValue = "0")Long lastCursor
+//            @RequestParam(required = false, name = "date") LocalDate date,
+//            @RequestParam(required = false, name = "time") LocalDate time
+    ) {
         CursorPageResponse<ShopSummaryResponse> shopResponsePage = shopService.readByFilter(lastCursor, area, tagList);
-
-        long end = System.currentTimeMillis();
-        System.out.println("API 실행 시간: " + (end - start) + "ms");
         return ResponseEntity.ok(shopResponsePage);
     }
 
@@ -59,7 +55,8 @@ public class ShopController {
     public ResponseEntity<ShopDetailResponse> updateShop(
             @RequestAttribute("userId") Long userId,
             @PathVariable("shopId") Long shopId,
-            @RequestBody @Valid UpdateShopRequest updateShopRequest) {
+            @RequestBody @Valid UpdateShopRequest updateShopRequest
+    ){
 
         ShopDetailResponse shopDetailResponse = shopService.updateShop(userId, shopId, updateShopRequest);
         return ResponseEntity.ok(shopDetailResponse);
@@ -68,7 +65,8 @@ public class ShopController {
     @DeleteMapping("/shops/{shopId}")
     public ResponseEntity<Void> deleteShop(
             @RequestAttribute("userId") Long userId,
-            @PathVariable("shopId") Long shopId) {
+            @PathVariable("shopId") Long shopId
+    ){
 
         shopService.deleteShop(userId, shopId);
         return ResponseEntity.ok().build();

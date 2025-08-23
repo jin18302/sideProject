@@ -17,6 +17,9 @@ public enum ErrorCode {
     //샵관련
     SHOP_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 헤어샵입니다."),
 
+    //샵 좋아요관련
+    SHOP_FAVORITE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 좋아요입니다."),
+
     //태그관련
     SHOP_TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다."),
 
@@ -32,6 +35,9 @@ public enum ErrorCode {
     //예약관련
     TIME_SLOT_ALREADY_BOOKED(HttpStatus.CONFLICT, "선택하신 시간은 예약이 불가능합니다."),
     RESERVATION_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 예약건입니다."),
+
+    //리뷰관련
+    REVIEW_NOT_ALLOWED_BEFORE_VISIT(HttpStatus.BAD_REQUEST, "방문 완료 후에만 리뷰 작성이 가능합니다."),
 
 
     //이미지 관련
