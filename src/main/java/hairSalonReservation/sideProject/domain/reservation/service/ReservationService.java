@@ -51,6 +51,7 @@ public class ReservationService {
         ServiceMenu serviceMenu = serviceMenuRepository.findById(request.serviceMenuId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_NOT_FOUND));
 
+        //TODO: 선택한 날짜가 예약가능한 시점인지 검증하는 로직 추가
         if(reservationRepositoryCustom.existByDesignerIdAndSlot(designerId, request.date(), request.time())){
             throw new BadRequestException(ErrorCode.TIME_SLOT_ALREADY_BOOKED);
         }

@@ -13,7 +13,8 @@ import java.time.LocalTime;
 
 @Getter
 @Entity
-@Table(name = "reservations")
+@Table(name = "reservations",
+        uniqueConstraints = @UniqueConstraint(name = "uk_designer_slot", columnNames = {"designer_id", "date", "time"}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reservation {
 
