@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.review.controller;
 
+import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
 import hairSalonReservation.sideProject.review.dto.request.CreateReviewRequest;
 import hairSalonReservation.sideProject.review.dto.request.UpdateReviewRequest;
 import hairSalonReservation.sideProject.review.dto.response.ReviewResponse;
@@ -8,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/api")
 @RestController
@@ -30,16 +29,20 @@ public class ReviewController {
     }
 
     @GetMapping("/shops/{shopId}/reviews")
-    public ResponseEntity<List<ReviewResponse>> readByShop(@PathVariable(name = "shopId")Long shopId){
+    public ResponseEntity<CursorPageResponse<ReviewResponse>> readByShop(@PathVariable(name = "shopId")Long shopId,
+                                                                         @RequestParam(name = "cursor", required = false) Long cursor
+    ){
 
-        List<ReviewResponse> reviewResponseList = reviewService.readByShop(shopId);
+        CursorPageResponse<ReviewResponse> reviewResponseList = reviewService.readByShop(shopId,cursor);
         return ResponseEntity.status(HttpStatus.OK).body(reviewResponseList);
     }
 
     @GetMapping("/designers/{designerId}/reviews")
-    public ResponseEntity<List<ReviewResponse>> readByDesigner(@PathVariable(name = "designerId")Long designerId){
+    public ResponseEntity<CursorPageResponse<ReviewResponse>> readByDesigner(@PathVariable(name = "designerId")Long designerId,
+                                                               @RequestParam(name = "cursor", required = false) Long cursor
+    ){
 
-        List<ReviewResponse> reviewResponseList = reviewService.readByDesigner(designerId);
+        CursorPageResponse<ReviewResponse> reviewResponseList = reviewService.readByDesigner(designerId, cursor);
         return ResponseEntity.status(HttpStatus.OK).body(reviewResponseList);
     }
 
@@ -58,7 +61,7 @@ public class ReviewController {
             @PathVariable(name = "reviewId") Long reviewId,
             @RequestAttribute("userId") Long userId
     ){
-        reviewService.deleteReview(reviewId);
+        reviewService.deleteReview(reviewId, userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

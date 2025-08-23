@@ -38,6 +38,7 @@ public enum ErrorCode {
 
     //리뷰관련
     REVIEW_NOT_ALLOWED_BEFORE_VISIT(HttpStatus.BAD_REQUEST, "방문 완료 후에만 리뷰 작성이 가능합니다."),
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 리뷰입니다"),
 
 
     //이미지 관련
