@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.review.dto.request;
+package hairSalonReservation.sideProject.domain.review.dto.request;
 
 public record CreateReviewRequest(String title, String content, Integer rating) {
 }

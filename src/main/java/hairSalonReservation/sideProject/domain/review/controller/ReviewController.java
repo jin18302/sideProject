@@ -1,10 +1,10 @@
-package hairSalonReservation.sideProject.review.controller;
+package hairSalonReservation.sideProject.domain.review.controller;
 
 import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
-import hairSalonReservation.sideProject.review.dto.request.CreateReviewRequest;
-import hairSalonReservation.sideProject.review.dto.request.UpdateReviewRequest;
-import hairSalonReservation.sideProject.review.dto.response.ReviewResponse;
-import hairSalonReservation.sideProject.review.service.ReviewService;
+import hairSalonReservation.sideProject.domain.review.dto.request.CreateReviewRequest;
+import hairSalonReservation.sideProject.domain.review.dto.request.UpdateReviewRequest;
+import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
+import hairSalonReservation.sideProject.domain.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

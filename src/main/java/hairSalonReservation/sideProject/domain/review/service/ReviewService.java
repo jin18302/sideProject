@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.review.service;
+package hairSalonReservation.sideProject.domain.review.service;
 
 import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
 import hairSalonReservation.sideProject.common.exception.BadRequestException;
@@ -10,12 +10,12 @@ import hairSalonReservation.sideProject.domain.reservation.entity.ReservationSta
 import hairSalonReservation.sideProject.domain.reservation.repository.ReservationRepository;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
-import hairSalonReservation.sideProject.review.dto.request.CreateReviewRequest;
-import hairSalonReservation.sideProject.review.dto.request.UpdateReviewRequest;
-import hairSalonReservation.sideProject.review.dto.response.ReviewResponse;
-import hairSalonReservation.sideProject.review.entity.Review;
-import hairSalonReservation.sideProject.review.reposiory.ReviewRepository;
-import hairSalonReservation.sideProject.review.reposiory.ReviewRepositoryCustomImpl;
+import hairSalonReservation.sideProject.domain.review.dto.request.CreateReviewRequest;
+import hairSalonReservation.sideProject.domain.review.dto.request.UpdateReviewRequest;
+import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
+import hairSalonReservation.sideProject.domain.review.entity.Review;
+import hairSalonReservation.sideProject.domain.review.reposiory.ReviewRepository;
+import hairSalonReservation.sideProject.domain.review.reposiory.ReviewRepositoryCustomImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

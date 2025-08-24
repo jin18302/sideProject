@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.review.entity;
+package hairSalonReservation.sideProject.domain.review.entity;
 
 import hairSalonReservation.sideProject.common.entity.BaseEntity;
 import hairSalonReservation.sideProject.domain.reservation.entity.Reservation;

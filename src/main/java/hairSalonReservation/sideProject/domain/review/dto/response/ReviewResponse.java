@@ -1,6 +1,6 @@
-package hairSalonReservation.sideProject.review.dto.response;
+package hairSalonReservation.sideProject.domain.review.dto.response;
 
-import hairSalonReservation.sideProject.review.entity.Review;
+import hairSalonReservation.sideProject.domain.review.entity.Review;
 
 import java.time.LocalDateTime;
 

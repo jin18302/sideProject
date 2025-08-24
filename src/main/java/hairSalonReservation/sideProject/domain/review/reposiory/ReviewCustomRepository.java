@@ -1,7 +1,6 @@
-package hairSalonReservation.sideProject.review.reposiory;
+package hairSalonReservation.sideProject.domain.review.reposiory;
 
-import hairSalonReservation.sideProject.review.dto.response.ReviewResponse;
-import hairSalonReservation.sideProject.review.entity.Review;
+import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
 
 import java.util.List;
 

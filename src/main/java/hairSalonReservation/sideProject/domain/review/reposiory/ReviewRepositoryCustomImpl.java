@@ -1,9 +1,9 @@
-package hairSalonReservation.sideProject.review.reposiory;
+package hairSalonReservation.sideProject.domain.review.reposiory;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import hairSalonReservation.sideProject.review.dto.response.ReviewResponse;
+import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
