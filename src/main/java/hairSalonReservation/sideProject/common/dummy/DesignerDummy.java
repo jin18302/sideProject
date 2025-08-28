@@ -9,8 +9,7 @@ import java.util.Random;
 public class DesignerDummy {
 
     private static final String DESIGNER_TABLE_NAME = "designers";
-    private static final String DESIGNER_COLUMNS = "id,shop_id,name,introduction, profile_image, day_off_weekday_list" +
-                                                    "image_url_list, sns_url_list,created_at,updated_at,@is_deleted,@deleted_at  ";
+    private static final String DESIGNER_COLUMNS = "id,shop_id,name,introduction,profile_image,day_off_weekday_list,image_url_list, sns_url_list,created_at,updated_at,@is_deleted,@deleted_at";
 
     private static Faker faker = new Faker();
     private static Random random = new Random();
@@ -19,7 +18,7 @@ public class DesignerDummy {
 
             List<String> designerDataList = new ArrayList<>();
 
-            for (int i = 1; i <= 100000000 ; i++) {
+            for (int i = 1; i <= 1000000 ; i++) {
 
                 StringBuilder builder = new StringBuilder();
 
@@ -32,16 +31,20 @@ public class DesignerDummy {
                 builder.append(',');
 
                 //name
-                builder.append( faker.company().name() );
+                builder.append( faker.company().name());
                 builder.append(',');
 
                 //introduction
-                builder.append(faker.lorem().sentence() );
+                builder.append(faker.lorem().sentence());
                 builder.append(',');
+
 
                 //profile
                 builder.append(faker.internet().image());
                 builder.append(',');
+
+                //휴무
+                builder.append( "[\"MONDAY\"]").append(",");
 
                 //image
                 builder.append(faker.internet().image());
@@ -59,21 +62,19 @@ public class DesignerDummy {
                 builder.append(LocalDateTime.now());
                 builder.append(',');
 
-                //deletedAt
-                builder.append(LocalDateTime.now());
-                builder.append(',');
-
                 //isDeleted
                 builder.append(0);
                 builder.append(',');
 
                 //deletedAt
+                builder.append(LocalDateTime.now());
+                builder.append(',');
 
                 designerDataList.add(builder.toString());
             }
 
             CSVGenerator.generate(DESIGNER_TABLE_NAME,DESIGNER_COLUMNS,designerDataList);
             System.out.println("SET is_deleted = CAST(@is_deleted AS UNSIGNED),\n"
-                               + "is_deleted_at = NULLIF(@is_deleted_at, '');");
+                               + "deleted_at = NULLIF(@deleted_at, '');");
         }
 }
