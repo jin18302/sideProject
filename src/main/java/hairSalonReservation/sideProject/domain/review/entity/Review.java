@@ -21,7 +21,7 @@ public class Review extends BaseEntity {
     @JoinColumn
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "review_id")
+    @OneToOne(fetch = FetchType.LAZY)
     private Reservation reservation;
 
     private String title;
