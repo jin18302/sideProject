@@ -27,8 +27,9 @@ public class ServiceMenuController {
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceMenuResponse);
     }
 
-    @GetMapping("/designers/service-categories/{serviceCategoryMapperId}")
+    @GetMapping("/designers/{designerId}/service-categories/{serviceCategoryMapperId}")
     public ResponseEntity<List<ServiceMenuResponse>> readAllByDesignerServiceCategory(
+            @PathVariable(name = "designerId") Long designerId,
             @PathVariable(name = "serviceCategoryMapperId") Long serviceCategoryMapperId
     ) {
         List<ServiceMenuResponse> serviceMenuResponseList = serviceMenuService.readAllByDesignerServiceCategory(serviceCategoryMapperId);
