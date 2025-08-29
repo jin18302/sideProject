@@ -36,7 +36,7 @@ public class ServiceMenuController {
         return ResponseEntity.status(HttpStatus.OK).body(serviceMenuResponseList);
     }
 
-    @PatchMapping("/service-menu/{serviceMenuId}")
+    @PatchMapping("/service-menus/{serviceMenuId}")
     public ResponseEntity<ServiceMenuResponse> updateServiceMenu(
             @RequestAttribute("userId") Long userId,
             @PathVariable(name = "serviceMenuId") Long serviceMenuId,
@@ -46,7 +46,7 @@ public class ServiceMenuController {
         return ResponseEntity.status(HttpStatus.OK).body(serviceMenuResponse);
     }
 
-    @DeleteMapping("/service-menu/{serviceMenuId}")
+    @DeleteMapping("/service-menus/{serviceMenuId}")
     public ResponseEntity<Void> deleteServiceMenu(
             @RequestAttribute("userId") Long userId,
             @PathVariable(name = "serviceMenuId") Long serviceMenuId) {

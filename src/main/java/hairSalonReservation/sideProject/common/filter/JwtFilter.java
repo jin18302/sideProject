@@ -32,7 +32,7 @@ public class JwtFilter implements Filter {
 
         log.info("현재 엔드포인트 : {}", url);
 
-        if (url.startsWith("/favicon.ico") || url.startsWith("/api") || url.startsWith("/image/upload.html")) {
+        if (url.startsWith("/favicon.ico") || url.startsWith("/api/auth") || url.startsWith("/image/upload.html")) {
             chain.doFilter(request, response);
             return;
         }

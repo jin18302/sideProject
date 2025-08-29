@@ -24,51 +24,53 @@ public class DesignerDummy {
 
                 //id
                 builder.append(i);
-                builder.append(',');
+                builder.append(",,");
 
                 //shop
                 builder.append(random.nextLong(5000000) + 1 );
-                builder.append(',');
+                builder.append(",,");
 
                 //name
-                builder.append( faker.company().name());
-                builder.append(',');
+                String name = faker.company().name();
+                builder.append(name.length() > 20 ? name.substring(0, 20) : name);
+                builder.append(",,");
 
                 //introduction
                 builder.append(faker.lorem().sentence());
-                builder.append(',');
+                builder.append(",,");
 
 
                 //profile
                 builder.append(faker.internet().image());
-                builder.append(',');
+                builder.append(",,");
 
                 //휴무
-                builder.append( "[\"MONDAY\"]").append(",");
+                builder.append( "[\"MONDAY\"]");
+                builder.append(",,");
 
                 //image
                 builder.append(faker.internet().image());
-                builder.append(',');
+                builder.append(",,");
 
                 //sns
                 builder.append(faker.internet().url());
-                builder.append(',');
+                builder.append(",,");
 
                 //createdAt
                 builder.append(LocalDateTime.now());
-                builder.append(',');
+                builder.append(",,");
 
                 //modifiedAt
                 builder.append(LocalDateTime.now());
-                builder.append(',');
+                builder.append(",,");
 
                 //isDeleted
                 builder.append(0);
-                builder.append(',');
+                builder.append(",,");
 
                 //deletedAt
                 builder.append(LocalDateTime.now());
-                builder.append(',');
+                builder.append(",,");
 
                 designerDataList.add(builder.toString());
             }

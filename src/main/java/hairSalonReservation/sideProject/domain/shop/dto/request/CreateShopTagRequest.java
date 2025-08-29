@@ -1,4 +1,6 @@
 package hairSalonReservation.sideProject.domain.shop.dto.request;
 
-public record CreateShopTagRequest(String name) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record CreateShopTagRequest(@NotEmpty  String name) {
 }

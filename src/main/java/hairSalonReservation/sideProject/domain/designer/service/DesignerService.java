@@ -93,7 +93,7 @@ public class DesignerService {
         Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
 
-        if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}//TODO 쿼리 날아가는 것 막기
 
         designer.delete();
     }

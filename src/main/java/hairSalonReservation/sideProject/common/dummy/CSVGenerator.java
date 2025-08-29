@@ -18,7 +18,7 @@ public class CSVGenerator {
             System.out.printf("""
                 LOAD DATA INFILE '/var/lib/mysql-files/%s.csv'
                 INTO TABLE %s
-                FIELDS TERMINATED BY ','
+                FIELDS TERMINATED BY ', '
                 LINES TERMINATED BY '\\n'
                 IGNORE 1 LINES
                 (%s)\n

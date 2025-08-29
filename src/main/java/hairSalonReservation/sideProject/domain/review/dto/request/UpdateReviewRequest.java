@@ -1,4 +1,10 @@
 package hairSalonReservation.sideProject.domain.review.dto.request;
 
-public record UpdateReviewRequest(String title, String content, Integer rating) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record UpdateReviewRequest(
+        @NotEmpty String title,
+        @NotEmpty String content,
+        Integer rating
+) {
 }

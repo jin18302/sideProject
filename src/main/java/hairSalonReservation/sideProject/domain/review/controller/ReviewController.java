@@ -5,6 +5,7 @@ import hairSalonReservation.sideProject.domain.review.dto.request.CreateReviewRe
 import hairSalonReservation.sideProject.domain.review.dto.request.UpdateReviewRequest;
 import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
 import hairSalonReservation.sideProject.domain.review.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> createReview(
             @PathVariable(name = "reservationId") Long reservationId,
             @RequestAttribute("userId") Long userId,
-            @RequestBody CreateReviewRequest createReviewRequest
+            @RequestBody @Valid CreateReviewRequest createReviewRequest
     ) {
 
         ReviewResponse reviewResponse = reviewService.createReview(reservationId, userId, createReviewRequest);
@@ -31,10 +32,11 @@ public class ReviewController {
     @GetMapping("/shops/{shopId}/reviews")
     public ResponseEntity<CursorPageResponse<ReviewResponse>> readByShop(@PathVariable(name = "shopId") Long shopId,
                                                                          @RequestParam(name = "cursor", required = false) String cursor,
-                                                                         @RequestParam(name = "sort", required = false, defaultValue = "create_desc") String sort
+                                                                         @RequestParam(name = "sort", required = false, defaultValue = "CREATED_AT") String sort,
+                                                                         @RequestParam(name = "sort_direction", required = false, defaultValue = "ASC") String sortDirection
     ) {
 
-        CursorPageResponse<ReviewResponse> reviewResponseList = reviewService.readByShop(shopId, cursor, sort);
+        CursorPageResponse<ReviewResponse> reviewResponseList = reviewService.readByShop(shopId, cursor, sort, sortDirection);
         return ResponseEntity.status(HttpStatus.OK).body(reviewResponseList);
     }
 
@@ -52,7 +54,7 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> updateReview(
             @PathVariable(name = "reviewId") Long reviewId,
             @RequestAttribute("userId") Long userId,
-            @RequestBody UpdateReviewRequest updateReviewRequest
+            @RequestBody @Valid UpdateReviewRequest updateReviewRequest
     ) {
         ReviewResponse reviewResponse = reviewService.updateReview(reviewId, userId, updateReviewRequest);
         return ResponseEntity.status(HttpStatus.OK).body(reviewResponse);

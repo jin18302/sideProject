@@ -1,9 +1,16 @@
 package hairSalonReservation.sideProject.domain.review.reposiory;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hairSalonReservation.sideProject.common.cursor.CreatedAtStrategy;
+import hairSalonReservation.sideProject.common.cursor.CursorStrategy;
+import hairSalonReservation.sideProject.common.cursor.RatingStrategy;
+import hairSalonReservation.sideProject.common.enums.SortDirection;
+import hairSalonReservation.sideProject.common.enums.SortField;
 import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
+import hairSalonReservation.sideProject.domain.review.entity.QReview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -12,7 +19,8 @@ import java.util.List;
 
 import static hairSalonReservation.sideProject.domain.designer.entity.QDesigner.designer;
 import static hairSalonReservation.sideProject.domain.reservation.entity.QReservation.reservation;
-import static hairSalonReservation.sideProject.review.entity.QReview.review;
+import static hairSalonReservation.sideProject.domain.review.entity.QReview.review;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -22,12 +30,12 @@ public class ReviewRepositoryCustomImpl implements ReviewCustomRepository {
     private int limit;
 
     private final JPAQueryFactory jpaQueryFactory;
+    private CursorStrategy<QReview> cursorStrategy;
 
     @Override
-    public List<ReviewResponse> findByShop(Long shopId, Long cursor) {
+    public List<ReviewResponse> findByShop(Long shopId, String cursor, SortField sortField) {
 
-        BooleanBuilder booleanBuilder = new BooleanBuilder().and(designer.shop.id.eq(shopId));
-        if(cursor != null){booleanBuilder.and(review.id.lt(cursor));}
+        setCursorStrategy(sortField);
 
         return jpaQueryFactory
                 .select(Projections.constructor(
@@ -44,17 +52,19 @@ public class ReviewRepositoryCustomImpl implements ReviewCustomRepository {
                 .from(review)
                 .join(review.reservation, reservation)
                 .join(reservation.designer, designer)
-                .where(booleanBuilder)
-                .orderBy(review.id.desc())
+                .where(
+                        designer.shop.id.eq(shopId),
+                        cursorStrategy.buildCursorPredicate(review, cursor)
+                )
+                .orderBy(getSortType(sortField, SortDirection.DESC))//TODO
                 .limit(limit + 1)
                 .fetch();
     }
 
     @Override
-    public List<ReviewResponse> findByDesigner(Long designerId, Long cursor) {
+    public List<ReviewResponse> findByDesigner(Long designerId, Long cursor, SortField sortField) {
 
         BooleanBuilder booleanBuilder = new BooleanBuilder().and(reservation.designer.id.eq(designerId));
-        if(cursor != null){booleanBuilder.and(review.id.lt(cursor));}
 
         return jpaQueryFactory
                 .select(Projections.constructor(
@@ -74,5 +84,16 @@ public class ReviewRepositoryCustomImpl implements ReviewCustomRepository {
                 .orderBy(review.id.desc())
                 .limit(limit + 1)
                 .fetch();
+    }
+
+    private void setCursorStrategy(SortField sortField) {
+        switch (sortField) {
+            case CREATED_AT -> this.cursorStrategy = new CreatedAtStrategy();
+            case RATING -> this.cursorStrategy = new RatingStrategy();
+        }
+    }
+
+    private OrderSpecifier<?>[] getSortType(SortField sortField, SortDirection sortDirection) {
+        return null;
     }
 }

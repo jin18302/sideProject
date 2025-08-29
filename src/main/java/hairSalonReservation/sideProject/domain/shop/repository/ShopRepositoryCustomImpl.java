@@ -23,7 +23,7 @@ public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Value("${query.limit}")
-    private int limit;
+    private int limit;//TODO
 
     @Override
     public CursorPageResponse<ShopSummaryResponse> findByFilter(Long cursor, String area, List<Long> tagList) {

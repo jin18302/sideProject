@@ -14,7 +14,7 @@ public class ShopFavoriteController {
 
     private final ShopFavoriteService shopFavoriteService;
 
-    @PostMapping("/shops/{shopId}")
+    @PostMapping("/shops/{shopId}/shop-favorites")
     public ResponseEntity<CreateShopFavoriteResponse> createShopFavorite(@PathVariable(name = "shopId")Long shopId,
                                                                          @RequestAttribute("userId") Long userId
     ){
@@ -22,7 +22,7 @@ public class ShopFavoriteController {
         return ResponseEntity.ok(createShopFavoriteResponse);
     }
 
-    @DeleteMapping("shop-favorite/{shopFavoriteId}")
+    @DeleteMapping("/shop-favorites/{shopFavoriteId}")
     public ResponseEntity<Void> deleteShopFavorite(@PathVariable(name = "shopFavoriteId") Long shopFavoriteId,
                                                    @RequestAttribute("userId") Long userId
     ){

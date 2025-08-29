@@ -17,7 +17,7 @@ public class ServiceMenuCategoryMapperController {
 
     private final ServiceMenuCategoryMapperService serviceMenuCategoryMapperService;
 
-    @PostMapping("/designer/{designerId}/serviceMenuCategories")
+    @PostMapping("/designers/{designerId}/service-menu-categories")
     public ResponseEntity<List<ServiceMenuCategoryMapperResponse>> createServiceCategoryMapper(
             @RequestAttribute("userId") Long userId,
             @PathVariable(name = "designerId") Long designerId,
@@ -29,14 +29,14 @@ public class ServiceMenuCategoryMapperController {
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperResponseList);
     }
 
-    @GetMapping("/designer/{designerId}/serviceMenuCategories")
+    @GetMapping("/designers/{designerId}/service-menu-categories")
     public ResponseEntity<List<ServiceMenuCategoryMapperResponse>> readByDesignerId(@PathVariable(name = "designerId") Long designerId){
 
         List<ServiceMenuCategoryMapperResponse> mapperResponseList = serviceMenuCategoryMapperService.readByDesignerId(designerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapperResponseList);
     }
 
-    @PatchMapping("/designer/{designerId}/serviceMenuCategories")
+    @PatchMapping("/designers/{designerId}/service-menu-categories")
     public ResponseEntity<List<ServiceMenuCategoryMapperResponse>> updateServiceCategoryMapper(
             @RequestAttribute("userId") Long userId,
             @PathVariable(name = "designerId") Long designerId,

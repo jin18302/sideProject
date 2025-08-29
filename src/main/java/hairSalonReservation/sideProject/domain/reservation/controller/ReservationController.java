@@ -63,11 +63,11 @@ public class ReservationController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PatchMapping("/designers/reservations/{reservationId}")
+    @PatchMapping("/reservations/{reservationId}")
     public ResponseEntity<ReservationResponse> updateReservationStatus(
             @RequestAttribute("userId") Long userId,
             @PathVariable(name = "reservationId")Long reservationId,
-            @RequestBody UpdateReservationStatusRequest request
+            @RequestBody @Valid UpdateReservationStatusRequest request
     ){
         ReservationResponse response = reservationService.updateReservationStatus(userId, reservationId, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);

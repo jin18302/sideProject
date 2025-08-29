@@ -49,7 +49,8 @@ public class ReservationRepositoryCustomImpl implements ReservationRepositoryCus
                         reservation.reservationStatus
                 ))
                 .from(reservation)
-                .where(reservation.designer.id.eq(designerId),
+                .where(
+                        reservation.designer.id.eq(designerId),
                         reservation.date.eq(Objects.requireNonNullElseGet(date, LocalDate::now))
                 )
                 .fetch();
