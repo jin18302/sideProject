@@ -1,15 +1,17 @@
 package hairSalonReservation.sideProject.domain.review.service;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
-import hairSalonReservation.sideProject.common.enums.SortDirection;
-import hairSalonReservation.sideProject.common.enums.SortField;
 import hairSalonReservation.sideProject.common.exception.BadRequestException;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import hairSalonReservation.sideProject.common.exception.ForbiddenException;
 import hairSalonReservation.sideProject.common.exception.NotFoundException;
+import hairSalonReservation.sideProject.common.util.ReviewFactory;
 import hairSalonReservation.sideProject.domain.reservation.entity.Reservation;
 import hairSalonReservation.sideProject.domain.reservation.entity.ReservationStatus;
 import hairSalonReservation.sideProject.domain.reservation.repository.ReservationRepository;
+import hairSalonReservation.sideProject.domain.review.entity.ReviewSortType;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
 import hairSalonReservation.sideProject.domain.review.dto.request.CreateReviewRequest;
@@ -65,12 +67,12 @@ public class ReviewService {
         return ReviewResponse.from(review);
     }
 
-    public CursorPageResponse<ReviewResponse> readByShop(Long shopId, String cursor, String sort, String sortDirection){
+    public CursorPageResponse<ReviewResponse> readByShop(Long shopId, String cursor, String sort, String order){
 
-        SortField sortField = SortField.valueOf(sort);
-        SortDirection sortDire = SortDirection.of(sortDirection);
+        ReviewSortType sortType = ReviewSortType.valueOf(sort);
+        Order orderBy = Order.valueOf(order);
 
-        List<ReviewResponse> reviewResponseList = reviewRepositoryCustom.findByShop(shopId, cursor, sortField);
+        List<ReviewResponse> reviewResponseList = reviewRepositoryCustom.findByShop(shopId, cursor, sortType, orderBy);
 
         boolean isLast = reviewResponseList.size() < limit + 1;
         if(!isLast){reviewResponseList.remove(limit);}
@@ -79,19 +81,19 @@ public class ReviewService {
         return new CursorPageResponse<>(reviewResponseList, lastCursor, isLast);
     }
 
-    public CursorPageResponse<ReviewResponse> readByDesigner(Long designerId, Long cursor, String sort){
-
-        SortField sortField = SortField.valueOf(sort);
-        List<ReviewResponse> reviewResponseList = reviewRepositoryCustom.findByDesigner(designerId, cursor, sortField);
-
-        boolean isLast = reviewResponseList.size() < limit + 1;
-        if(!isLast){reviewResponseList.remove(limit);}
-
-        Long lastCursor = reviewResponseList.isEmpty() ? 0 : reviewResponseList.get(reviewResponseList.size() - 1).id();
-        //TODO: 마지막 커서를 어떻게 보낼것인가...,
-
-        return new CursorPageResponse<>(reviewResponseList, lastCursor, isLast);
-    }
+//    public CursorPageResponse<ReviewResponse> readByDesigner(Long designerId, Long cursor, String sort){
+//
+//        SortField sortField = SortField.valueOf(sort);
+//        List<ReviewResponse> reviewResponseList = reviewRepositoryCustom.findByDesigner(designerId, cursor, sortField);
+//
+//        boolean isLast = reviewResponseList.size() < limit + 1;
+//        if(!isLast){reviewResponseList.remove(limit);}
+//
+//        Long lastCursor = reviewResponseList.isEmpty() ? 0 : reviewResponseList.get(reviewResponseList.size() - 1).id();
+//        //TODO: 마지막 커서를 어떻게 보낼것인가...,
+//
+//        return new CursorPageResponse<>(reviewResponseList, lastCursor, isLast);
+//    }
 
     @Transactional
     public ReviewResponse updateReview(Long reviewId, Long userId, UpdateReviewRequest request){

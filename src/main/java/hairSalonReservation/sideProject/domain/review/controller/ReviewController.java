@@ -33,10 +33,10 @@ public class ReviewController {
     public ResponseEntity<CursorPageResponse<ReviewResponse>> readByShop(@PathVariable(name = "shopId") Long shopId,
                                                                          @RequestParam(name = "cursor", required = false) String cursor,
                                                                          @RequestParam(name = "sort", required = false, defaultValue = "CREATED_AT") String sort,
-                                                                         @RequestParam(name = "sort_direction", required = false, defaultValue = "ASC") String sortDirection
+                                                                         @RequestParam(name = "order", required = false, defaultValue = "ASC") String order
     ) {
 
-        CursorPageResponse<ReviewResponse> reviewResponseList = reviewService.readByShop(shopId, cursor, sort, sortDirection);
+        CursorPageResponse<ReviewResponse> reviewResponseList = reviewService.readByShop(shopId, cursor, sort, order);
         return ResponseEntity.status(HttpStatus.OK).body(reviewResponseList);
     }
 
