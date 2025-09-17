@@ -73,63 +73,62 @@ public class ShopDummyDataCreator {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        for (int i = 1; i <= 5000000; i++) {
+        for (int i = 1; i <= 500_000; i++) {
             StringBuilder builder = new StringBuilder();
 
             // id
-            builder.append(i).append(',');
+            builder.append(i).append(", ");
 
             // user_id
-            builder.append(faker.number().numberBetween(1, 100001)).append(',');
+            builder.append(faker.number().numberBetween(1, 100001)).append(", ");
 
             // name
-            builder.append(faker.name().fullName().replace(",", "")).append(',');
+            builder.append(faker.name().fullName().replace(",", "")).append(", ");
 
             // business_id
             String businessId = String.format("%03d-%02d-%05d",
                     faker.number().numberBetween(100, 999),
                     faker.number().numberBetween(10, 99),
                     faker.number().numberBetween(10000, 99999));
-            builder.append(businessId).append(',');
+            builder.append(businessId).append(", ");
 
 
             // address
             builder.append(generateRandomAddress());
-            builder.append(',');
+            builder.append(", ");
 
             // phone_number
-            builder.append(faker.phoneNumber().phoneNumber().replace(",", "")).append(',');
+            builder.append(faker.phoneNumber().phoneNumber().replace(",", "")).append(", ");
 
             // open_time & end_time
-            builder.append(LocalTime.of(random.nextInt(24), 0).format(timeFormatter)).append(',');
-            builder.append(LocalTime.of(random.nextInt(24), 0).format(timeFormatter)).append(',');
+            builder.append(LocalTime.of(random.nextInt(24), 0).format(timeFormatter)).append(", ");
+            builder.append(LocalTime.of(random.nextInt(24), 0).format(timeFormatter)).append(", ");
 
             // introduction
-            builder.append(faker.lorem().paragraph().replace(",", "")).append(',');
+            builder.append(faker.lorem().paragraph().replace(",", "")).append(", ");;
 
             // image_url_list
-            builder.append(faker.internet().image()).append(',');
+            builder.append(faker.internet().image()).append(", ");;
 
             // sns_uri_list
-            builder.append(faker.internet().url()).append(',');
+            builder.append(faker.internet().url()).append(", ");;
 
             // shop_status
-            builder.append(i >= 2_500_000 ? ShopStatus.BEFORE_OPEN : ShopStatus.OPEN).append(',');
+            builder.append(i >= 250_000 ? ShopStatus.BEFORE_OPEN : ShopStatus.OPEN).append(", ");;
 
             // open_date, created_at, updated_at, is_deleted, is_deleted_at
             String now = LocalDateTime.now().format(dateTimeFormatter);
-            builder.append(now).append(','); // open_date
-            builder.append(now).append(','); // created_at
-            builder.append(now).append(','); // updated_at
-            builder.append(0).append(',');   // @is_deleted
-            builder.append("");              // @is_deleted_at (빈값)
+            builder.append(now).append(", "); // open_date
+            builder.append(now).append(", "); // created_at
+            builder.append(now).append(", "); // updated_at
+            builder.append(0).append(", ");   // @is_deleted
 
             shopDataList.add(builder.toString());
         }
 
         CSVGenerator.generate(SHOP_TABLE_NAME, SHOP_COLUMNS, shopDataList);
         System.out.println("SET is_deleted = CAST(@is_deleted AS UNSIGNED),\n"
-                           + "is_deleted_at = NULLIF(@is_deleted_at, '');");
+                           + "deleted_at = NULLIF(@deleted_at, '');");
     }
 
     public static String generateRandomAddress() {

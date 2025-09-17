@@ -24,7 +24,7 @@ public class UserDummyDataCreator {
         List<String> userDataList = new ArrayList<>();
         Set<String> emails = new HashSet<>();
 
-        for (int i = 1; i <= 100000 ; i++) {
+        for (int i = 1; i <= 100_000 ; i++) {
 
             StringBuilder builder = new StringBuilder();
             String email ;
@@ -35,43 +35,43 @@ public class UserDummyDataCreator {
 
             //id
             builder.append(i);
-            builder.append(',');
+            builder.append(", ");
 
             //name
             builder.append(faker.name().fullName());
-            builder.append(',');
+            builder.append(", ");
 
             //email
             builder.append(email);
-            builder.append(',');
+            builder.append(", ");
 
             //password
             builder.append(passwordEncoder.encode(faker.internet().password()+"!"));
-            builder.append(',');
+            builder.append(", ");
 
             //gender
             builder.append( i<=10000 ? Gender.MALE : Gender.FEMALE);
-            builder.append(',');
+            builder.append(", ");
 
             //userRole
             builder.append( i<=1000 ? UserRole.ADMIN.toString() : UserRole.CUSTOMER.toString());
-            builder.append(',');
+            builder.append(", ");
 
             //createdAt
             builder.append(LocalDateTime.now());
-            builder.append(',');
+            builder.append(", ");
 
             //modifiedAt
             builder.append(LocalDateTime.now());
-            builder.append(',');
+            builder.append(", ");
 
             //deletedAt
             builder.append(LocalDateTime.now());
-            builder.append(',');
+            builder.append(", ");
 
             //isDeleted
             builder.append(0);
-            builder.append(',');
+            builder.append(", ");
 
             //deletedAt
 

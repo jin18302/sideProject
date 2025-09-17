@@ -18,41 +18,41 @@ public class ServiceMenuDummy {
 
     public static void main(String[] args) {
 
-        for(int i = 1 ; i <= 5_000_000 ; i++){
+        for(long i = 1 ; i <= 4000000 ; i++){
 
             StringBuffer buffer = new StringBuffer();
 
             //id
-            buffer.append(i).append(",,");
+            buffer.append(i).append(", ");
 
             //mapperId
-            buffer.append(random.nextLong(3_000_000)).append(",,");
+            buffer.append(i).append(", ");
 
             //name
             String name = faker.name().firstName();
-            buffer.append(name.length() > 20 ? name.substring(0, 20) : name).append(",,");
+            buffer.append(name.length() > 20 ? name.substring(0, 20) : name).append(", ");
 
             //price
-            buffer.append(faker.number().randomDigit()).append(",,");
+            buffer.append(faker.number().randomDigit()).append(", ");
 
             //description
-            buffer.append(faker.name().fullName()).append(",,");
+            buffer.append(faker.name().fullName()).append(", ");
 
             //createdAt
             buffer.append(LocalDateTime.now());
-            buffer.append(",,");
+            buffer.append(", ");
 
             //modifiedAt
             buffer.append(LocalDateTime.now());
-            buffer.append(",,");
+            buffer.append(", ");
 
             //isDeleted
             buffer.append(0);
-            buffer.append(",,");
+            buffer.append(", ");
 
             //deletedAt
             buffer.append(LocalDateTime.now());
-            buffer.append(",,");
+            buffer.append(", ");
 
             serviceMenuList.add(buffer.toString());
 

@@ -45,11 +45,11 @@ public class TagDummy {
 
             // id
             builder.append(i + 1); // 1부터 시작
-            builder.append(',');
+            builder.append(", ");
 
             // name
             builder.append(shopTags.get(i));
-            builder.append(',');
+            builder.append(", ");
 
             // isDeleted
             builder.append(0);

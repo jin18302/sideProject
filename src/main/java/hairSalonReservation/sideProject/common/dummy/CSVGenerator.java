@@ -16,7 +16,7 @@ public class CSVGenerator {
             System.out.println("CSV 파일 생성 완료\n");
             System.out.println("DB 삽입 명령어 : \n");
             System.out.printf("""
-                LOAD DATA INFILE '/var/lib/mysql-files/%s.csv'
+                LOAD DATA INFILE '/usr/local/mysql-9.4.0-macos15-arm64/mysql-files/%s.csv'
                 INTO TABLE %s
                 FIELDS TERMINATED BY ', '
                 LINES TERMINATED BY '\\n'

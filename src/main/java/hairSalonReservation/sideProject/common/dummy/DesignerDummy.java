@@ -18,59 +18,59 @@ public class DesignerDummy {
 
             List<String> designerDataList = new ArrayList<>();
 
-            for (int i = 1; i <= 1000000 ; i++) {
+            for (int i = 1; i <= 1_000_000 ; i++) {
 
                 StringBuilder builder = new StringBuilder();
 
                 //id
                 builder.append(i);
-                builder.append(",,");
+                builder.append(", ");
 
                 //shop
-                builder.append(random.nextLong(5000000) + 1 );
-                builder.append(",,");
+                builder.append(random.nextLong(500_000) + 1 );
+                builder.append(", ");
 
                 //name
-                String name = faker.company().name();
+                String name = faker.company().name().replace(",", "");
                 builder.append(name.length() > 20 ? name.substring(0, 20) : name);
-                builder.append(",,");
+                builder.append(", ");
 
                 //introduction
-                builder.append(faker.lorem().sentence());
-                builder.append(",,");
+                builder.append(faker.lorem().sentence().replace(",", ""));
+                builder.append(", ");
 
 
                 //profile
-                builder.append(faker.internet().image());
-                builder.append(",,");
+                builder.append(faker.internet().image().replace(",", ""));
+                builder.append(", ");
 
                 //휴무
                 builder.append( "[\"MONDAY\"]");
-                builder.append(",,");
+                builder.append(", ");
 
                 //image
-                builder.append(faker.internet().image());
-                builder.append(",,");
+                builder.append(faker.internet().image().replace(",", ""));
+                builder.append(", ");
 
                 //sns
-                builder.append(faker.internet().url());
-                builder.append(",,");
+                builder.append(faker.internet().url().replace(",", ""));
+                builder.append(", ");
 
                 //createdAt
                 builder.append(LocalDateTime.now());
-                builder.append(",,");
+                builder.append(", ");
 
                 //modifiedAt
                 builder.append(LocalDateTime.now());
-                builder.append(",,");
+                builder.append(", ");
 
                 //isDeleted
                 builder.append(0);
-                builder.append(",,");
+                builder.append(", ");
 
                 //deletedAt
                 builder.append(LocalDateTime.now());
-                builder.append(",,");
+                builder.append(", ");
 
                 designerDataList.add(builder.toString());
             }

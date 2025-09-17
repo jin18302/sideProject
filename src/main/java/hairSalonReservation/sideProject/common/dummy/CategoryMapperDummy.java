@@ -20,9 +20,9 @@ public class CategoryMapperDummy {
 
         int c = 1;
 
-        for (int i = 1; i <= 500_000; i++) {
-            for (int j = 1; j <= 6; j++) {
-                StringBuilder stringBuffer = new StringBuilder();
+        for (int i = 1; i <= 1_000_000; i++) {
+            for (int j = 1; j <= 4; j++) {
+                StringBuffer stringBuffer = new StringBuffer();
 
                 //id
                 stringBuffer.append(c++).append(", ");
