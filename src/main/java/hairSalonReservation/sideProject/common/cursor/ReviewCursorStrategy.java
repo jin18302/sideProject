@@ -5,14 +5,14 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
 import hairSalonReservation.sideProject.domain.review.entity.QReview;
-import hairSalonReservation.sideProject.domain.review.entity.SortField;
+import hairSalonReservation.sideProject.domain.review.entity.ReviewSortField;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReviewCursorStrategy implements CursorStrategy<QReview>{
+public class ReviewCursorStrategy implements CursorStrategy<QReview, ReviewSortField>{
 
     @Override
-    public Predicate buildCursorPredicate(QReview review, String lastCursor, Order order, SortField sortField) {
+    public Predicate buildCursorPredicate(QReview review, String lastCursor, Order order, ReviewSortField sortField) {
 
         if(lastCursor == null){return Expressions.TRUE.isTrue(); }
 
