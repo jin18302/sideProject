@@ -9,7 +9,7 @@ import hairSalonReservation.sideProject.common.exception.NotFoundException;
 import hairSalonReservation.sideProject.domain.reservation.entity.Reservation;
 import hairSalonReservation.sideProject.domain.reservation.entity.ReservationStatus;
 import hairSalonReservation.sideProject.domain.reservation.repository.ReservationRepository;
-import hairSalonReservation.sideProject.domain.review.entity.SortField;
+import hairSalonReservation.sideProject.domain.review.entity.ReviewSortField;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
 import hairSalonReservation.sideProject.domain.review.dto.request.CreateReviewRequest;
@@ -67,7 +67,7 @@ public class ReviewService {
 
     public CursorPageResponse<ReviewResponse> readByShop(Long shopId, String cursor, String sort, String order){
 
-        SortField sortType = SortField.valueOf(sort);
+        ReviewSortField sortType = ReviewSortField.valueOf(sort);
         Order orderBy = Order.valueOf(order);
 
         List<ReviewResponse> reviewResponseList = reviewRepositoryCustom.findByShop(shopId, cursor, sortType, orderBy);
@@ -81,7 +81,7 @@ public class ReviewService {
 
     public CursorPageResponse<ReviewResponse> readByDesigner(Long designerId, String cursor, String sort, String order){
 
-        SortField sortField = SortField.valueOf(sort);
+        ReviewSortField sortField = ReviewSortField.valueOf(sort);
         Order orderBy = Order.valueOf(order);
 
         List<ReviewResponse> reviewResponseList = reviewRepositoryCustom.findByDesigner(designerId, cursor, sortField, orderBy);

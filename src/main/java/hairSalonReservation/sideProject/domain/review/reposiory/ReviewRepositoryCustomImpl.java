@@ -8,7 +8,7 @@ import hairSalonReservation.sideProject.common.cursor.CursorStrategy;
 import hairSalonReservation.sideProject.common.util.OrderSpecifierFactory;
 import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
 import hairSalonReservation.sideProject.domain.review.entity.QReview;
-import hairSalonReservation.sideProject.domain.review.entity.SortField;
+import hairSalonReservation.sideProject.domain.review.entity.ReviewSortField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -25,11 +25,11 @@ public class ReviewRepositoryCustomImpl implements ReviewCustomRepository {
     private int limit;
 
     private final JPAQueryFactory jpaQueryFactory;
-    private final OrderSpecifierFactory<QReview> orderSpecifierFactory;
-    private final CursorStrategy<QReview> cursorStrategy;
+    private final OrderSpecifierFactory<QReview, ReviewSortField> orderSpecifierFactory;
+    private final CursorStrategy<QReview, ReviewSortField> cursorStrategy;
 
     @Override
-    public List<ReviewResponse> findByShop(Long shopId, String cursor, SortField sortType, Order order) {
+    public List<ReviewResponse> findByShop(Long shopId, String cursor, ReviewSortField sortType, Order order) {
 
         return jpaQueryFactory
                 .select(Projections.constructor(
@@ -56,7 +56,7 @@ public class ReviewRepositoryCustomImpl implements ReviewCustomRepository {
     }
 
     @Override
-    public List<ReviewResponse> findByDesigner(Long designerId, String cursor, SortField sortField, Order order) {
+    public List<ReviewResponse> findByDesigner(Long designerId, String cursor, ReviewSortField sortField, Order order) {
 
         BooleanBuilder booleanBuilder = new BooleanBuilder().and(reservation.designer.id.eq(designerId));
 
