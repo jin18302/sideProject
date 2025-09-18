@@ -42,11 +42,12 @@ public class ReviewController {
 
     @GetMapping("/designers/{designerId}/reviews")
     public ResponseEntity<CursorPageResponse<ReviewResponse>> readByDesigner(@PathVariable(name = "designerId") Long designerId,
-                                                                             @RequestParam(name = "cursor", required = false) Long cursor,
-                                                                             @RequestParam(name = "sort", required = false, defaultValue = "create_desc") String sort
+                                                                             @RequestParam(name = "cursor", required = false) String cursor,
+                                                                             @RequestParam(name = "sort", required = false, defaultValue = "CREATED_AT") String sort,
+                                                                             @RequestParam(name = "order", required = false, defaultValue = "ASC") String order
     ) {
 
-        CursorPageResponse<ReviewResponse> reviewResponseList = reviewService.readByDesigner(designerId, cursor, sort);
+        CursorPageResponse<ReviewResponse> reviewResponseList = reviewService.readByDesigner(designerId, cursor, sort, order);
         return ResponseEntity.status(HttpStatus.OK).body(reviewResponseList);
     }
 
