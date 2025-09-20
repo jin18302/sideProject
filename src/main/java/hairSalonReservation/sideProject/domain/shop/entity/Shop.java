@@ -60,6 +60,8 @@ public class Shop extends BaseEntity {
 
     private LocalDate openDate;
 
+    private Long likeCount = 0L;
+
     private Shop(User user, String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
                  String introduction, String imageUrlList, String snsUriList, LocalDate openDate){
         this.user = user;
@@ -99,5 +101,13 @@ public class Shop extends BaseEntity {
         this.setDeleted(true);
         this.setDeletedAt(LocalDateTime.now());
         this.shopStatus = ShopStatus.SHUTDOWN;
+    }
+
+    public void increaseLikeCount(){
+        this.likeCount++;
+    }
+
+    public void decreaseLikeCount(){
+        this.likeCount--;
     }
 }
