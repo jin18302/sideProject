@@ -1,10 +1,15 @@
 package hairSalonReservation.sideProject.domain.shop.repository;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Order;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hairSalonReservation.sideProject.common.cursor.CursorStrategy;
+import hairSalonReservation.sideProject.common.cursor.ShopSortField;
 import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
+import hairSalonReservation.sideProject.common.util.OrderSpecifierFactory;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
+import hairSalonReservation.sideProject.domain.shop.entity.QShop;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,17 +26,19 @@ import static hairSalonReservation.sideProject.domain.shop.entity.QShopTagMapper
 public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final CursorStrategy<QShop, ShopSortField> cursorStrategy;
+    private final OrderSpecifierFactory<QShop, ShopSortField> orderSpecifierFactory;
 
     @Value("${query.limit}")
     private int limit;//TODO
 
     @Override
-    public CursorPageResponse<ShopSummaryResponse> findByFilter(Long cursor, String area, List<Long> tagList) {
+    public CursorPageResponse<ShopSummaryResponse> findByFilter(String area, List<Long> tagList, ShopSortField sortField, Order order, String cursor) {
 
-        List<Long> taggedShopList = tagList == null ? null : filterShopIdsByAllTagsAndCursor(cursor, tagList);
+        List<Long> taggedShopList = tagList == null ? null : filterShopIdsByAllTagsAndCursor(cursor, tagList, order, sortField);
 
         BooleanBuilder builder = new BooleanBuilder().and(shop.address.startsWith(area));
-        if(taggedShopList != null){builder.and(shop.id.in(taggedShopList).and(shop.id.lt(cursor)));}
+        if(taggedShopList != null){builder.and(shop.id.in(taggedShopList));}
 
         List<ShopSummaryResponse> shopSummaryResponseList = queryFactory.select(
                         Projections.constructor(
@@ -45,7 +52,7 @@ public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
                         ))
                 .from(shop)
                 .where(builder)
-                .orderBy(shop.id.desc())
+                .orderBy(orderSpecifierFactory.generateOrderSpecifier(shop, sortField, order))
                 .limit(limit + 1)
                 .fetch();
 
@@ -58,10 +65,12 @@ public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
 
 
 
-    private List<Long> filterShopIdsByAllTagsAndCursor(Long lastCursor, List<Long> tagList){
+    private List<Long> filterShopIdsByAllTagsAndCursor(String lastCursor, List<Long> tagList, Order order, ShopSortField sortField){
 
         BooleanBuilder subQueryBuilder = new BooleanBuilder().and(shopTagMapper.shopTag.id.in(tagList));
-        if(lastCursor != 0){subQueryBuilder.and(shop.id.lt(lastCursor));}
+        if(lastCursor != null){
+            subQueryBuilder.and(cursorStrategy.buildCursorPredicate(shop, lastCursor, order, sortField));
+        }
 
        return  queryFactory.select(shopTagMapper.shop.id)
                 .from(shopTagMapper)
