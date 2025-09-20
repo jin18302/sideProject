@@ -36,11 +36,13 @@ public class ShopController {
     public ResponseEntity<CursorPageResponse<ShopSummaryResponse>> readByFilter(
             @RequestParam(required = true, name = "area") String area,
             @RequestParam(required = false, name = "tagIdList") List<Long> tagList,
-            @RequestParam(required = false, name = "lastCursor", defaultValue = "0")Long lastCursor
+            @RequestParam(required = false, name = "lastCursor", defaultValue = "0")String lastCursor,
+            @RequestParam(required = false, name = "order", defaultValue = "ASC")String order,
+            @RequestParam(required = false, name = "sortFelid", defaultValue = "CREATED_AT") String sortFelid
 //            @RequestParam(required = false, name = "date") LocalDate date,
 //            @RequestParam(required = false, name = "time") LocalDate time
     ) {
-        CursorPageResponse<ShopSummaryResponse> shopResponsePage = shopService.readByFilter(lastCursor, area, tagList);
+        CursorPageResponse<ShopSummaryResponse> shopResponsePage = shopService.readByFilter(area, tagList, order, sortFelid, lastCursor);
         return ResponseEntity.ok(shopResponsePage);
     }
 

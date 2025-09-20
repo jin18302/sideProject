@@ -1,7 +1,12 @@
 package hairSalonReservation.sideProject.domain.shop.service;
 
+import com.querydsl.core.types.Order;
 import hairSalonReservation.sideProject.common.annotation.CheckRole;
+import hairSalonReservation.sideProject.common.cursor.ShopSortField;
 import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
+import hairSalonReservation.sideProject.common.exception.ErrorCode;
+import hairSalonReservation.sideProject.common.exception.ForbiddenException;
+import hairSalonReservation.sideProject.common.exception.NotFoundException;
 import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.request.UpdateShopRequest;
@@ -14,9 +19,6 @@ import hairSalonReservation.sideProject.domain.shop.repository.ShopRepository;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.user.entity.User;
 import hairSalonReservation.sideProject.domain.user.repository.UserRepository;
-import hairSalonReservation.sideProject.common.exception.ErrorCode;
-import hairSalonReservation.sideProject.common.exception.ForbiddenException;
-import hairSalonReservation.sideProject.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,9 +63,9 @@ public class ShopService {
         return CreateShopResponse.from(shop);
     }
 
-    public CursorPageResponse<ShopSummaryResponse> readByFilter(Long lastCursor, String area, List<Long> tagList) {
+    public CursorPageResponse<ShopSummaryResponse> readByFilter(String area, List<Long> tagList, String order, String sortFelid, String lastCursor) {
 
-        return shopRepositoryCustom.findByFilter(lastCursor, area, tagList);
+        return shopRepositoryCustom.findByFilter(area, tagList, ShopSortField.valueOf(sortFelid), Order.valueOf(order), lastCursor);
     }
 
     public ShopDetailResponse readShopDetail(Long shopId) {

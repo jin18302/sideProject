@@ -5,7 +5,9 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import hairSalonReservation.sideProject.common.cursor.ShopSortField;
 import hairSalonReservation.sideProject.domain.shop.entity.QShop;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ShopOrderSpecifierFactory implements OrderSpecifierFactory<QShop, ShopSortField>{
     @Override
     public OrderSpecifier<?> generateOrderSpecifier(QShop shop, ShopSortField shopSortField, Order order) {
@@ -21,4 +23,3 @@ public class ShopOrderSpecifierFactory implements OrderSpecifierFactory<QShop, S
         return new OrderSpecifier<>(order, expression);
     }
     }
-}
