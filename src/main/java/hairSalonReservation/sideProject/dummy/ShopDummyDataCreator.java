@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.common.dummy;
+package hairSalonReservation.sideProject.dummy;
 
 import hairSalonReservation.sideProject.domain.shop.entity.ShopStatus;
 import net.datafaker.Faker;

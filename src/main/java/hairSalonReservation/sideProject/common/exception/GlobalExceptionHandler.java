@@ -1,6 +1,5 @@
 package hairSalonReservation.sideProject.common.exception;
 
-import hairSalonReservation.sideProject.common.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

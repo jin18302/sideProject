@@ -1,6 +1,6 @@
 package hairSalonReservation.sideProject.domain.review.controller;
 
-import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
+import hairSalonReservation.sideProject.common.cursor.CursorPageResponse;
 import hairSalonReservation.sideProject.domain.review.dto.request.CreateReviewRequest;
 import hairSalonReservation.sideProject.domain.review.dto.request.UpdateReviewRequest;
 import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;

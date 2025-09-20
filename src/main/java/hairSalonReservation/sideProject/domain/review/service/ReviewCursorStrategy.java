@@ -1,15 +1,16 @@
-package hairSalonReservation.sideProject.common.cursor;
+package hairSalonReservation.sideProject.domain.review.service;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
+import hairSalonReservation.sideProject.common.cursor.CursorStrategy;
 import hairSalonReservation.sideProject.domain.review.entity.QReview;
 import hairSalonReservation.sideProject.domain.review.entity.ReviewSortField;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReviewCursorStrategy implements CursorStrategy<QReview, ReviewSortField>{
+public class ReviewCursorStrategy implements CursorStrategy<QReview, ReviewSortField> {
 
     @Override
     public Predicate buildCursorPredicate(QReview review, String lastCursor, Order order, ReviewSortField sortField) {

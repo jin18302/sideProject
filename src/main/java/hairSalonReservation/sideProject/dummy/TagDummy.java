@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.common.dummy;
+package hairSalonReservation.sideProject.dummy;
 
 import java.util.ArrayList;
 import java.util.List;

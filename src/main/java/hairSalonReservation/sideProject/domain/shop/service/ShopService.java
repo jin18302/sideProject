@@ -2,8 +2,8 @@ package hairSalonReservation.sideProject.domain.shop.service;
 
 import com.querydsl.core.types.Order;
 import hairSalonReservation.sideProject.common.annotation.CheckRole;
-import hairSalonReservation.sideProject.common.cursor.ShopSortField;
-import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
+import hairSalonReservation.sideProject.domain.shop.entity.ShopSortField;
+import hairSalonReservation.sideProject.common.cursor.CursorPageResponse;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import hairSalonReservation.sideProject.common.exception.ForbiddenException;
 import hairSalonReservation.sideProject.common.exception.NotFoundException;

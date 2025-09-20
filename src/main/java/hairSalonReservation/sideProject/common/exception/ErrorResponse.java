@@ -1,6 +1,5 @@
-package hairSalonReservation.sideProject.common.dto;
+package hairSalonReservation.sideProject.common.exception;
 
-import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

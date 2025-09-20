@@ -1,6 +1,6 @@
 package hairSalonReservation.sideProject.domain.shop.controller;
 
-import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
+import hairSalonReservation.sideProject.common.cursor.CursorPageResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.request.CreateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.request.UpdateShopRequest;
 import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopResponse;

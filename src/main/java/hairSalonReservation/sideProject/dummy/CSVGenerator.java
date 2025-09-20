@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.common.dummy;
+package hairSalonReservation.sideProject.dummy;
 
 import java.io.FileWriter;
 import java.io.IOException;

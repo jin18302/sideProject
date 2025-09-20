@@ -1,11 +1,10 @@
 package hairSalonReservation.sideProject.common.image.controller;
 
-import hairSalonReservation.sideProject.common.dto.PresignedUrlResponse;
+import hairSalonReservation.sideProject.common.image.dto.PresignedUrlResponse;
 import hairSalonReservation.sideProject.common.image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

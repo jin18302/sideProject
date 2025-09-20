@@ -1,14 +1,16 @@
-package hairSalonReservation.sideProject.common.cursor;
+package hairSalonReservation.sideProject.domain.shop.service;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpression;
+import hairSalonReservation.sideProject.common.cursor.CursorStrategy;
+import hairSalonReservation.sideProject.domain.shop.entity.ShopSortField;
 import hairSalonReservation.sideProject.domain.shop.entity.QShop;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ShopCursorStrategy implements CursorStrategy<QShop, ShopSortField>{
+public class ShopCursorStrategy implements CursorStrategy<QShop, ShopSortField> {
 
     @Override
     public Predicate buildCursorPredicate(QShop shop, String cursor, Order order, ShopSortField sortField) {

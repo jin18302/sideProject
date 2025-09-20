@@ -1,6 +1,6 @@
 package hairSalonReservation.sideProject.common.image.service;
 
-import hairSalonReservation.sideProject.common.dto.PresignedUrlResponse;
+import hairSalonReservation.sideProject.common.image.dto.PresignedUrlResponse;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import hairSalonReservation.sideProject.common.exception.ExternalServiceException;
 import io.minio.GetPresignedObjectUrlArgs;
@@ -17,10 +17,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ImageService {
 
-    @Value("${image.bucket}")
+    @Value("${minio.bucket}")
     String bucket;
 
-    @Value("${image.expiry}")
+    @Value("${minio.expiry}")
     int expiry;
 
     private final MinioClient minioClient;

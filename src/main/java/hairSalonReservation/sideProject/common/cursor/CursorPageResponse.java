@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.common.dto;
+package hairSalonReservation.sideProject.common.cursor;
 
 import java.util.List;
 

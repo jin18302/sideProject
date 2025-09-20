@@ -1,7 +1,7 @@
 package hairSalonReservation.sideProject.domain.review.service;
 
 import com.querydsl.core.types.Order;
-import hairSalonReservation.sideProject.common.dto.CursorPageResponse;
+import hairSalonReservation.sideProject.common.cursor.CursorPageResponse;
 import hairSalonReservation.sideProject.common.exception.BadRequestException;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import hairSalonReservation.sideProject.common.exception.ForbiddenException;

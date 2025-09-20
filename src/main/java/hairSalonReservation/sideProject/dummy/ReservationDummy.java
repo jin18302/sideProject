@@ -1,14 +1,10 @@
-package hairSalonReservation.sideProject.common.dummy;
+package hairSalonReservation.sideProject.dummy;
 
 import net.datafaker.Faker;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 

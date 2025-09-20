@@ -1,4 +1,4 @@
-package hairSalonReservation.sideProject.common.dummy;
+package hairSalonReservation.sideProject.dummy;
 
 import hairSalonReservation.sideProject.common.util.PasswordEncoder;
 import hairSalonReservation.sideProject.domain.user.entity.Gender;

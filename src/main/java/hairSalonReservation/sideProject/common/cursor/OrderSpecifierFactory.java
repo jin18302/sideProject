@@ -1,9 +1,8 @@
-package hairSalonReservation.sideProject.common.util;
+package hairSalonReservation.sideProject.common.cursor;
 
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import hairSalonReservation.sideProject.common.cursor.SortableField;
 
 public interface OrderSpecifierFactory<T extends EntityPath<?> , F extends SortableField> {
 

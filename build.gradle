@@ -37,6 +37,7 @@ dependencies {
 	//thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+    //
 	implementation 'at.favre.lib:bcrypt:0.10.2'
 
 	//jwt
@@ -55,8 +56,6 @@ dependencies {
 
 	//minio
 	implementation 'io.minio:minio:8.5.7'
-
-
 }
 
 tasks.named('test') {

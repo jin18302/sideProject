@@ -5,7 +5,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import hairSalonReservation.sideProject.common.cursor.CursorStrategy;
-import hairSalonReservation.sideProject.common.util.OrderSpecifierFactory;
+import hairSalonReservation.sideProject.common.cursor.OrderSpecifierFactory;
 import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
 import hairSalonReservation.sideProject.domain.review.entity.QReview;
 import hairSalonReservation.sideProject.domain.review.entity.ReviewSortField;
