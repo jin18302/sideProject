@@ -25,14 +25,14 @@ public class ShopFavoriteService {
     @Transactional
     public CreateShopFavoriteResponse createShopFavorite(Long shopId, Long userId){
 
-        if(!shopRepository.existsById(shopId)){throw new NotFoundException(ErrorCode.SHOP_NOT_FOUND);}
         if(!userRepository.existsById(userId)){throw new NotFoundException(ErrorCode.USER_NOT_FOUND);}
-
-        Shop shop = shopRepository.getReferenceById(shopId);
         User user = userRepository.getReferenceById(userId);
+
+        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_NOT_FOUND));
 
         ShopFavorite shopFavorite = ShopFavorite.of(user, shop);
         shopFavoriteRepository.save(shopFavorite);
+        shop.increaseLikeCount(); // TODO: 비동기 가능한 로직임으로 변경여지
 
         return CreateShopFavoriteResponse.from(shopFavorite);
     }
@@ -41,6 +41,7 @@ public class ShopFavoriteService {
     public void deleteShopFavorite(Long shopFavoriteId, Long userId){
 
         if(!shopFavoriteRepository.existsById(shopFavoriteId)){throw new NotFoundException(ErrorCode.SHOP_FAVORITE_NOT_FOUND);}
+        //TODO 샵 count 로직 추가 + 비동기
         shopFavoriteRepository.deleteById(shopFavoriteId);
     }
 }

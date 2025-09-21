@@ -1,16 +1,58 @@
 services:
+  database:
+    image: 'mysql:9.4'
+    container_name: mysql-container
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: side
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+
   minio:
     image: quay.io/minio/minio:latest
     container_name: minio
+    env_file: .env
     ports:
       - "9000:9000"   # API
       - "9001:9001"   # 웹 콘솔
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server /data --console-address ":9001"
     volumes:
       - minio_data:/data
 
+
+  app:
+    build: .
+    image: side-project:latest
+    container_name: side-app
+    restart: no
+    environment:
+      # === DB (스프링 설정에서 spring.datasource.url=${DB_URL} 라면) ===
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/side
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+
+      # === MinIO ===
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}     # 운영은 전용 사용자 권장
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+
+
+      # === JWT ===
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+    depends_on:
+      - database
+      - minio
+    ports:
+      - "8080:8080"        # 앱 접근용 (원격 디버깅 쓰면 5005도)
+
 volumes:
     minio_data:
+    mysql_data:
