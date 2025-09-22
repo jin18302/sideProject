@@ -42,7 +42,6 @@ public class DesignerService {
                 request.name(),
                 request.profileImage(),
                 request.introduction(),
-                JsonHelper.toJson(request.dayOffWeekdayList()),
                 JsonHelper.toJson(request.imageUriList()),
                 JsonHelper.toJson(request.snsUriList())
         );
