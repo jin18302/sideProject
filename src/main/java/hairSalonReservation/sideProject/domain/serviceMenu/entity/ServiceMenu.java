@@ -1,6 +1,7 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.entity;
 
 import hairSalonReservation.sideProject.common.entity.BaseEntity;
+import hairSalonReservation.sideProject.domain.designer.entity.Designer;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,8 +18,12 @@ public class ServiceMenu extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ServiceCategoryMapper serviceMenuCategoryMapper;
+    @ManyToOne
+    @JoinColumn(name = "designer_id")
+    private Designer designer;
+
+    @Enumerated(EnumType.STRING)
+    private MenuCategory category;
 
     @Column(nullable = false, length = 20)
     private String name;
@@ -29,15 +34,16 @@ public class ServiceMenu extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction;
 
-    private ServiceMenu(ServiceCategoryMapper serviceMenuCategoryMapper, String name, Integer price, String introduction){
-        this.serviceMenuCategoryMapper = serviceMenuCategoryMapper;
+    private ServiceMenu(Designer designer, MenuCategory category, String name, Integer price, String introduction){
+        this.designer = designer;
+        this.category = category;
         this.name = name;
         this.price = price;
         this.introduction = introduction;
     }
 
-    public static ServiceMenu of(ServiceCategoryMapper serviceMenuCategoryMapper, String name, Integer price, String introduction){
-        return new ServiceMenu(serviceMenuCategoryMapper, name, price, introduction);
+    public static ServiceMenu of(Designer designer, MenuCategory category, String name, Integer price, String introduction){
+        return new ServiceMenu(designer, category, name, price, introduction);
     }
 
     public void update(String name, Integer price, String introduction){

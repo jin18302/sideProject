@@ -1,6 +1,7 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hairSalonReservation.sideProject.domain.serviceMenu.entity.MenuCategory;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenu;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -16,12 +17,11 @@ public class ServiceMenuRepositoryCustomImpl implements ServiceMenuRepositoryCus
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<ServiceMenu> findByServiceCategoryMapperId(Long serviceCategoryMapperId) {
-
+    public List<ServiceMenu> findByDesignerAndCategory(Long designerId, String category) {
         return jpaQueryFactory.select(serviceMenu)
-                .from(serviceMenu)
-                .where(serviceMenu.serviceMenuCategoryMapper.id.eq(serviceCategoryMapperId),
-                        serviceMenu.isDeleted.eq(false))
-                .fetch();
+                .where(
+                        serviceMenu.category.eq(MenuCategory.valueOf(category)),
+                        serviceMenu.designer.id.eq(designerId)
+                ).fetch();
     }
 }

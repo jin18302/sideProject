@@ -18,21 +18,22 @@ public class ServiceMenuController {
 
     private final ServiceMenuService serviceMenuService;
 
-    @PostMapping("/designers/service-categories/{serviceCategoryMapperId}")
+    @PostMapping("/designers/{designerId}/service-menus")
     public ResponseEntity<ServiceMenuResponse> createServiceMenu(
-            @PathVariable(name = "serviceCategoryMapperId") Long serviceCategoryMapperId,
+            @RequestAttribute(name = "userId")Long userId,
+            @PathVariable(name = "designerId")Long designerId,
             @RequestBody @Valid CreateServiceMenuRequest request
     ) {
-        ServiceMenuResponse serviceMenuResponse = serviceMenuService.createServiceMenu(serviceCategoryMapperId, request);
+        ServiceMenuResponse serviceMenuResponse = serviceMenuService.createServiceMenu(userId, designerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceMenuResponse);
     }
 
-    @GetMapping("/designers/{designerId}/service-categories/{serviceCategoryMapperId}")
-    public ResponseEntity<List<ServiceMenuResponse>> readAllByDesignerServiceCategory(
+    @GetMapping("/designers/{designerId}/service-menus")
+    public ResponseEntity<List<ServiceMenuResponse>> readByDesignerAndCategory(
             @PathVariable(name = "designerId") Long designerId,
-            @PathVariable(name = "serviceCategoryMapperId") Long serviceCategoryMapperId
+            @RequestParam(name = "category") String category
     ) {
-        List<ServiceMenuResponse> serviceMenuResponseList = serviceMenuService.readAllByDesignerServiceCategory(serviceCategoryMapperId);
+        List<ServiceMenuResponse> serviceMenuResponseList = serviceMenuService.readByDesignerAndCategory(designerId, category);
         return ResponseEntity.status(HttpStatus.OK).body(serviceMenuResponseList);
     }
 

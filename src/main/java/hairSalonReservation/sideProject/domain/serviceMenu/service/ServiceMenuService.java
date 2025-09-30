@@ -1,12 +1,12 @@
 package hairSalonReservation.sideProject.domain.serviceMenu.service;
 
 import hairSalonReservation.sideProject.common.annotation.CheckRole;
+import hairSalonReservation.sideProject.domain.designer.entity.Designer;
+import hairSalonReservation.sideProject.domain.designer.repository.DesignerRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.CreateServiceMenuRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.request.UpdateServiceMenuRequest;
 import hairSalonReservation.sideProject.domain.serviceMenu.dto.response.ServiceMenuResponse;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenu;
-import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceCategoryMapper;
-import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuCategoryMapperRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepository;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepositoryCustomImpl;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
@@ -24,17 +24,21 @@ public class ServiceMenuService {
 
     private final ServiceMenuRepository serviceMenuRepository;
     private final ServiceMenuRepositoryCustomImpl serviceMenuRepositoryCustom;
-    private final ServiceMenuCategoryMapperRepository serviceMenuCategoryMapperRepository;
+    private final DesignerRepository designerRepository;
 
     @CheckRole("OWNER")
     @Transactional
-    public ServiceMenuResponse createServiceMenu(Long serviceCategoryMapperId, CreateServiceMenuRequest request){
+    public ServiceMenuResponse createServiceMenu(Long userId, Long designerId, CreateServiceMenuRequest request){
 
-        ServiceCategoryMapper serviceMenuCategoryMapper = serviceMenuCategoryMapperRepository.findById(serviceCategoryMapperId)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_CATEGORY_NOTFOUND));
+        Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
+                .orElseThrow(()->new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+
+        Long ownerId = designer.getShop().getUser().getId();
+        if(!ownerId.equals(userId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         ServiceMenu serviceMenu = ServiceMenu.of(
-                serviceMenuCategoryMapper,
+                designer,
+                request.category(),
                 request.name(),
                 request.price(),
                 request.introduction()
@@ -44,9 +48,9 @@ public class ServiceMenuService {
         return ServiceMenuResponse.from(serviceMenu);
     }
 
-    public List<ServiceMenuResponse> readAllByDesignerServiceCategory(Long serviceCategoryMapperId){
+    public List<ServiceMenuResponse> readByDesignerAndCategory(Long designerId, String category){
 
-        return serviceMenuRepositoryCustom.findByServiceCategoryMapperId(serviceCategoryMapperId)
+        return serviceMenuRepositoryCustom.findByDesignerAndCategory(designerId, category)
                 .stream().map(ServiceMenuResponse::from).toList();
     }
 
@@ -57,7 +61,7 @@ public class ServiceMenuService {
         ServiceMenu menu = serviceMenuRepository.findById(serviceMenuId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_NOT_FOUND));
 
-        Long shopOwnerId = menu.getServiceMenuCategoryMapper().getDesigner().getShop().getId();
+        Long shopOwnerId = menu.getDesigner().getShop().getId();
         if(!userId.equals(shopOwnerId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         menu.update(
@@ -76,7 +80,7 @@ public class ServiceMenuService {
         ServiceMenu menu = serviceMenuRepository.findById(serviceMenuId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_NOT_FOUND));
 
-        Long shopOwnerId = menu.getServiceMenuCategoryMapper().getDesigner().getShop().getId();
+        Long shopOwnerId = menu.getDesigner().getShop().getId();
         if(!userId.equals(shopOwnerId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         menu.delete();

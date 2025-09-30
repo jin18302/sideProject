@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ServiceMenuRepositoryCustom {
 
-    List<ServiceMenu> findByServiceCategoryMapperId(Long serviceCategoryMapperId);
+    List<ServiceMenu> findByDesignerAndCategory(Long designerId, String category);
 }
