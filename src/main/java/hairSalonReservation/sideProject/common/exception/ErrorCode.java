@@ -41,6 +41,10 @@ public enum ErrorCode {
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 리뷰입니다"),
 
 
+    //스케줄 블록관련
+    BLOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 블록을 찾을 수 없습니다."),
+
+
     //이미지 관련
     MINIO_INITIALIZATION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "버킷 설정 중 문제 발생"),
     IMAGE_UPLOAD_FAILED(HttpStatus.BAD_GATEWAY, "이미지 업로드 중 문제가 발생하였습니다"),
