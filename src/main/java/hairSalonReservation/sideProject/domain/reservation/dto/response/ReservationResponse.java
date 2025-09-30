@@ -11,10 +11,10 @@ public record ReservationResponse(
         ReservationStatus reservationStatus
 ) {
 
-    public static ReservationResponse from(Reservation reservation){
+    public static ReservationResponse from(Reservation reservation) {
         return new ReservationResponse(
                 reservation.getId(),
-               reservation.getServiceMenu().getId(),
+                reservation.getServiceMenu().getId(),
                 reservation.getDesigner().getId(),
                 reservation.getUser().getId(),
                 reservation.getReservationStatus()

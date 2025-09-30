@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.domain.designer.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import hairSalonReservation.sideProject.common.annotation.CheckRole;
 import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.designer.dto.request.CreateDesignerRequest;
