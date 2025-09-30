@@ -20,6 +20,10 @@ public record SignUpRequest(
         String password,
 
         @NotEmpty
+        @Pattern(regexp = "^010-\\d{4}-\\d{3}$", message = "010-1234-567 형식으로 입력해주세요.")
+        String phoneNumber,
+
+        @NotEmpty
         String gender,
 
         @NotEmpty
