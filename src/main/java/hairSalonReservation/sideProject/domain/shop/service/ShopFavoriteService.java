@@ -1,6 +1,7 @@
 package hairSalonReservation.sideProject.domain.shop.service;
 
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
+import hairSalonReservation.sideProject.common.exception.ForbiddenException;
 import hairSalonReservation.sideProject.common.exception.NotFoundException;
 import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopFavoriteResponse;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
@@ -40,8 +41,12 @@ public class ShopFavoriteService {
     @Transactional
     public void deleteShopFavorite(Long shopFavoriteId, Long userId){
 
-        if(!shopFavoriteRepository.existsById(shopFavoriteId)){throw new NotFoundException(ErrorCode.SHOP_FAVORITE_NOT_FOUND);}
-        //TODO 샵 count 로직 추가 + 비동기
+        ShopFavorite favorite = shopFavoriteRepository.findById(shopFavoriteId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.SHOP_FAVORITE_NOT_FOUND));
+
+        if(!userId.equals(favorite.getUser().getId())){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+
+        favorite.getShop().decreaseLikeCount();//
         shopFavoriteRepository.deleteById(shopFavoriteId);
     }
 }

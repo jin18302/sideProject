@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ShopRepositoryCustom {
 
-    CursorPageResponse<ShopSummaryResponse> findByFilter(String area, List<Long> tagList, ShopSortField sortField, Order order, String cursor);
+    List<ShopSummaryResponse> findByFilter(String area, List<Long> tagList, ShopSortField sortField, Order order, String cursor);
 
     Long findShopOwnerIdByShopId(Long shopId);
 

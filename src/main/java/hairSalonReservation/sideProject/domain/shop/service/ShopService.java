@@ -65,7 +65,10 @@ public class ShopService {
 
     public CursorPageResponse<ShopSummaryResponse> readByFilter(String area, List<Long> tagList, String order, String sortFelid, String lastCursor) {
 
-        return shopRepositoryCustom.findByFilter(area, tagList, ShopSortField.valueOf(sortFelid), Order.valueOf(order), lastCursor);
+        List<ShopSummaryResponse> shopSummaryResponseList = shopRepositoryCustom
+                .findByFilter(area, tagList, ShopSortField.valueOf(sortFelid), Order.valueOf(order), lastCursor);
+
+        return CursorPageResponse.of(shopSummaryResponseList, ShopSummaryResponse::getId);
     }
 
     public ShopDetailResponse readShopDetail(Long shopId) {

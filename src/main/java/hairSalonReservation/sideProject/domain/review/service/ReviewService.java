@@ -19,9 +19,9 @@ import hairSalonReservation.sideProject.domain.review.entity.Review;
 import hairSalonReservation.sideProject.domain.review.reposiory.ReviewRepository;
 import hairSalonReservation.sideProject.domain.review.reposiory.ReviewRepositoryCustomImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -29,18 +29,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewService {
 
-    @Value("${query.limit}")
-    private int limit;
-
     private final ReviewRepository reviewRepository;
     private final ReviewRepositoryCustomImpl reviewRepositoryCustom;
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
 
     @Transactional
-    public ReviewResponse createReview(Long reservationId, Long userId, CreateReviewRequest request){
+    public ReviewResponse createReview(Long reservationId, Long userId, CreateReviewRequest request) {
 
-        if(!userRepository.existsById(userId)){throw new NotFoundException(ErrorCode.USER_NOT_FOUND);}
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
+        }
         User user = userRepository.getReferenceById(userId);
 
         Reservation reservation = reservationRepository.findById(reservationId)
@@ -48,8 +47,10 @@ public class ReviewService {
 
         Long reserverId = reservation.getUser().getId();
 
-        if(!reserverId.equals(userId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
-        if(reservation.getReservationStatus() != ReservationStatus.VISITED){
+        if (!reserverId.equals(userId)) {
+            throw new ForbiddenException(ErrorCode.FORBIDDEN);
+        }
+        if (reservation.getReservationStatus() != ReservationStatus.VISITED) {
             throw new BadRequestException(ErrorCode.REVIEW_NOT_ALLOWED_BEFORE_VISIT);
         }
 
@@ -65,55 +66,49 @@ public class ReviewService {
         return ReviewResponse.from(review);
     }
 
-    public CursorPageResponse<ReviewResponse> readByShop(Long shopId, String cursor, String sort, String order){
+    public CursorPageResponse<ReviewResponse> readByShop(Long shopId, String cursor, String sort, String order) {
 
         ReviewSortField sortType = ReviewSortField.valueOf(sort);
         Order orderBy = Order.valueOf(order);
 
         List<ReviewResponse> reviewResponseList = reviewRepositoryCustom.findByShop(shopId, cursor, sortType, orderBy);
-
-        boolean isLast = reviewResponseList.size() < limit + 1;
-        if(!isLast){reviewResponseList.remove(limit);}
-
-        Long lastCursor = reviewResponseList.isEmpty() ? 0 : reviewResponseList.get(reviewResponseList.size() - 1).id();
-        return new CursorPageResponse<>(reviewResponseList, lastCursor, isLast);
+        return CursorPageResponse.of(reviewResponseList, ReviewResponse::id);
     }
 
-    public CursorPageResponse<ReviewResponse> readByDesigner(Long designerId, String cursor, String sort, String order){
+    public CursorPageResponse<ReviewResponse> readByDesigner(Long designerId, String cursor, String sort, String order) {
 
         ReviewSortField sortField = ReviewSortField.valueOf(sort);
         Order orderBy = Order.valueOf(order);
 
         List<ReviewResponse> reviewResponseList = reviewRepositoryCustom.findByDesigner(designerId, cursor, sortField, orderBy);
-
-        boolean isLast = reviewResponseList.size() < limit + 1;
-        if(!isLast){reviewResponseList.remove(limit);}
-
-        Long lastCursor = reviewResponseList.isEmpty() ? 0 : reviewResponseList.get(reviewResponseList.size() - 1).id();
-
-        return new CursorPageResponse<>(reviewResponseList, lastCursor, isLast);
+        return CursorPageResponse.of(reviewResponseList, ReviewResponse::id);
     }
 
     @Transactional
-    public ReviewResponse updateReview(Long reviewId, Long userId, UpdateReviewRequest request){
+    public ReviewResponse updateReview(Long reviewId, Long userId, UpdateReviewRequest request) {
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
 
         Long reviewWriterId = review.getId();
-        if(!reviewWriterId.equals(userId)){ throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        if (!reviewWriterId.equals(userId)) {
+            throw new ForbiddenException(ErrorCode.FORBIDDEN);
+        }
 
         review.update(request.title(), request.content(), request.rating());
         return ReviewResponse.from(review);
     }
 
     @Transactional
-    public void deleteReview(Long reviewId, Long userId){
+    public void deleteReview(Long reviewId, Long userId) {
+
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.REVIEW_NOT_FOUND));
 
         Long reviewWriterId = review.getId();
-        if(!reviewWriterId.equals(userId)){ throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        if (!reviewWriterId.equals(userId)) {
+            throw new ForbiddenException(ErrorCode.FORBIDDEN);
+        }
 
         reviewRepository.deleteById(reviewId);
     }
