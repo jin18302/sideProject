@@ -55,4 +55,23 @@ public class ReservationRepositoryCustomImpl implements ReservationRepositoryCus
                 )
                 .fetch();
     }
+
+    @Override
+    public List<Reservation> findByReservationSloat(LocalDate date, LocalTime time, Long cursor) {
+
+       return queryFactory
+                .select(reservation)
+                .from(reservation)
+                .join(reservation.user, user).fetchJoin()
+                .join(reservation.designer, designer).fetchJoin()
+                .join(designer.shop, shop).fetchJoin()
+                .where(
+                        reservation.date.eq(date),
+                        reservation.time.eq(time),
+                        reservation.id.gt(cursor)
+                )
+                .orderBy(reservation.id.asc())
+                .limit(queryProperties.getLimit())
+                .fetch();
+    }
 }
