@@ -23,10 +23,6 @@ public enum ErrorCode {
     //태그관련
     SHOP_TAG_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 태그입니다."),
 
-    //카테고리 관련
-    DUPLICATE_CATEGORY_NAME(HttpStatus.CONFLICT, "이미 존재하는 카테고리명입니다."),
-    SERVICE_MENU_CATEGORY_NOTFOUND(HttpStatus.NOT_FOUND, "존재하지 않는 서비스카테고리입니다."),
-
     SERVICE_MENU_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 메뉴입니다."),
 
     //디자이너 관련
@@ -39,7 +35,6 @@ public enum ErrorCode {
     //리뷰관련
     REVIEW_NOT_ALLOWED_BEFORE_VISIT(HttpStatus.BAD_REQUEST, "방문 완료 후에만 리뷰 작성이 가능합니다."),
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 리뷰입니다"),
-
 
     //스케줄 블록관련
     BLOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 블록을 찾을 수 없습니다."),
