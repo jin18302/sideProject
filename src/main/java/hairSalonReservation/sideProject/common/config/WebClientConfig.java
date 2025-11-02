@@ -9,11 +9,16 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 
+//TODO: 웹클라이언트를 api마다 따로 관리하는 방식을 취하는 부분 생각해보기
+
 @Configuration
 public class WebClientConfig {
 
     @Value("${webclient.connect.timeout}")
     private int timeOutMillis;
+
+    @Value("${address.api.url}")
+    private String uri;
 
     private final String API_CONNECTION_POOL = "api-pool";
 
@@ -27,6 +32,14 @@ public class WebClientConfig {
     @Bean
     public WebClient webClient(HttpClient httpClient){
         return WebClient.builder()
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .build();
+    }
+
+    @Bean
+    public WebClient apiClient(HttpClient httpClient){
+        return WebClient.builder()
+                .baseUrl(uri)
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
     }
