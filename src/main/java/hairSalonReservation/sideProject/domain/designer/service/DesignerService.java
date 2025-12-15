@@ -73,7 +73,7 @@ public class DesignerService {
 
         Long shopOwnerId = designer.getShop().getUser().getId();
 
-        if(shopOwnerId != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
+        if(!shopOwnerId.equals(userId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         designer.update(
                 request.name(),
@@ -93,7 +93,8 @@ public class DesignerService {
         Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
 
-        if(designer.getShop().getUser().getId() != userId){throw new ForbiddenException(ErrorCode.FORBIDDEN);}//TODO 쿼리 날아가는 것 막기
+        Long shopOwnerId = designer.getShop().getUser().getId();
+        if(!shopOwnerId.equals(userId)){throw new ForbiddenException(ErrorCode.FORBIDDEN);}
 
         designer.delete();
     }
