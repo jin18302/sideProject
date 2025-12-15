@@ -22,20 +22,26 @@ public class ScheduleBlock {
 
     private LocalDate date;
 
+    private Boolean isDayOff;
+
     private String timeList;
 
-
-    private ScheduleBlock(Designer designer, LocalDate date, String timeList){
+    private ScheduleBlock(Designer designer, LocalDate date, String timeList,  boolean isDayOff){
         this.designer = designer;
         this.date = date;
         this.timeList = timeList;
+        this.isDayOff = isDayOff;
     }
 
-    public static ScheduleBlock of(Designer designer, LocalDate date, String timeList){
-        return new ScheduleBlock(designer, date, timeList);
+    public static ScheduleBlock of(Designer designer, LocalDate date, String timeList, boolean isDayOff){
+        return new ScheduleBlock(designer, date, timeList, isDayOff);
     }
 
     public void updateTimeSlot(String timeList){
         this.timeList = timeList;
+    }
+
+    public void setIsDayOff(boolean isDayOff){
+        this.isDayOff = isDayOff;
     }
 }
