@@ -1,6 +1,7 @@
 package hairSalonReservation.sideProject.domain.reservation.controller;
 
 import hairSalonReservation.sideProject.domain.reservation.dto.request.CreateScheduleBlockRequest;
+import hairSalonReservation.sideProject.domain.reservation.dto.response.ReadClosedDaysResponse;
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ScheduleBlockResponse;
 import hairSalonReservation.sideProject.domain.reservation.service.ScheduleBlockService;
 import lombok.RequiredArgsConstructor;
@@ -29,12 +30,23 @@ public class ScheduleBlockController {
     }
 
 
+    @GetMapping("/auth/designers/{designerId}/off-days")
+    public ResponseEntity<ReadClosedDaysResponse> readByDesignerId(@PathVariable(name = "designerId") Long designerId,
+                                                                   @RequestParam(name = "month", required = true) Integer month){
+
+
+        ReadClosedDaysResponse response = scheduleBlockService.readOffDaysByDesignerId(designerId, month);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
+
     @GetMapping("/designers/{designerId}/schedule-blocks")
     public ResponseEntity<ScheduleBlockResponse> readByDesignerAndDate(
             @PathVariable(name = "designerId") Long designerId,
             @RequestParam(name = "date", required = true) LocalDate date
     ){
-        ScheduleBlockResponse response = scheduleBlockService.readByDesignerId(designerId, date);
+        ScheduleBlockResponse response = scheduleBlockService.readByDesignerIdAndDate(designerId, date);
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }

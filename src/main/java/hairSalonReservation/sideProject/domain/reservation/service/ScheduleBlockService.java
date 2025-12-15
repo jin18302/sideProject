@@ -9,6 +9,7 @@ import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.designer.entity.Designer;
 import hairSalonReservation.sideProject.domain.designer.repository.DesignerRepository;
 import hairSalonReservation.sideProject.domain.reservation.dto.request.CreateScheduleBlockRequest;
+import hairSalonReservation.sideProject.domain.reservation.dto.response.ReadClosedDaysResponse;
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ScheduleBlockResponse;
 import hairSalonReservation.sideProject.domain.reservation.entity.ScheduleBlock;
 import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepositoryCustomImpl;
@@ -44,9 +45,8 @@ public class ScheduleBlockService {
 
         Optional<ScheduleBlock> targetBlock = blockRepositoryCustom.findByDesignerIdAndDate(designerId, request.date());
 
-        if (targetBlock.isEmpty()) {
-
-            ScheduleBlock block = ScheduleBlock.of(designer, request.date(), JsonHelper.toJson(request.time()));
+        if (targetBlock.isEmpty()) {//TODO
+            ScheduleBlock block = ScheduleBlock.of(designer, request.date(), JsonHelper.toJson(request.time()), request.isOffDay());
             scheduleBlockRepository.save(block);
             return ScheduleBlockResponse.from(block);
 
@@ -57,10 +57,16 @@ public class ScheduleBlockService {
         }
     }
 
-    public ScheduleBlockResponse readByDesignerId(Long designerId, LocalDate date) {
+    public ReadClosedDaysResponse readOffDaysByDesignerId(Long designerId, Integer month) {
+
+        List<ScheduleBlock> blockList = blockRepositoryCustom.findByDesignerIdAndMonth(designerId, month);
+        return ReadClosedDaysResponse.from(blockList);
+    }
+
+    public ScheduleBlockResponse readByDesignerIdAndDate(Long designerId, LocalDate date) {
 
         ScheduleBlock block = blockRepositoryCustom.findByDesignerIdAndDate(designerId, date)
-                .orElseGet(null);//TODO
+                .orElseGet(null);
 
         return ScheduleBlockResponse.from(block);
     }

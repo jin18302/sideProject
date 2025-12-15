@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-public record CreateScheduleBlockRequest(@JsonFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate date,
-                                         @JsonFormat(pattern = "HH:mm") @NotNull List<LocalTime> time) {
+public record CreateScheduleBlockRequest(
+        @JsonFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate date,
+        @JsonFormat(pattern = "HH:mm") List<LocalTime> time,
+        boolean isOffDay
+) {
 }
