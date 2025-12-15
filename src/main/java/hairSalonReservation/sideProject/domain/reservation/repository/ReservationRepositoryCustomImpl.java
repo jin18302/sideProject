@@ -3,7 +3,9 @@ package hairSalonReservation.sideProject.domain.reservation.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hairSalonReservation.sideProject.common.config.QueryProperties;
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ReservationResponse;
+import hairSalonReservation.sideProject.domain.reservation.entity.Reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,13 +14,17 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
+import static hairSalonReservation.sideProject.domain.designer.entity.QDesigner.designer;
 import static hairSalonReservation.sideProject.domain.reservation.entity.QReservation.reservation;
+import static hairSalonReservation.sideProject.domain.shop.entity.QShop.shop;
+import static hairSalonReservation.sideProject.domain.user.entity.QUser.user;
 
 @Repository
 @RequiredArgsConstructor
 public class ReservationRepositoryCustomImpl implements ReservationRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
+    private final QueryProperties queryProperties;
 
     @Override
     public boolean existByDesignerIdAndSlot(Long designerId, LocalDate date, LocalTime time) {

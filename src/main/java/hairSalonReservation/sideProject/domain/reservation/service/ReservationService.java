@@ -14,10 +14,9 @@ import hairSalonReservation.sideProject.domain.reservation.dto.request.UpdateRes
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ReservationResponse;
 import hairSalonReservation.sideProject.domain.reservation.entity.Reservation;
 import hairSalonReservation.sideProject.domain.reservation.entity.ScheduleBlock;
-import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.reservation.repository.ReservationRepository;
 import hairSalonReservation.sideProject.domain.reservation.repository.ReservationRepositoryCustomImpl;
-import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepository;
+import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenu;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepository;
 import hairSalonReservation.sideProject.domain.user.entity.User;
@@ -43,7 +42,6 @@ public class ReservationService {
     private final DesignerRepository designerRepository;
     private final ServiceMenuRepository serviceMenuRepository;
     private final UserRepository userRepository;
-    private final ScheduleBlockRepository scheduleBlockRepository;
     private final ScheduleBlockRepositoryCustomImpl blockRepositoryCustom;
 
 
@@ -60,10 +58,9 @@ public class ReservationService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_NOT_FOUND));
 
         ScheduleBlock block = blockRepositoryCustom.findByDesignerIdAndDate(designerId, request.date())
-                .orElseGet(null);
+                .orElseGet(null);//TODO
 
-        List<LocalTime> timeList = JsonHelper.fromJsonToList(block.getTimeList(), new TypeReference<List<LocalTime>>() {
-        });
+        List<LocalTime> timeList = JsonHelper.fromJsonToList(block.getTimeList(), new TypeReference<List<LocalTime>>() {});
 
         boolean isExistReservation = reservationRepositoryCustom
                 .existByDesignerIdAndSlot(designerId, request.date(), request.time());
