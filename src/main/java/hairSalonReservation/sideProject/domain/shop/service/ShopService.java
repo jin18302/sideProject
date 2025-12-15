@@ -2,7 +2,6 @@ package hairSalonReservation.sideProject.domain.shop.service;
 
 import com.querydsl.core.types.Order;
 import hairSalonReservation.sideProject.common.annotation.CheckRole;
-import hairSalonReservation.sideProject.domain.shop.entity.ShopSortField;
 import hairSalonReservation.sideProject.common.cursor.CursorPageResponse;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import hairSalonReservation.sideProject.common.exception.ForbiddenException;
@@ -14,6 +13,7 @@ import hairSalonReservation.sideProject.domain.shop.dto.response.CreateShopRespo
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopDetailResponse;
 import hairSalonReservation.sideProject.domain.shop.dto.response.ShopSummaryResponse;
 import hairSalonReservation.sideProject.domain.shop.entity.Shop;
+import hairSalonReservation.sideProject.domain.shop.entity.ShopSortField;
 import hairSalonReservation.sideProject.domain.shop.entity.ShopStatus;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepository;
 import hairSalonReservation.sideProject.domain.shop.repository.ShopRepositoryCustomImpl;
