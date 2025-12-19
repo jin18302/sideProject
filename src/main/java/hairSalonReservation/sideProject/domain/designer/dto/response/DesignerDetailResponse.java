@@ -13,7 +13,8 @@ public record DesignerDetailResponse(
         String profileImage,
         String introduction,
         List<String> imageUrlList,
-        List<String> snsUrlList
+        List<String> snsUrlList,
+        List<String> timeSlotList
 
 ) {
 
@@ -25,7 +26,9 @@ public record DesignerDetailResponse(
                 designer.getProfileImage(),
                 designer.getIntroduction(),
                 JsonHelper.fromJsonToList(designer.getImageUrlList(), new TypeReference<>(){}),
-                JsonHelper.fromJsonToList(designer.getSnsUrlList(), new TypeReference<>(){})
+                JsonHelper.fromJsonToList(designer.getSnsUrlList(), new TypeReference<>(){}),
+                JsonHelper.fromJsonToList(designer.getTimeSlotList(), new TypeReference<>(){})
+
         );
     }
 }

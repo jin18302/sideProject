@@ -36,17 +36,25 @@ public class Designer extends BaseEntity {
     @Column(nullable = true, columnDefinition = "TEXT")
     private String snsUrlList;
 
-    private Designer(Shop shop, String name, String profileImage, String introduction, String imageUrlList, String snsUriList){
+    @Column(nullable = false,  columnDefinition = "TEXT")
+    private String timeSlotList;
+
+    private Designer(Shop shop, String name, String profileImage, String introduction,
+                     String imageUrlList, String snsUriList, String timeSlotList
+    ){
         this.shop = shop;
         this.name = name;
         this.profileImage = profileImage;
         this.introduction = introduction;
         this.imageUrlList = imageUrlList;
         this.snsUrlList = snsUriList;
+        this.timeSlotList = timeSlotList;
     }
 
-    public static Designer of(Shop shop, String name, String profileImage, String introduction, String imageUrlList, String snsUriList){
-        return new Designer(shop, name, profileImage, introduction, imageUrlList, snsUriList);
+    public static Designer of(Shop shop, String name, String profileImage, String introduction,
+                              String imageUrlList, String snsUriList, String timeSlotList
+    ){
+        return new Designer(shop, name, profileImage, introduction, imageUrlList, snsUriList, timeSlotList);
     }
 
     public void update(String name, String profileImage, String introduction, String imageUrlList, String snsUriList){
