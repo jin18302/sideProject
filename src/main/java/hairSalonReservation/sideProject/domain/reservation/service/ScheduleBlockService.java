@@ -11,6 +11,7 @@ import hairSalonReservation.sideProject.domain.designer.repository.DesignerRepos
 import hairSalonReservation.sideProject.domain.reservation.dto.request.CreateScheduleBlockRequest;
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ReadClosedDaysResponse;
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ScheduleBlockResponse;
+import hairSalonReservation.sideProject.domain.reservation.dto.response.TimeSlotResponse;
 import hairSalonReservation.sideProject.domain.reservation.entity.ScheduleBlock;
 import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepository;
@@ -57,18 +58,28 @@ public class ScheduleBlockService {
         }
     }
 
+    //휴무일 조회 api
     public ReadClosedDaysResponse readOffDaysByDesignerId(Long designerId, Integer month) {
 
         List<ScheduleBlock> blockList = blockRepositoryCustom.findByDesignerIdAndMonth(designerId, month);
         return ReadClosedDaysResponse.from(blockList);
     }
 
-    public ScheduleBlockResponse readByDesignerIdAndDate(Long designerId, LocalDate date) {
 
-        ScheduleBlock block = blockRepositoryCustom.findByDesignerIdAndDate(designerId, date)
-                .orElseGet(null);
+    public List<TimeSlotResponse> readTimeSlotByDesignerId(Long designerId, LocalDate date) {
 
-        return ScheduleBlockResponse.from(block);
+        Designer designer = designerRepository.findById(designerId)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
+
+        Optional<ScheduleBlock> block = blockRepositoryCustom.findByDesignerIdAndDate(designerId, date); //null 가능성있는 블록
+        List<LocalTime> timeSlotList = JsonHelper.fromJsonToList(designer.getTimeSlotList(), new TypeReference<>() {});//디자이너의 타임슬롯
+
+        if (block.isEmpty() || (block.get().getTimeList().isEmpty() && !block.get().isDayOff())) {// 모든 스케줄이 예약 가능하다면
+            return timeSlotList.stream().map(t -> TimeSlotResponse.of(t, true)).toList();
+        }
+
+        List<LocalTime> blockTimeList = JsonHelper.fromJsonToList(block.get().getTimeList(), new TypeReference<>() {});
+        return timeSlotList.stream().map(t -> TimeSlotResponse.of(t, !blockTimeList.contains(t))).toList();
     }
 
     @Transactional

@@ -3,6 +3,7 @@ package hairSalonReservation.sideProject.domain.reservation.controller;
 import hairSalonReservation.sideProject.domain.reservation.dto.request.CreateScheduleBlockRequest;
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ReadClosedDaysResponse;
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ScheduleBlockResponse;
+import hairSalonReservation.sideProject.domain.reservation.dto.response.TimeSlotResponse;
 import hairSalonReservation.sideProject.domain.reservation.service.ScheduleBlockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -39,16 +41,13 @@ public class ScheduleBlockController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-
-
-    @GetMapping("/designers/{designerId}/schedule-blocks")
-    public ResponseEntity<ScheduleBlockResponse> readByDesignerAndDate(
+    @GetMapping("/auth/designers/{designerId}/time-slots")
+    public ResponseEntity<List<TimeSlotResponse>> readByDesignerAndDate(
             @PathVariable(name = "designerId") Long designerId,
             @RequestParam(name = "date", required = true) LocalDate date
     ){
-        ScheduleBlockResponse response = scheduleBlockService.readByDesignerIdAndDate(designerId, date);
+        List<TimeSlotResponse> response = scheduleBlockService.readTimeSlotByDesignerId(designerId, date);
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
 
     @DeleteMapping("/designers/{designerId}/schedule-blocks")
@@ -61,8 +60,4 @@ public class ScheduleBlockController {
         scheduleBlockService.deleteBlock(ownerId, designerId, date, time);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-    ;
-
-
 }

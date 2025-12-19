@@ -22,7 +22,7 @@ public class ScheduleBlock {
 
     private LocalDate date;
 
-    private Boolean isDayOff;
+    private boolean isDayOff = false;
 
     private String timeList;
 
