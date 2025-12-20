@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record CreateServiceMenuRequest(
-        @NotBlank MenuCategory category,
+        @NotNull MenuCategory category,
         @NotBlank @Size(max = 20) String name,
         @NotNull Integer price,
         @NotEmpty String introduction
