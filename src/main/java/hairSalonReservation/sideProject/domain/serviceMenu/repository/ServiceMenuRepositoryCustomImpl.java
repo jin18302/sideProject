@@ -18,7 +18,9 @@ public class ServiceMenuRepositoryCustomImpl implements ServiceMenuRepositoryCus
 
     @Override
     public List<ServiceMenu> findByDesignerAndCategory(Long designerId, String category) {
-        return jpaQueryFactory.select(serviceMenu)
+        return jpaQueryFactory
+                .select(serviceMenu)
+                .from(serviceMenu)
                 .where(
                         serviceMenu.category.eq(MenuCategory.valueOf(category)),
                         serviceMenu.designer.id.eq(designerId)
