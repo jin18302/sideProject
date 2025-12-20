@@ -31,14 +31,14 @@ public class DesignerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(designerResponse);
     }
 
-    @GetMapping("/shops/{shopId}/designers")
+    @GetMapping("/auth/shops/{shopId}/designers")
     public ResponseEntity<List<DesignerSummaryResponse>> readByShopId(@PathVariable(name = "shopId") Long shopId){
 
         List<DesignerSummaryResponse> designerSummaryResponseList = designerService.readByShop(shopId);
         return ResponseEntity.status(HttpStatus.OK).body(designerSummaryResponseList);
     }
 
-    @GetMapping("/designers/{designerId}")
+    @GetMapping("/auth/designers/{designerId}")
     public ResponseEntity<DesignerDetailResponse> readById(@PathVariable(name = "designerId") Long designerId){
 
         DesignerDetailResponse designerDetailResponse = designerService.readById(designerId);
