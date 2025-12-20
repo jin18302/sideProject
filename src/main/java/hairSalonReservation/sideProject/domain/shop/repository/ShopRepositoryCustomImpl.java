@@ -13,10 +13,10 @@ import hairSalonReservation.sideProject.domain.shop.entity.ShopSortField;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
-
+import java.util.Objects;
 import static hairSalonReservation.sideProject.domain.shop.entity.QShop.shop;
+import static hairSalonReservation.sideProject.domain.shop.entity.QShopTag.shopTag;
 import static hairSalonReservation.sideProject.domain.shop.entity.QShopTagMapper.shopTagMapper;
 
 @Slf4j
@@ -34,7 +34,8 @@ public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
 
         List<Long> taggedShopList = tagList == null ? null : filterShopIdsByAllTagsAndCursor(cursor, tagList, order, sortField);
 
-        BooleanBuilder builder = new BooleanBuilder().and(shop.address.startsWith(area));
+        BooleanBuilder builder = new BooleanBuilder();
+        if(area != null){builder.and(shop.address.startsWith(area));}
         if(taggedShopList != null){builder.and(shop.id.in(taggedShopList));}
 
         return queryFactory.select(
@@ -56,20 +57,28 @@ public class ShopRepositoryCustomImpl implements ShopRepositoryCustom {
 
 
 
-    private List<Long> filterShopIdsByAllTagsAndCursor(String lastCursor, List<Long> tagList, Order order, ShopSortField sortField){
 
-        BooleanBuilder subQueryBuilder = new BooleanBuilder().and(shopTagMapper.shopTag.id.in(tagList));
-        if(lastCursor != null){
+    //TODO
+    private List<Long> filterShopIdsByAllTagsAndCursor(String lastCursor, List<Long> tagList, Order order, ShopSortField sortField) {
+
+        BooleanBuilder subQueryBuilder = new BooleanBuilder();
+        if (tagList != null) {
+            subQueryBuilder.and(shopTagMapper.shopTag.id.in(tagList));
+        }
+
+        if (!Objects.equals(lastCursor, "0")) {
+            subQueryBuilder.and(shop.id.gt(Long.parseLong(lastCursor)));
             subQueryBuilder.and(cursorStrategy.buildCursorPredicate(shop, lastCursor, order, sortField));
         }
 
-       return  queryFactory.select(shopTagMapper.shop.id)
+        return queryFactory.select(shopTagMapper.shop.id)
                 .from(shopTagMapper)
                 .where(subQueryBuilder)
-                .groupBy(shopTagMapper.shop.id)
-                .having(shopTagMapper.shopTag.id.count().eq((long) tagList.size()))
+                .groupBy(shop.id)
+                .having(shopTag.id.count().eq((long) tagList.size()))
                 .fetch();
     }
+
 
     @Override
     public Long findShopOwnerIdByShopId(Long shopId) {
