@@ -16,6 +16,7 @@ import hairSalonReservation.sideProject.domain.reservation.entity.Reservation;
 import hairSalonReservation.sideProject.domain.reservation.entity.ScheduleBlock;
 import hairSalonReservation.sideProject.domain.reservation.repository.ReservationRepository;
 import hairSalonReservation.sideProject.domain.reservation.repository.ReservationRepositoryCustomImpl;
+import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepository;
 import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenu;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepository;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,6 +45,7 @@ public class ReservationService {
     private final ServiceMenuRepository serviceMenuRepository;
     private final UserRepository userRepository;
     private final ScheduleBlockRepositoryCustomImpl blockRepositoryCustom;
+    private final ScheduleBlockService scheduleBlockService;
 
 
     @Transactional
@@ -60,12 +63,12 @@ public class ReservationService {
         ScheduleBlock block = blockRepositoryCustom.findByDesignerIdAndDate(designerId, request.date())
                 .orElseGet(null);//TODO
 
-        List<LocalTime> timeList = JsonHelper.fromJsonToList(block.getTimeList(), new TypeReference<List<LocalTime>>() {});
+        List<LocalTime> blockTimeList = JsonHelper.fromJsonToList(block.getTimeList(), new TypeReference<List<LocalTime>>() {});
 
         boolean isExistReservation = reservationRepositoryCustom
                 .existByDesignerIdAndSlot(designerId, request.date(), request.time());
 
-        if (isExistReservation || timeList.contains(request.time())) {
+        if (isExistReservation || blockTimeList.contains(request.time())) {
             throw new BadRequestException(ErrorCode.TIME_SLOT_ALREADY_BOOKED);
         }
         Reservation reservation = Reservation.of(serviceMenu, designer, user, request.date(), request.time());
@@ -75,6 +78,11 @@ public class ReservationService {
         } catch (DataIntegrityViolationException ex) {
             throw new BadRequestException(ErrorCode.TIME_SLOT_ALREADY_BOOKED);
         }
+
+        ArrayList<LocalTime> timeList = new ArrayList<>();
+        timeList.add(request.time());
+
+        scheduleBlockService.createBlock(designer, request.date(), timeList , false);
 
         return ReservationResponse.from(reservation);
     }

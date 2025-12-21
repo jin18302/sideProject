@@ -18,18 +18,19 @@ import java.util.List;
 
 @RequestMapping("/api")
 @RestController
+@CrossOrigin("http://localhost:5173")
 @RequiredArgsConstructor
 public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @PostMapping("/designers/{designerId}/reservations")
+    @PostMapping("/auth/designers/{designerId}/reservations")
     public ResponseEntity<ReservationResponse> createReservation(
-            @RequestAttribute("userId") Long userId,
+//            @RequestAttribute("userId") Long userId,
             @PathVariable(name = "designerId") Long designerId,
             @RequestBody @Valid CreateReservationRequest request) {
 
-        ReservationResponse response = reservationService.createReservation(userId, designerId, request);
+        ReservationResponse response = reservationService.createReservation(100007L, designerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
