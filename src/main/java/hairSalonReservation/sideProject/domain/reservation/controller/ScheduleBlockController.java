@@ -27,7 +27,7 @@ public class ScheduleBlockController {
             , @RequestBody CreateScheduleBlockRequest request
             , @PathVariable Long designerId
     ){
-        ScheduleBlockResponse response = scheduleBlockService.createBlock(ownerId, designerId, request);
+        ScheduleBlockResponse response = scheduleBlockService.createBlockByOwner(ownerId, designerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

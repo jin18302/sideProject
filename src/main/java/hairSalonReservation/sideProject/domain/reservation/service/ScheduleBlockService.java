@@ -33,9 +33,9 @@ public class ScheduleBlockService {
     private final ScheduleBlockRepositoryCustomImpl blockRepositoryCustom;
     private final DesignerRepository designerRepository;
 
-    @Transactional
-    public ScheduleBlockResponse createBlock(Long ownerId, Long designerId, CreateScheduleBlockRequest request) {
 
+    @Transactional
+    public ScheduleBlockResponse createBlockByOwner(Long ownerId, Long designerId, CreateScheduleBlockRequest request){
         Designer designer = designerRepository.findByIdAndIsDeletedFalse(designerId)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.DESIGNER_NOT_FOUND));
 
@@ -44,19 +44,27 @@ public class ScheduleBlockService {
             throw new ForbiddenException(ErrorCode.FORBIDDEN);
         }
 
-        Optional<ScheduleBlock> targetBlock = blockRepositoryCustom.findByDesignerIdAndDate(designerId, request.date());
+        return createBlock(designer, request.date(), request.time(), request.isOffDay());
+
+    }
+
+
+    public ScheduleBlockResponse createBlock(Designer designer, LocalDate date, List<LocalTime> time, boolean isOffDay) {
+
+        Optional<ScheduleBlock> targetBlock = blockRepositoryCustom.findByDesignerIdAndDate(designer.getId(), date);
 
         if (targetBlock.isEmpty()) {//TODO
-            ScheduleBlock block = ScheduleBlock.of(designer, request.date(), JsonHelper.toJson(request.time()), request.isOffDay());
+            ScheduleBlock block = ScheduleBlock.of(designer, date, JsonHelper.toJson(time), isOffDay);
             scheduleBlockRepository.save(block);
             return ScheduleBlockResponse.from(block);
 
         } else {
-            targetBlock.get().updateTimeSlot(JsonHelper.toJson(request.time()));
+            targetBlock.get().addTimeSlot(time);
             return ScheduleBlockResponse.from(targetBlock.get());
-
         }
     }
+
+
 
     //휴무일 조회 api
     public ReadClosedDaysResponse readOffDaysByDesignerId(Long designerId, Integer month) {
@@ -74,7 +82,7 @@ public class ScheduleBlockService {
         Optional<ScheduleBlock> block = blockRepositoryCustom.findByDesignerIdAndDate(designerId, date); //null 가능성있는 블록
         List<LocalTime> timeSlotList = JsonHelper.fromJsonToList(designer.getTimeSlotList(), new TypeReference<>() {});//디자이너의 타임슬롯
 
-        if (block.isEmpty() || (block.get().getTimeList().isEmpty() && !block.get().isDayOff())) {// 모든 스케줄이 예약 가능하다면
+        if (block.isEmpty()) {
             return timeSlotList.stream().map(t -> TimeSlotResponse.of(t, true)).toList();
         }
 
