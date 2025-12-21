@@ -1,12 +1,17 @@
 package hairSalonReservation.sideProject.domain.reservation.entity;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import hairSalonReservation.sideProject.common.util.JsonHelper;
 import hairSalonReservation.sideProject.domain.designer.entity.Designer;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Entity @Table
@@ -24,7 +29,7 @@ public class ScheduleBlock {
 
     private boolean isDayOff = false;
 
-    private String timeList;
+    private String timeList = "[]";
 
     private ScheduleBlock(Designer designer, LocalDate date, String timeList,  boolean isDayOff){
         this.designer = designer;
@@ -37,8 +42,17 @@ public class ScheduleBlock {
         return new ScheduleBlock(designer, date, timeList, isDayOff);
     }
 
-    public void updateTimeSlot(String timeList){
-        this.timeList = timeList;
+    public void addTimeSlot(List<LocalTime> timeList){
+
+      List<LocalTime> list =  JsonHelper.fromJsonToList(this.getTimeList(), new TypeReference<List<LocalTime>>(){});
+      list.addAll(timeList);
+      this.timeList = JsonHelper.toJson(list);
+    }
+
+    public void deleteTimeSlot(LocalTime time){
+        List<LocalTime> list =  JsonHelper.fromJsonToList(this.getTimeList(), new TypeReference<List<LocalTime>>(){});
+        list.remove(time);
+        this.timeList = JsonHelper.toJson(list);
     }
 
     public void setIsDayOff(boolean isDayOff){
