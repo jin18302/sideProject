@@ -37,10 +37,17 @@ public class JwtFilter implements Filter {
             return;
         }
 
+        if(httpRequest.getMethod().equalsIgnoreCase("OPTIONS")){
+            log.info("필터 통과 완료");
+            chain.doFilter(request, response);
+            return;
+        }
+
         String bearerJwt = httpRequest.getHeader("Authorization");
 
         if (bearerJwt == null) {
 //            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED_ACCESS_MESSAGE); TODO
+
         }
 
         String jwt = jwtUtil.substringToken(bearerJwt);
