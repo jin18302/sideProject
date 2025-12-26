@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    Page<Reservation> findByUserId(Long userId, Pageable pageable);
 }

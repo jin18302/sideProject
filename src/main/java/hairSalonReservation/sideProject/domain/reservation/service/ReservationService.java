@@ -2,6 +2,7 @@ package hairSalonReservation.sideProject.domain.reservation.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import hairSalonReservation.sideProject.common.annotation.CheckRole;
+import hairSalonReservation.sideProject.common.cursor.CursorPageResponse;
 import hairSalonReservation.sideProject.common.exception.BadRequestException;
 import hairSalonReservation.sideProject.common.exception.ErrorCode;
 import hairSalonReservation.sideProject.common.exception.ForbiddenException;
@@ -18,6 +19,7 @@ import hairSalonReservation.sideProject.domain.reservation.repository.Reservatio
 import hairSalonReservation.sideProject.domain.reservation.repository.ReservationRepositoryCustomImpl;
 import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepository;
 import hairSalonReservation.sideProject.domain.reservation.repository.ScheduleBlockRepositoryCustomImpl;
+import hairSalonReservation.sideProject.domain.review.dto.response.ReviewResponse;
 import hairSalonReservation.sideProject.domain.serviceMenu.entity.ServiceMenu;
 import hairSalonReservation.sideProject.domain.serviceMenu.repository.ServiceMenuRepository;
 import hairSalonReservation.sideProject.domain.user.entity.User;
@@ -33,6 +35,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -60,17 +63,19 @@ public class ReservationService {
         ServiceMenu serviceMenu = serviceMenuRepository.findById(request.serviceMenuId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.SERVICE_MENU_NOT_FOUND));
 
-        ScheduleBlock block = blockRepositoryCustom.findByDesignerIdAndDate(designerId, request.date())
-                .orElseGet(null);//TODO
+        Optional<ScheduleBlock> block = blockRepositoryCustom.findByDesignerIdAndDate(designerId, request.date());
 
-        List<LocalTime> blockTimeList = JsonHelper.fromJsonToList(block.getTimeList(), new TypeReference<List<LocalTime>>() {});
+        if(block.isPresent()){
+            List<LocalTime> blockTimeList = JsonHelper.fromJsonToList(block.get().getTimeList(), new TypeReference<List<LocalTime>>() {});
 
-        boolean isExistReservation = reservationRepositoryCustom
-                .existByDesignerIdAndSlot(designerId, request.date(), request.time());
+            boolean isExistReservation = reservationRepositoryCustom
+                    .existByDesignerIdAndSlot(designerId, request.date(), request.time());
 
-        if (isExistReservation || blockTimeList.contains(request.time())) {
-            throw new BadRequestException(ErrorCode.TIME_SLOT_ALREADY_BOOKED);
+            if (isExistReservation || blockTimeList.contains(request.time())) {
+                throw new BadRequestException(ErrorCode.TIME_SLOT_ALREADY_BOOKED);
+            }
         }
+
         Reservation reservation = Reservation.of(serviceMenu, designer, user, request.date(), request.time());
 
         try {
@@ -92,9 +97,10 @@ public class ReservationService {
         return reservationRepositoryCustom.findByDesignerIdAndDate(designerId, date);
     }
 
-    public Page<ReservationResponse> readByUserId(Long userId, Pageable pageable) {
+    public CursorPageResponse<ReservationResponse> readByUserId(Long userId) {
 
-        return reservationRepository.findByUserId(userId, pageable).map(ReservationResponse::from);
+        List<ReservationResponse> responseList =  reservationRepositoryCustom.findByUserId(userId);
+        return CursorPageResponse.of(responseList, ReservationResponse::id);
     }
 
     @Transactional

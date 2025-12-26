@@ -1,5 +1,6 @@
 package hairSalonReservation.sideProject.domain.reservation.controller;
 
+import hairSalonReservation.sideProject.common.cursor.CursorPageResponse;
 import hairSalonReservation.sideProject.domain.reservation.dto.request.CreateReservationRequest;
 import hairSalonReservation.sideProject.domain.reservation.dto.request.UpdateReservationStatusRequest;
 import hairSalonReservation.sideProject.domain.reservation.dto.response.ReservationResponse;
@@ -24,18 +25,18 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
-    @PostMapping("/auth/designers/{designerId}/reservations")
+    @PostMapping("/designers/{designerId}/reservations")//o
     public ResponseEntity<ReservationResponse> createReservation(
-//            @RequestAttribute("userId") Long userId,
+            @RequestAttribute("userId") Long userId,
             @PathVariable(name = "designerId") Long designerId,
             @RequestBody @Valid CreateReservationRequest request) {
 
-        ReservationResponse response = reservationService.createReservation(100007L, designerId, request);
+        ReservationResponse response = reservationService.createReservation(userId, designerId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/designers/{designerId}/reservations")
-    public ResponseEntity<List<ReservationResponse>> readByDesignerId(
+    public ResponseEntity<List<ReservationResponse>> readByDesignerId(//x
             @PathVariable(name = "designerId") Long designerId,
             @RequestParam(name = "date", required = false) LocalDate date) {
 
@@ -44,18 +45,16 @@ public class ReservationController {
     }
 
     @GetMapping("/reservations")
-    public ResponseEntity<Page<ReservationResponse>> readByUserId(
+    public ResponseEntity<CursorPageResponse<ReservationResponse>> readByUserId(//o
             @RequestAttribute("userId") Long userId,
-            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-            @RequestParam(name = "page", required = false, defaultValue = "1") int page){
+            @RequestParam(name = "lastCursor", required = false, defaultValue = "1") int lastCursor){
 
-        Pageable pageable = PageRequest.of(page - 1, size);
-        Page<ReservationResponse> responsePage = reservationService.readByUserId(userId, pageable);
+        CursorPageResponse<ReservationResponse> responsePage = reservationService.readByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(responsePage);
     }
 
     @PatchMapping("/reservations/{reservationId}")
-    public ResponseEntity<ReservationResponse> cancelReservation(
+    public ResponseEntity<ReservationResponse> cancelReservation(//x
             @RequestAttribute("userId") Long userId,
             @PathVariable(name = "reservationId")Long reservationId
     ){
@@ -65,7 +64,7 @@ public class ReservationController {
     }
 
     @PatchMapping("/designers/reservations/{reservationId}")
-    public ResponseEntity<ReservationResponse> updateReservationStatus(
+    public ResponseEntity<ReservationResponse> updateReservationStatus(//x
             @RequestAttribute("userId") Long userId,
             @PathVariable(name = "reservationId")Long reservationId,
             @RequestBody @Valid UpdateReservationStatusRequest request

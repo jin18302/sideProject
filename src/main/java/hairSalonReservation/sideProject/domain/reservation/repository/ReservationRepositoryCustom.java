@@ -15,5 +15,7 @@ public interface ReservationRepositoryCustom {
 
     List<ReservationResponse> findByDesignerIdAndDate(Long designerId, LocalDate date);
 
+    List<ReservationResponse> findByUserId(Long userId);
+
     List<Reservation> findByReservationSloat(LocalDate date, LocalTime time, Long cursor);
 }
