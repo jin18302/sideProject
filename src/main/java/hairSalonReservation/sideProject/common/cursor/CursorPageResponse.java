@@ -13,7 +13,7 @@ public record CursorPageResponse<T>(List<T> content, Long lastCursor, boolean is
 
         log.info("response:{}", contentList.size());
 
-        if(contentList.isEmpty()){return null;};
+        if(contentList.isEmpty()){return new CursorPageResponse<T>(contentList, 0L, true);}
 
         boolean isLast = contentList.size() < new QueryProperties().getLimit() + 1;
         if (!isLast) {contentList.remove(contentList.size() - 1);}
