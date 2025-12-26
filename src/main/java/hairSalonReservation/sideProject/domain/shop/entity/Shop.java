@@ -57,12 +57,10 @@ public class Shop extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ShopStatus shopStatus = ShopStatus.NOT_OPENED;
 
-    private LocalDate openDate;
-
     private Long likeCount = 0L;
 
     private Shop(User user, String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
-                 String introduction, String imageUrlList, String snsUriList, LocalDate openDate){
+                 String introduction, String imageUrlList, String snsUriList){
         this.user = user;
         this.name = name;
         this.businessId = businessId;
@@ -73,16 +71,15 @@ public class Shop extends BaseEntity {
         this.introduction = introduction;
         this.imageUrlList = imageUrlList;
         this.snsUriList = snsUriList;
-        this.openDate = openDate;
     }
 
     public static Shop of(User user, String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
-                          String introduction, String imageUrlList, String snsUriList, LocalDate openDate){
-        return new Shop(user, name, businessId, address, phoneNumber, openTime, endTime, introduction, imageUrlList, snsUriList, openDate);
+                          String introduction, String imageUrlList, String snsUriList){
+        return new Shop(user, name, businessId, address, phoneNumber, openTime, endTime, introduction, imageUrlList, snsUriList);
     }
 
     public void update(String name, String businessId, String address, String phoneNumber, LocalTime openTime, LocalTime endTime,
-                 String introduction, String imageUrlList, String snsUriList, LocalDate openDate, ShopStatus shopStatus){
+                 String introduction, String imageUrlList, String snsUriList,  ShopStatus shopStatus){
         this.name = name;
         this.businessId = businessId;
         this.address = address;
@@ -92,7 +89,6 @@ public class Shop extends BaseEntity {
         this.introduction = introduction;
         this.imageUrlList = imageUrlList;
         this.snsUriList = snsUriList;
-        this.openDate = openDate;
         this.shopStatus = shopStatus;
     }
 

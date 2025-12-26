@@ -20,7 +20,6 @@ public record CreateShopRequest(
         @NotEmpty String introduction,
         List<String> imageUrlList,
         List<String> snsUriList,
-        Set<Long> shopTagIdSet,
-        @JsonFormat(pattern = "yyyy-MM-dd") @NotNull LocalDate openDate
+        Set<Long> shopTagIdSet
 ) {
 }

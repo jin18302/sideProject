@@ -53,8 +53,7 @@ public class ShopService {
                 request.endTime(),
                 request.introduction(),
                 JsonHelper.toJson(request.imageUrlList()),
-                JsonHelper.toJson(request.snsUriList()),
-                request.openDate()
+                JsonHelper.toJson(request.snsUriList())
         );
 
         shopRepository.save(shop);
@@ -97,7 +96,6 @@ public class ShopService {
                 updateShopRequest.introduction(),
                 JsonHelper.toJson(updateShopRequest.imageUrlList()),
                 JsonHelper.toJson(updateShopRequest.snsUriList()),
-                updateShopRequest.openDate(),
                 shopStatus
         );
         shopTagMapperService.updateShopTagMapper(userId, shop, new ArrayList<>(updateShopRequest.shopTagIdSet()));

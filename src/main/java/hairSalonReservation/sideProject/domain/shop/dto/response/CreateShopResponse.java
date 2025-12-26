@@ -21,7 +21,6 @@ public record CreateShopResponse(
         String snsUriList,
         List<String> shopTagList,
         ShopStatus shopStatus,
-        LocalDate openDate,
         LocalDateTime createdAt
 ) {
 
@@ -42,7 +41,6 @@ public record CreateShopResponse(
                 shop.getSnsUriList(),
                 shopTagList,
                 shop.getShopStatus(),
-                shop.getOpenDate(),
                 shop.getCreatedAt()
         );
     }
